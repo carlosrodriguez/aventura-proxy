@@ -1,0 +1,4 @@
+# Crawling is allowed so search engines can read the site-wide noindex directive.
+# Exclusion from search results is enforced by X-Robots-Tag and page metadata.
+User-agent: *
+Allow: /

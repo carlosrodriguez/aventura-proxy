@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   title: "Aventura Isles · Independent Homeowner Proxy",
   description:
     "Independent homeowner-operated limited proxy website. Association validation is required.",
-  robots: { index: false, follow: false },
+  robots: { index: false, follow: false, nosnippet: true },
 };
 export const dynamic = "force-dynamic";
 export default function RootLayout({
