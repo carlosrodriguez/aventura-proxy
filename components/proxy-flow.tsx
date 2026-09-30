@@ -61,6 +61,7 @@ export function ProxyFlow({
   const [resendAt, setResendAt] = useState(0);
   const [now, setNow] = useState(0);
   const [notice, setNotice] = useState("");
+  const [editingReview, setEditingReview] = useState(false);
   const stepHeading = useRef<HTMLHeadingElement>(null);
   const previousStep = useRef(step);
   useEffect(() => {
@@ -106,6 +107,7 @@ export function ProxyFlow({
   function update(key: keyof typeof initial, value: string) {
     setData((v) => ({ ...v, [key]: value }));
     signatureImage.current = "";
+    pad.current?.clear();
     setSigned(false);
     setCertified(false);
   }
@@ -160,6 +162,18 @@ export function ProxyFlow({
       }
     }
     if (step === 3) {
+      const details = propertySchema.safeParse(data);
+      const person = signerSchema.safeParse(data);
+      if (!details.success || !person.success) {
+        setError(
+          !details.success
+            ? details.error.issues[0].message
+            : !person.success
+              ? person.error.issues[0].message
+              : "Request failed",
+        );
+        return;
+      }
       if (!certified || !pad.current || pad.current.isEmpty()) {
         setError("Draw your signature and confirm the certification");
         return;
@@ -197,6 +211,7 @@ export function ProxyFlow({
   }
   async function verify() {
     setError("");
+    if (editingReview) return;
     if (!enabled) {
       setStep(5);
       return;
@@ -213,6 +228,51 @@ export function ProxyFlow({
   }
   const entity = ["Trust", "LLC", "Corporation", "Other"].includes(
     data.ownershipType,
+  );
+  const reviewFields = (
+    <>
+      <div className="split">
+        {(["firstName", "lastName"] as const).map((key) => (
+          <div className="field" key={key}>
+            <label htmlFor={`review-${key}`}>
+              {t(key === "firstName" ? "First name" : "Last name")}
+            </label>
+            <input
+              id={`review-${key}`}
+              value={data[key]}
+              maxLength={100}
+              onChange={(e) => update(key, e.target.value)}
+            />
+          </div>
+        ))}
+      </div>
+      <div className="split">
+        <div className="field">
+          <label htmlFor="review-house">{t("House number")}</label>
+          <input
+            id="review-house"
+            value={data.houseNumber}
+            maxLength={7}
+            onChange={(e) => update("houseNumber", e.target.value)}
+          />
+        </div>
+        <div className="field">
+          <label htmlFor="review-street">{t("Street")}</label>
+          <select
+            id="review-street"
+            value={data.street}
+            onChange={(e) => update("street", e.target.value)}
+          >
+            <option value="">{t("Select your street")}</option>
+            {proxyConfig.allowedStreets.map((street) => (
+              <option key={street} value={street}>
+                {street}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+    </>
   );
   return (
     <div className="form-shell" lang={locale}>
@@ -322,6 +382,11 @@ export function ProxyFlow({
         )}
         {step === 1 && (
           <>
+            <p>
+              {locale === "es"
+                ? "Introduzca el nombre de la persona que completa y firma este formulario. Debe estar autorizada para votar por esta propiedad."
+                : "Enter the name of the person completing and signing this form. This person must be authorized to vote for this property."}
+            </p>
             <div className="split">
               {(["firstName", "lastName"] as const).map((k) => (
                 <div className="field" key={k}>
@@ -429,15 +494,18 @@ export function ProxyFlow({
         )}
         {step === 3 && (
           <>
+            <h3>
+              {locale === "es"
+                ? "Revise su nombre y dirección"
+                : "Review your name and address"}
+            </h3>
             <p>
-              <strong>
-                {data.firstName} {data.lastName}
-              </strong>
-              <br />
-              {data.houseNumber} {data.street}
-              <br />
-              {data.email}
+              {locale === "es"
+                ? "Corrija cualquier error antes de firmar."
+                : "Correct any errors before signing."}
             </p>
+            {reviewFields}
+            <p>{data.email}</p>
             <label htmlFor="signature">{t("Draw your signature")}</label>
             <p className="note">
               {t(
@@ -489,6 +557,82 @@ export function ProxyFlow({
         )}
         {step === 4 && (
           <>
+            <h3>
+              {locale === "es"
+                ? "Revise los datos de su poder"
+                : "Review your proxy details"}
+            </h3>
+            {!editingReview ? (
+              <>
+                <p>
+                  <strong>
+                    {data.firstName} {data.lastName}
+                  </strong>
+                  <br />
+                  {data.houseNumber} {data.street}
+                </p>
+                <button
+                  className="secondary"
+                  disabled={busy}
+                  onClick={() => setEditingReview(true)}
+                >
+                  {locale === "es"
+                    ? "Editar nombre o dirección"
+                    : "Edit name or address"}
+                </button>
+              </>
+            ) : (
+              <>
+                {reviewFields}
+                <p className="note">
+                  {locale === "es"
+                    ? "Después de guardar los cambios, deberá firmar de nuevo y confirmar un nuevo código de correo."
+                    : "After saving changes, you will sign again and confirm a new email code."}
+                </p>
+                <button
+                  disabled={busy}
+                  onClick={async () => {
+                    const property = propertySchema.safeParse(data);
+                    const signer = signerSchema.safeParse(data);
+                    if (!property.success || !signer.success) {
+                      setError(
+                        !property.success
+                          ? property.error.issues[0].message
+                          : !signer.success
+                            ? signer.error.issues[0].message
+                            : "Request failed",
+                      );
+                      return;
+                    }
+                    setBusy(true);
+                    try {
+                      if (enabled) await call("/api/proxy/restart", {});
+                      setId("");
+                      setCode("");
+                      setToken("");
+                      setCertified(false);
+                      setSigned(false);
+                      signatureImage.current = "";
+                      setNotice("");
+                      setError("");
+                      setEditingReview(false);
+                      setStep(3);
+                    } catch (e) {
+                      setError(
+                        e instanceof Error ? e.message : "Request failed",
+                      );
+                    } finally {
+                      setBusy(false);
+                    }
+                  }}
+                >
+                  {locale === "es"
+                    ? "Guardar cambios y firmar de nuevo"
+                    : "Save changes and sign again"}
+                </button>
+              </>
+            )}
+
             {enabled ? (
               <>
                 <p>
@@ -567,6 +711,7 @@ export function ProxyFlow({
                     setSigned(false);
                     signatureImage.current = "";
                     setNotice("");
+                    setEditingReview(false);
                     setStep(3);
                   } catch (e) {
                     setError(e instanceof Error ? e.message : "Request failed");
@@ -577,7 +722,7 @@ export function ProxyFlow({
               >
                 {t("Back to edit")}
               </button>
-              <button disabled={busy} onClick={verify}>
+              <button disabled={busy || editingReview} onClick={verify}>
                 {busy
                   ? t("Verifying…")
                   : enabled
