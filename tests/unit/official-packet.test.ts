@@ -29,7 +29,7 @@ it("preserves amendment redlines without presenting deleted text as new text", (
     change: "deleted",
   });
   expect(proxyConfig.officialExhibits.C.sections[0].segments).toContainEqual({
-    text: "30%",
+    text: "one-third",
     change: "deleted",
   });
   expect(proxyConfig.officialExhibits.C.sections[0].segments).toContainEqual({
@@ -37,11 +37,11 @@ it("preserves amendment redlines without presenting deleted text as new text", (
     change: "added",
   });
 });
-it("does not enable submissions while Exhibit B and review remain outstanding", () => {
+it("does not enable submissions while template review remains outstanding", () => {
   vi.stubEnv("ENABLE_SUBMISSIONS", "true");
-  expect(proxyConfig.officialExhibits.B.language).toBe(
-    "[OFFICIAL EXHIBIT B LANGUAGE REQUIRED]",
-  );
+  expect(proxyConfig.officialExhibits.B.sections[0].segments).toContainEqual({
+    text: "entire membership of the ASSOCIATION", change: "deleted",
+  });
   expect(proxyConfig.reviewed).toBe(false);
   expect(officialTemplateReady()).toBe(false);
   expect(submissionsEnabled()).toBe(false);

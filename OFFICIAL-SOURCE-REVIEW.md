@@ -20,3 +20,9 @@ The user supplied a six-page scanned meeting packet. All six pages were visually
 ENABLE_SUBMISSIONS=false, reviewed=false, and the draft template version remain in place. No live voting PDF was generated or signed. No email was sent.
 
 Source SHA-256: 39e823468ea7d429f23b5e7b1a7c9a9675e0dee4bc5b3d1a7e392f702a0e3565
+
+## Additional packet reviewed September 29, 2026
+
+The seven-page packet supplied later includes Exhibit A on page 3, Exhibit B on page 4, Exhibit C on page 5, and the official proxy on page 7. These pages were visually reviewed. SHA-256: 6339836f463bb061f4bbde62d1d16c6cd7890619374f76f93141a10a22f21217.
+
+This packet shows the existing Section 3.2 quorum as one-third, unlike the earlier packet’s 30%. Dev now follows the newly supplied packet. Exhibit B changes the amendment majority from the entire membership to lots represented at a meeting with quorum. Exhibit A retains “may not be amended” for lowering specially required voting thresholds. Source signatures and the DocuSign identifier are not copied into the repository. Template finalization remains disabled pending the complete execution PDF review and service configuration.

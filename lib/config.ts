@@ -37,7 +37,7 @@ export const proxyConfig = {
     );
   },
   importantProxyNote:
-    "Important note: In order to be valid, a Proxy must be signed by the person entitled to cast a vote on behalf of a Lot, and it must be filed with the Association at or prior to the time roll call is made and quorum is determined. A Proxy may be revoked by the Owner and is valid only for the meeting for which it is given and any lawful adjournment, except that a Proxy automatically expires 90 days after the date of the meeting for which it was originally given.",
+    "Important note: In order to be valid, a Proxy must be signed by the person authorized to cast a vote on behalf of the Lot, and it must be filed with the Association at or prior to the time roll call is made and quorum is determined. A Proxy may be revoked by the Owner and is valid only for the meeting for which it is given and any lawful adjournment, except that a Proxy automatically expires 90 days after the date of the meeting for which it was originally given.",
   substitutionNotice:
     "This section is only to be filled in by the proxyholder if they wish to appoint a substitute proxyholder.",
   substitutionWording:
@@ -45,7 +45,7 @@ export const proxyConfig = {
   officialExhibits: {
     A: {
       label: "Exhibit A",
-      sourcePage: 2,
+      sourcePage: 3,
       title:
         "Proposed Amendments to the Master Declaration of Covenants and Restrictions of Aventura Isles (the “Declaration”)",
       intro:
@@ -83,7 +83,7 @@ export const proxyConfig = {
               change: "added",
             },
             {
-              text: " to approve any action, such provision may only be amended to require a lesser vote, and may not be deleted, without the same number of votes required to approve such action. In addition, so long as DECLARANT has the right to appoint a majority of the directors of the Association as provided in the ARTICLES, this DECLARATION may be amended from time to time, by DECLARANT without the consent of the ASSOCIATION or any OWNER, and no amendment may be made by the OWNERS without the written joinder of DECLARANT. Such right of DECLARANT to amend this DECLARATION shall specifically include, but shall not be limited to, (i) amendments adding any property which will be developed in a similar manner as the SUBJECT PROPERTY, or deleting any property from the SUBJECT PROPERTY which will be developed differently than the SUBJECT PROPERTY (provided that any such amendments shall require the joinder of the owners of such property or any portion thereof if the owners are different than DECLARANT and further provided that DECLARANT shall not have the obligation to add any property or delete any property from the SUBJECT PROPERTY), and (ii) amendments required by INSTITUTIONAL LENDER or governmental authority in order to comply with the requirements of same. In order to be effective, any amendment to this DECLARATION must first be recorded in the public records of the county in which the SUBJECT PROPERTY is located, and, in the case of an amendment made by the OWNERS, such amendment shall contain a certification by the President and Secretary of the ASSOCIATION that the amendment was duly adopted.",
+              text: " to approve any action, such provision may not be amended to require a lesser vote, and may not be deleted, without the same number of votes required to approve such action. In addition, so long as DECLARANT has the right to appoint a majority of the directors of the Association as provided in the ARTICLES, this DECLARATION may be amended from time to time, by DECLARANT without the consent of the ASSOCIATION or any OWNER, and no amendment may be made by the OWNERS without the written joinder of DECLARANT. Such right of DECLARANT to amend this DECLARATION shall specifically include, but shall not be limited to, (i) amendments adding any property which will be developed in a similar manner as the SUBJECT PROPERTY, or deleting any property from the SUBJECT PROPERTY which will be developed differently than the SUBJECT PROPERTY (provided that any such amendments shall require the joinder of the owners of such property or any portion thereof if the owners are different than DECLARANT and further provided that DECLARANT shall not have the obligation to add any property or delete any property from the SUBJECT PROPERTY), and (ii) amendments required by INSTITUTIONAL LENDER or governmental authority in order to comply with the requirements of same. In order to be effective, any amendment to this DECLARATION must first be recorded in the public records of the county in which the SUBJECT PROPERTY is located, and, in the case of an amendment made by the OWNERS, such amendment shall contain a certification by the President and Secretary of the ASSOCIATION that the amendment was duly adopted.",
               change: "unchanged",
             },
           ],
@@ -92,11 +92,25 @@ export const proxyConfig = {
     },
     B: {
       label: "Exhibit B",
-      language: "[OFFICIAL EXHIBIT B LANGUAGE REQUIRED]",
+      sourcePage: 4,
+      title: "Proposed Amendments to the Articles of Incorporation of Aventura Isles Master Homeowners’ Association, Inc. (the “Articles”)",
+      intro: "All other Sections of the Articles shall remain unchanged. In the event of any conflict or inconsistency between the below amendments and the corresponding provisions of the Articles, the terms and provisions of the below amendments shall govern and control.",
+      note: "Note: Text appearing underlined is new text; Text appearing with strikethrough is deleted text; and Text appearing without underlining or strikethrough is existing text and remains unchanged.",
+      language: "11.3 At such meeting, a vote of the members entitled to vote thereon shall be taken on the proposed amendment. The proposed amendment shall be adopted upon receiving the affirmative vote of a majority of the votes of the entire membership of the ASSOCIATION [deleted]; LOTS represented at a meeting at which a quorum has been attained [added].",
+      sections: [{
+        heading: "Section 11.3 of the Articles is hereby amended as follows:",
+        segments: [
+          { text: "11.3 At such meeting, a vote of the members entitled to vote thereon shall be taken on the proposed amendment. The proposed amendment shall be adopted upon receiving the affirmative vote of a majority of the votes of the ", change: "unchanged" },
+          { text: "entire membership of the ASSOCIATION", change: "deleted" },
+          { text: " ", change: "unchanged" },
+          { text: "LOTS represented at a meeting at which a quorum has been attained", change: "added" },
+          { text: ".", change: "unchanged" },
+        ],
+      }],
     },
     C: {
       label: "Exhibit C",
-      sourcePage: 3,
+      sourcePage: 5,
       title:
         "Proposed Amendments to the By-Laws of Aventura Isles Master Homeowners’ Association, Inc. (the “By-Laws”)",
       intro:
@@ -111,7 +125,7 @@ export const proxyConfig = {
               change: "unchanged",
             },
             {
-              text: "30%",
+              text: "one-third",
               change: "deleted",
             },
             { text: " ", change: "unchanged" },

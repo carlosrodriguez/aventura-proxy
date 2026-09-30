@@ -38,11 +38,10 @@ export default function Language() {
       </p>
       <h2>Official exhibit text</h2>
       <p>
-        The supplied scan contains Exhibits A and C. Exhibit B is still
-        required. Underlining indicates added language; strikethrough indicates
+        The supplied packet contains Exhibits A, B, and C. Underlining indicates added language; strikethrough indicates
         deleted language.
       </p>
-      {[proxyConfig.officialExhibits.A, proxyConfig.officialExhibits.C].map(
+      {[proxyConfig.officialExhibits.A, proxyConfig.officialExhibits.B, proxyConfig.officialExhibits.C].map(
         (exhibit) => (
           <section key={exhibit.label} className="section">
             <h3>
@@ -69,10 +68,6 @@ export default function Language() {
           </section>
         ),
       )}
-      <section className="card">
-        <h3>Exhibit B</h3>
-        <p>{proxyConfig.officialExhibits.B.language}</p>
-      </section>
       <h2>Important proxy note</h2>
       <p>{proxyConfig.importantProxyNote}</p>
       <h3>Substitution of proxy</h3>

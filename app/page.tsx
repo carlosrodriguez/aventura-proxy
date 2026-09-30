@@ -2,7 +2,7 @@ import Link from "next/link";
 import { submissionsEnabled, proxyConfig } from "@/lib/config";
 import { homeCopy } from "@/lib/i18n/home";
 
-function OfficialRedlines({ exhibit }: { exhibit: "A" | "C" }) {
+function OfficialRedlines({ exhibit }: { exhibit: "A" | "B" | "C" }) {
   return (
     <div className="official-redlines" lang="en">
       {proxyConfig.officialExhibits[exhibit].sections.map((section) => (
@@ -172,7 +172,7 @@ export default async function Home({
               <p className="eyebrow">{exhibit.label}</p>
               <h3>{exhibit.title}</h3>
               <p>{exhibit.body}</p>
-              {index !== 1 && (
+              {(
                 <details className="exhibit-wording">
                   <summary>
                     {locale === "es"
@@ -184,7 +184,7 @@ export default async function Home({
                       ? "El texto tachado se elimina; el texto subrayado se añade. Se conserva el inglés original del documento."
                       : "Strikethrough marks deleted text; underlining marks added text. The original document wording is preserved."}
                   </p>
-                  <OfficialRedlines exhibit={index === 0 ? "A" : "C"} />
+                  <OfficialRedlines exhibit={index === 0 ? "A" : index === 1 ? "B" : "C"} />
                 </details>
               )}
             </section>

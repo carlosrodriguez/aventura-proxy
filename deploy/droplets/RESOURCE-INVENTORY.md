@@ -19,3 +19,5 @@ DigitalOcean Droplet IDs: dev 604803751; prod 604803750. Both were created Septe
 Root domain `aventuraislesproxy.com` points to prod and now serves the preview over HTTPS with HTTP redirect. Let's Encrypt certificate expires December 28, 2026; Certbot automatic renewal is scheduled. Public TLS validation and all eight referenced CSS/JavaScript assets passed. The planned vote/dev subdomain records remain pending. Nginx configuration for the root is `/etc/nginx/sites-available/aventura-root`. Submissions remain disabled.
 
 Dev and vote subdomains now resolve to their respective Droplets and have installed Let’s Encrypt certificates expiring December 28, 2026. Automatic certificate renewal is scheduled.
+
+Dev private storage created September 29: aventura-proxy-dev-private, NYC3, Aventura Isles Proxy project. Spaces subscription $5/month approved by user. Listing restricted, CDN disabled, app access limited to this bucket with Read/Write/Delete. Credentials installed only in dev protected environment. Write/read/delete smoke test passed; anonymous read denied (403). Dev proxyholder: Jenny Ghetea. Resend verification and keys still pending.

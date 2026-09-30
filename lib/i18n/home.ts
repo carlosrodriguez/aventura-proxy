@@ -15,10 +15,10 @@ export const homeCopy = {
     todayLead:
       "Holding a meeting and changing the governing documents have two different requirements.",
     todayRule:
-      "To hold the meeting: at least 30% of lots must be represented in person or by proxy.",
+      "To hold the meeting: at least one-third of lots must be represented in person or by proxy.",
     todayApproval: "To amend the documents: the current Declaration requires approval by a majority of owners; the current By-Laws require a majority of the entire membership—not just those represented at the meeting.",
     todayProtection: "Why keep this? A smaller group can attend a meeting, but it cannot amend these documents without support from a majority of the community. The proposed changes would let a majority of the smaller group represented at a meeting approve amendments, subject to specific higher voting requirements.",
-    currentShare: "30%",
+    currentShare: "⅓",
     currentShareLabel: "of the lots",
     proposed: "Proposed change",
     stepOne: "Step 1",
@@ -64,7 +64,7 @@ export const homeCopy = {
       {
         label: "Exhibit B",
         title: "Changing the Articles of Incorporation",
-        body: "The voting question concerns the Association’s Articles of Incorporation. The supplied packet does not include Exhibit B itself, so we cannot explain its exact changes yet. The complete exhibit is needed before any proxy can be finalized.",
+        body: "The proposed Articles amendment changes approval from a majority of the entire membership to a majority of lots represented at a meeting with quorum.",
       },
       {
         label: "Exhibit C",
@@ -96,12 +96,12 @@ export const homeCopy = {
     todayLead:
       "Celebrar una reunión y cambiar los documentos que rigen la comunidad tienen requisitos distintos.",
     todayRule:
-      "Para celebrar la reunión: al menos el 30% de las viviendas debe estar representado en persona o mediante un poder.",
+      "Para celebrar la reunión: al menos un tercio de las viviendas debe estar representado en persona o mediante un poder.",
     todayApproval:
       "Para modificar los documentos: la Declaración actual exige la aprobación de la mayoría de los propietarios; los Estatutos actuales exigen la mayoría de todos los miembros, no solo de quienes estén representados en la reunión.",
     todayProtection:
       "¿Por qué conservar esta protección? Un grupo más pequeño puede participar en una reunión, pero no puede modificar estos documentos sin el apoyo de la mayoría de la comunidad. Los cambios propuestos permitirían aprobar enmiendas con la mayoría del grupo representado en la reunión, salvo los casos que exijan una votación superior.",
-    currentShare: "30%",
+    currentShare: "⅓",
     currentShareLabel: "de los lotes",
     proposed: "Cambio propuesto",
     stepOne: "Paso 1",
@@ -147,7 +147,7 @@ export const homeCopy = {
       {
         label: "Anexo B",
         title: "Cambios al acta constitutiva de la Asociación",
-        body: "La pregunta de votación se refiere al acta constitutiva de la Asociación. El paquete recibido no incluye el Anexo B, por lo que todavía no podemos explicar sus cambios exactos. Se necesita el anexo completo antes de finalizar cualquier poder de representación.",
+        body: "El cambio propuesto al acta constitutiva sustituye la aprobación por mayoría de todos los miembros por la aprobación de la mayoría de los lotes representados en una reunión con quórum.",
       },
       {
         label: "Anexo C",
