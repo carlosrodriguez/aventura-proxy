@@ -452,7 +452,7 @@ td {
   padding: 12px;
   color: #875019;
 }
-.decision-sequence .everyone {
+.decision-sequence li.everyone:not(.sequence-arrow) {
   background: var(--ink);
   color: white;
   border-color: var(--ink);
