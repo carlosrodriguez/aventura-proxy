@@ -41,13 +41,16 @@ export async function readPrivate(key: string) {
   if (!res.Body) throw new Error("Missing object");
   return res.Body.transformToByteArray();
 }
-export async function temporaryUrl(key: string) {
+export async function temporaryUrl(
+  key: string,
+  filename = "limited-proxy.pdf",
+) {
   return getSignedUrl(
     client(),
     new GetObjectCommand({
       Bucket: process.env.SPACES_BUCKET,
       Key: key,
-      ResponseContentDisposition: 'attachment; filename="limited-proxy.pdf"',
+      ResponseContentDisposition: `attachment; filename="${filename.replace(/[^a-zA-Z0-9._-]/g, "_")}"`,
     }),
     { expiresIn: 60 },
   );

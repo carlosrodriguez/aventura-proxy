@@ -105,6 +105,7 @@ export async function POST(req: NextRequest) {
           "validation",
           "retry-email",
         ]),
+        confirmed: z.boolean().optional(),
         status: z
           .enum(["pending", "accepted", "rejected", "duplicate", "revoked"])
           .optional(),
@@ -112,7 +113,7 @@ export async function POST(req: NextRequest) {
       .strict()
       .safeParse(await jsonBody(req, 2048));
     if (!p.success) throw new HttpError(400, "Invalid request");
-    const { id, action, status } = p.data,
+    const { id, action, status, confirmed = true } = p.data,
       s = await db().proxySubmission.findUnique({ where: { id } });
     if (!s) throw new HttpError(404, "Unavailable");
     if (action === "download") {
@@ -137,11 +138,15 @@ export async function POST(req: NextRequest) {
         where: { id },
         data:
           action === "received"
-            ? { holderReceivedAt: s.holderReceivedAt ?? new Date() }
+            ? {
+                holderReceivedAt: confirmed
+                  ? (s.holderReceivedAt ?? new Date())
+                  : null,
+              }
             : action === "printed"
-              ? { printedAt: s.printedAt ?? new Date() }
+              ? { printedAt: confirmed ? (s.printedAt ?? new Date()) : null }
               : action === "filed"
-                ? { filedAt: s.filedAt ?? new Date() }
+                ? { filedAt: confirmed ? (s.filedAt ?? new Date()) : null }
                 : { associationStatus: status },
       }),
       db().auditEvent.create({
@@ -156,6 +161,7 @@ export async function POST(req: NextRequest) {
                   ? "FILING_CONFIRMED"
                   : "ASSOCIATION_STATUS_CHANGED",
           metadata: {
+            confirmed,
             admin: admin.email,
             status: status ?? action,
             previousStatus: s.associationStatus,

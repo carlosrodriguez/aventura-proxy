@@ -82,3 +82,16 @@ it("preserves the original print confirmation timestamp", async () => {
   expect((await POST(request("printed"))).status).toBe(200);
   expect(state.update.mock.calls[0][0].data).toEqual({ printedAt: date });
 });
+it("allows an operator to undo a mistaken print confirmation with an audit event", async () => {
+  const req = new NextRequest("https://test.example/api/admin/submissions", {
+    method: "POST",
+    headers: {
+      origin: "https://test.example",
+      "content-type": "application/json",
+    },
+    body: JSON.stringify({ id, action: "printed", confirmed: false }),
+  });
+  expect((await POST(req)).status).toBe(200);
+  expect(state.update.mock.calls[0][0].data).toEqual({ printedAt: null });
+  expect(state.create.mock.calls[0][0].data.metadata.confirmed).toBe(false);
+});

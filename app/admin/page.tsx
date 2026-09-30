@@ -9,7 +9,7 @@ export default async function Admin() {
     redirect("/admin/login");
   }
   return (
-    <article className="container prose">
+    <article className="container admin-page">
       <h1>Proxy administration</h1>
       <p>
         Reconcile finalized proxies with Jenny Ghetea’s received and printed
