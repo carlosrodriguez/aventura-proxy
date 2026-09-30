@@ -829,3 +829,7 @@ td {
     flex-wrap: nowrap;
   }
 }
+
+.signing-step-heading {
+  scroll-margin-top: 20px;
+}

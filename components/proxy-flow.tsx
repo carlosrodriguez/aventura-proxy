@@ -56,6 +56,14 @@ export function ProxyFlow({
   const [resendAt, setResendAt] = useState(0);
   const [now, setNow] = useState(0);
   const [notice, setNotice] = useState("");
+  const stepHeading = useRef<HTMLHeadingElement>(null);
+  const previousStep = useRef(step);
+  useEffect(() => {
+    if (previousStep.current === step) return;
+    previousStep.current = step;
+    stepHeading.current?.focus({ preventScroll: true });
+    stepHeading.current?.scrollIntoView({ block: "start", behavior: "instant" });
+  }, [step]);
   const signatureImage = useRef("");
   useEffect(() => {
     const timer = setInterval(() => setNow(Date.now()), 1000);
@@ -242,7 +250,9 @@ export function ProxyFlow({
         ))}
       </div>
       <div className="form-card">
-        <h2 className="step-title">{steps[step]}</h2>
+        <h2 ref={stepHeading} tabIndex={-1} className="step-title signing-step-heading">
+          {steps[step]}
+        </h2>
         {error && (
           <p className="error" role="alert">
             {t(error)}
