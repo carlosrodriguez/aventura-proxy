@@ -83,5 +83,5 @@ export async function transactionalEmail(
   }
 }
 export function receiptText(id: string, date: Date, hash: string) {
-  return `Submission ID: ${id}\nFinalized: ${date.toISOString()}\nSHA-256: ${hash}\n\n${authorityNotice}\nContact the site operator for correction or revocation-request instructions. A request to this website does not itself legally revoke a proxy.`;
+  return `Submission ID: ${id}\nFinalized: ${date.toISOString()}\nSHA-256: ${hash}\n\n${authorityNotice}\nContact Jenny Ghetea directly about correcting or withdrawing a proxy you have given her. Contact does not automatically revoke a proxy; this website does not cancel proxies.`;
 }

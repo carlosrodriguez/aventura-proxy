@@ -12,7 +12,7 @@ export default function Page() {
         <li>Read the fixed NO voting instructions and official wording.</li>
         <li>Draw your signature and certify your authority.</li>
         <li>Enter the email code within ten minutes.</li>
-        <li>The system generates a signed PDF and a separate audit record.</li>
+        <li>We fill the official proxy form and preserve a separate audit record.</li>
       </ol>
       <p>
         The Association independently validates voting authority. Email

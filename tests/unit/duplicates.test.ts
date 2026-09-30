@@ -12,6 +12,7 @@ const state = vi.hoisted(() => ({
 }));
 vi.mock("@/lib/config", () => ({
   submissionsEnabled: () => true,
+  certification: "TEST electronic signing consent",
   proxyConfig: { templateVersion: "test-only-v1" },
 }));
 vi.mock("@/lib/email", () => ({

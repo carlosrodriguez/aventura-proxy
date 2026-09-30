@@ -67,8 +67,8 @@ export const spanishSign: Record<string, string> = {
     "No se ha finalizado ni enviado ningún poder. Los envíos están desactivados hasta que se revise el formulario oficial.",
   "Contact Jenny Ghetea directly about correcting or withdrawing a proxy you have given her. Contact does not automatically revoke a proxy.":
     "Contacte directamente a Jenny Ghetea para corregir o retirar un poder que le haya otorgado. Contactarla no lo revoca automáticamente.",
-  "Email verification confirms access to this email address. It does not establish property ownership or voting authority. The Association must independently validate the proxy.":
-    "La verificación confirma el acceso al correo, no la titularidad de la propiedad ni la facultad de votar. La Asociación debe validar el poder de forma independiente.",
+  "These safeguards help prevent spam, detect potential duplicates, and preserve a traceable signing record. The Association confirms the signer’s voting authority and whether the proxy meets its requirements.":
+    "Estas medidas ayudan a prevenir el spam, detectar posibles duplicados y conservar un registro de firma que se puede revisar. La Asociación confirma la facultad del firmante para votar y si el poder cumple sus requisitos.",
   "I certify that I am the owner or authorized voting member for the property identified above and that I am authorizing this limited proxy. I consent to sign electronically and receive a copy by email.":
     "Certifico que soy el propietario o miembro autorizado para votar por la propiedad indicada y que autorizo este poder limitado. Acepto firmarlo electrónicamente y recibir una copia por correo.",
   "Draw your signature and confirm the certification":

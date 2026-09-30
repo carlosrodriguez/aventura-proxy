@@ -212,7 +212,7 @@ export const proxyConfig = {
 } as const;
 export const disclaimer = `This independent website is operated by ${siteOperatorName}. It is not an official Aventura Isles Master Homeowners’ Association website and is not operated by the Association or its management company.`;
 export const authorityNotice =
-  "Email verification confirms access to this email address. It does not establish property ownership or voting authority. The Association must independently validate the proxy.";
+  "These safeguards help prevent spam, detect potential duplicates, and preserve a traceable signing record. The Association confirms the signer’s voting authority and whether the proxy meets its requirements.";
 export const certification =
   "I certify that I am the owner or authorized voting member for the property identified above and that I am authorizing this limited proxy. I consent to sign electronically and receive a copy by email.";
 export function officialTemplateReady(): boolean {
