@@ -173,4 +173,4 @@ Before finalization, Back to edit invalidates the saved draft’s access token a
 
 Address entry currently validates syntax and the configured street list. It does not check whether a particular house number exists. A trusted community address roster can provide that check without sending personal data to a geocoding vendor.
 
-Install `poppler-utils` on the app server for the signing preview. The preview endpoint renders the exact unsigned PDF as a PNG with `pdftoppm`, using a private temporary directory and deleting it in a finally block. Nothing is uploaded to Spaces or emailed for a preview. The rendered image works in browsers that do not support embedded PDF viewers.
+The Preview your filled proxy button opens the PDF directly in a new tab with one click. A tab is opened synchronously from the user gesture to support Safari; generation errors close it and appear in the signing form. The endpoint returns an unsigned PDF directly with private/no-store headers. No embedded viewer, image renderer, temporary files, storage upload, or email is used.

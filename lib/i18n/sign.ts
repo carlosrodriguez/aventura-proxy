@@ -1,4 +1,8 @@
 export const spanishSign: Record<string, string> = {
+  "Preparing your PDF…": "Preparando su PDF…",
+  "Allow this site to open PDF previews in a new tab, then try again.":
+    "Permita que este sitio abra el PDF en una pestaña nueva e inténtelo de nuevo.",
+
   "Aventura Isles Property Address":
     "Dirección de la propiedad en Aventura Isles",
   "Review your proxy": "Revise su poder",

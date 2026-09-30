@@ -769,16 +769,6 @@ td {
   line-height: 1.5;
   margin-top: 24px;
 }
-.proxy-document-preview {
-  margin-top: 20px;
-}
-.proxy-document-preview img {
-  width: 100%;
-  height: auto;
-  border: 1px solid #cbd8c8;
-  margin-top: 12px;
-}
-
 .document-page {
   max-width: 1040px;
 }

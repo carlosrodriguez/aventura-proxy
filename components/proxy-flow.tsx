@@ -53,7 +53,6 @@ export function ProxyFlow({
     [id, setId] = useState(""),
     [signed, setSigned] = useState(false);
   const [previewUrl, setPreviewUrl] = useState("");
-  const [previewImage, setPreviewImage] = useState("");
   const [resendAt, setResendAt] = useState(0);
   const [now, setNow] = useState(0);
   const [notice, setNotice] = useState("");
@@ -97,7 +96,6 @@ export function ProxyFlow({
   function update(key: keyof typeof initial, value: string) {
     setData((v) => ({ ...v, [key]: value }));
     setPreviewUrl("");
-    setPreviewImage("");
     signatureImage.current = "";
     setSigned(false);
     setCertified(false);
@@ -377,8 +375,25 @@ export function ProxyFlow({
               className="secondary"
               disabled={busy}
               onClick={async () => {
-                setBusy(true);
                 setError("");
+                // Open synchronously from the click so Safari allows the PDF tab.
+                const previewWindow = window.open("about:blank", "_blank");
+                if (!previewWindow) {
+                  setError(
+                    "Allow this site to open PDF previews in a new tab, then try again.",
+                  );
+                  return;
+                }
+                previewWindow.opener = null;
+                previewWindow.document.title = t("Preparing your PDF…");
+                previewWindow.document.body.textContent = t(
+                  "Preparing your PDF…",
+                );
+                if (previewUrl) {
+                  previewWindow.location.replace(previewUrl);
+                  return;
+                }
+                setBusy(true);
                 try {
                   const response = await fetch("/api/proxy-preview", {
                     method: "POST",
@@ -387,37 +402,20 @@ export function ProxyFlow({
                   });
                   if (!response.ok)
                     throw new Error("Preview unavailable. Please try again.");
-                  const preview = (await response.json()) as {
-                    pdf: string;
-                    image: string;
-                  };
-                  const pdf = Uint8Array.from(atob(preview.pdf), (character) =>
-                    character.charCodeAt(0),
-                  );
-                  setPreviewUrl(
-                    URL.createObjectURL(
-                      new Blob([pdf], { type: "application/pdf" }),
-                    ),
-                  );
-                  setPreviewImage(`data:image/png;base64,${preview.image}`);
+                  const url = URL.createObjectURL(await response.blob());
+                  setPreviewUrl(url);
+                  previewWindow.location.replace(url);
                 } catch (e) {
+                  previewWindow.close();
                   setError(e instanceof Error ? e.message : "Request failed");
                 } finally {
                   setBusy(false);
                 }
               }}
             >
-              {t("Preview your filled proxy")}
+              {busy ? t("Preparing your PDF…") : t("Preview your filled proxy")}
             </button>
-            {previewUrl && (
-              <div className="proxy-document-preview">
-                <a href={previewUrl} target="_blank" rel="noopener">
-                  {t("Open PDF preview")}
-                </a>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={previewImage} alt={t("Unsigned proxy preview")} />
-              </div>
-            )}
+
             {proxyConfig.proposals.map((p) => (
               <div className="card" key={p.label}>
                 <h3>
