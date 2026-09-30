@@ -134,10 +134,7 @@ export default async function Home({
             <span className={i < 10 ? "highlighted" : undefined} key={i} />
           ))}
         </div>
-        <h2 id="takeaway-heading">
-          {copy.takeawayBefore} <strong>10%</strong> {copy.takeawayMiddle}{" "}
-          <strong>100%</strong> {copy.takeawayAfter}
-        </h2>
+        <h2 id="takeaway-heading">{copy.amendmentTakeaway}</h2>
         <p className="accuracy-note">{copy.accuracy}</p>
       </section>
       <section className="recommendation-panel" aria-labelledby="why-heading">
