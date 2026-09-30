@@ -152,6 +152,15 @@ export default async function Home({
         {!enabled && <p className="preview">{copy.previewNote}</p>}
         <p className="disclaimer">{copy.disclaimer}</p>
       </section>
+      <section
+        className="recommendation-panel"
+        aria-labelledby="participation-heading"
+      >
+        <h2 id="participation-heading">{copy.participationTitle}</h2>
+        {copy.participationArgument.map((paragraph) => (
+          <p key={paragraph}>{paragraph}</p>
+        ))}
+      </section>
       <details className="participation-details">
         <summary>{copy.how}</summary>
         <div>
@@ -172,7 +181,7 @@ export default async function Home({
               <p className="eyebrow">{exhibit.label}</p>
               <h3>{exhibit.title}</h3>
               <p>{exhibit.body}</p>
-              {(
+              {
                 <details className="exhibit-wording">
                   <summary>
                     {locale === "es"
@@ -184,9 +193,11 @@ export default async function Home({
                       ? "El texto tachado se elimina; el texto subrayado se añade. Se conserva el inglés original del documento."
                       : "Strikethrough marks deleted text; underlining marks added text. The original document wording is preserved."}
                   </p>
-                  <OfficialRedlines exhibit={index === 0 ? "A" : index === 1 ? "B" : "C"} />
+                  <OfficialRedlines
+                    exhibit={index === 0 ? "A" : index === 1 ? "B" : "C"}
+                  />
                 </details>
-              )}
+              }
             </section>
           ))}
         </div>

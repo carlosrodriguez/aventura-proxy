@@ -16,8 +16,10 @@ export const homeCopy = {
       "Holding a meeting and changing the governing documents have two different requirements.",
     todayRule:
       "To hold the meeting: at least one-third of lots must be represented in person or by proxy.",
-    todayApproval: "To amend the documents: the current Declaration requires approval by a majority of owners; the current By-Laws require a majority of the entire membership—not just those represented at the meeting.",
-    todayProtection: "Why keep this? A smaller group can attend a meeting, but it cannot amend these documents without support from a majority of the community. The proposed changes would let a majority of the smaller group represented at a meeting approve amendments, subject to specific higher voting requirements.",
+    todayApproval:
+      "To amend the documents: the current Declaration requires approval by a majority of owners; the current By-Laws require a majority of the entire membership—not just those represented at the meeting.",
+    todayProtection:
+      "Why keep this? A smaller group can attend a meeting, but it cannot amend these documents without support from a majority of the community. The proposed changes would let a majority of the smaller group represented at a meeting approve amendments, subject to specific higher voting requirements.",
     currentShare: "⅓",
     currentShareLabel: "of the lots",
     proposed: "Proposed change",
@@ -28,7 +30,8 @@ export const homeCopy = {
     represented:
       "A home can be represented by someone attending the meeting or through a proxy.",
     stepTwo: "Step 2",
-    stepTwoTitle: "A majority of that smaller group could change the governing documents.",
+    stepTwoTitle:
+      "A majority of that smaller group could change the governing documents.",
     homes: "homes represented",
     yes: "YES votes",
     everyone: "of homes bound by the decision",
@@ -44,6 +47,13 @@ export const homeCopy = {
       "These amendments would allow future changes to the community’s governing documents to pass with as few as 66 YES votes at a meeting with minimum participation.",
       "Those documents set the rules for how the Association operates and how community decisions are made. Changing them can affect every homeowner.",
       "Today, these amendments require support from a majority of owners or the entire membership, as specified in each document. We believe changing the rules for everyone should continue to require that broader support.",
+    ],
+    participationTitle: "Participation is possible. Let’s work for it.",
+    participationArgument: [
+      "The current Board has been elected twice under the existing rules. That does not mean reaching quorum is always easy, but it is a reason to question the claim that holding elections is nearly impossible.",
+      "Expecting a vote to fail is an opinion about turnout. If a vote is not called because it is expected to fail, that does not show that owners were asked and the required support could not be reached. Owners should be shown which votes were held, how many lots participated, and which requirements were not met.",
+      "This amendment campaign shows that organized outreach takes effort. We believe that same effort should first go toward informing owners and encouraging participation under the current rules, before lowering the support needed to change the governing documents that affect us all.",
+      "Making meetings easier to hold and making governing documents easier to amend are separate choices. Successful elections do not prove that every amendment can pass; concerns about turnout do not, by themselves, justify letting a smaller group change the rules for everyone.",
     ],
     recommendation: "Vote NO to keep the current protections in place.",
     how: "How does this work?",
@@ -111,12 +121,15 @@ export const homeCopy = {
     represented:
       "Una vivienda puede estar representada por alguien que asista a la reunión o mediante un poder de representación (proxy).",
     stepTwo: "Paso 2",
-    stepTwoTitle: "La mayoría de ese grupo más pequeño podría cambiar los documentos que rigen la comunidad.",
+    stepTwoTitle:
+      "La mayoría de ese grupo más pequeño podría cambiar los documentos que rigen la comunidad.",
     homes: "viviendas representadas",
     yes: "votos a favor",
     everyone: "de las viviendas sujetas a la decisión",
-    consequence: "Los cambios aprobados por 66 viviendas podrían aplicarse a las 654 viviendas.",
-    amendmentTakeaway: "66 viviendas podrían cambiar las reglas para las 654 viviendas.",
+    consequence:
+      "Los cambios aprobados por 66 viviendas podrían aplicarse a las 654 viviendas.",
+    amendmentTakeaway:
+      "66 viviendas podrían cambiar las reglas para las 654 viviendas.",
     takeawayBefore: "Alrededor del",
     takeawayMiddle: "de la comunidad podría decidir por el",
     takeawayAfter: "de la comunidad.",
@@ -127,6 +140,14 @@ export const homeCopy = {
       "Estas enmiendas permitirían aprobar futuros cambios a los documentos que rigen la comunidad con apenas 66 votos a favor en una reunión con la participación mínima.",
       "Esos documentos establecen cómo funciona la Asociación y cómo se toman las decisiones de la comunidad. Modificarlos puede afectar a todos los propietarios.",
       "Actualmente, estas enmiendas requieren el apoyo de la mayoría de los propietarios o de todos los miembros, según cada documento. Creemos que cambiar las reglas para todos debe seguir exigiendo ese respaldo más amplio.",
+    ],
+    participationTitle:
+      "La participación es posible. Trabajemos para lograrla.",
+    participationArgument: [
+      "La Junta actual ha sido elegida dos veces bajo las reglas vigentes. Eso no significa que alcanzar el quórum siempre sea fácil, pero sí es una razón para cuestionar la afirmación de que celebrar elecciones es casi imposible.",
+      "Prever que una votación fracasará es una opinión sobre la participación. Si no se convoca una votación porque se espera que fracase, eso no demuestra que se haya consultado a los propietarios y no se haya logrado el apoyo necesario. Los propietarios deberían conocer qué votaciones se celebraron, cuántos lotes participaron y qué requisitos no se cumplieron.",
+      "Esta campaña de enmiendas demuestra que organizar la comunicación con los propietarios requiere esfuerzo. Creemos que ese mismo esfuerzo debe dirigirse primero a informar a los propietarios y fomentar su participación bajo las reglas actuales, antes de reducir el apoyo necesario para modificar los documentos que nos afectan a todos.",
+      "Facilitar la celebración de reuniones y facilitar las modificaciones a los documentos de la comunidad son decisiones distintas. Las elecciones celebradas no demuestran que cualquier enmienda pueda aprobarse; las dudas sobre la participación no justifican, por sí solas, permitir que un grupo más pequeño cambie las reglas para todos.",
     ],
     recommendation: "Vote NO para mantener las protecciones actuales.",
     how: "¿Cómo funciona?",
