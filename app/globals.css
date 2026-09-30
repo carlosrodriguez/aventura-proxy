@@ -833,3 +833,30 @@ td {
 .signing-step-heading {
   scroll-margin-top: 20px;
 }
+
+.header-language {
+  width: auto;
+  min-height: 36px;
+  padding: 6px 30px 6px 10px;
+  font-size: 14px;
+  margin: 0;
+}
+
+@media (max-width: 640px) {
+  .header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 12px;
+  }
+  .header > .nav {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+  .header-language {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .brand small {
+    letter-spacing: 0.06em;
+  }
+}

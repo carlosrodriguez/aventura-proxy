@@ -1,11 +1,8 @@
+import { getLocale } from "@/lib/i18n/locale";
 import Link from "next/link";
 import { authorityNotice, disclaimer } from "@/lib/config";
-export default async function Page({
-  searchParams,
-}: {
-  searchParams: Promise<{ lang?: string }>;
-}) {
-  const es = (await searchParams).lang === "es";
+export default async function Page() {
+  const es = (await getLocale()) === "es";
   const safeguards = es
     ? [
         [

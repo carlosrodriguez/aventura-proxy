@@ -1,3 +1,5 @@
+import { getLocale } from "@/lib/i18n/locale";
+import { LanguageSelect } from "@/components/language-select";
 import type { Metadata } from "next";
 import Link from "next/link";
 import "./globals.css";
@@ -9,39 +11,61 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false, nosnippet: true },
 };
 export const dynamic = "force-dynamic";
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const locale = await getLocale();
+  const es = locale === "es";
   return (
-    <html lang="en">
+    <html lang={locale}>
       <body>
         <a className="sr-only focus:not-sr-only" href="#main">
-          Skip to content
+          {es ? "Ir al contenido" : "Skip to content"}
         </a>
         <header className="container header">
           <Link className="brand" href="/">
-            Aventura Isles<small>Independent homeowner initiative</small>
+            Aventura Isles
+            <small>
+              {es
+                ? "Iniciativa independiente de propietarios"
+                : "Independent homeowner initiative"}
+            </small>
           </Link>
-          <nav className="nav" aria-label="Main navigation">
-            <Link href="/how-it-works">How it works</Link>
-            <Link href="/verification">Verification</Link>
-            <Link href="/contact">Contact</Link>
+          <nav
+            className="nav"
+            aria-label={es ? "Navegación principal" : "Main navigation"}
+          >
+            <Link href="/how-it-works">
+              {es ? "Cómo funciona" : "How it works"}
+            </Link>
+            <Link href="/verification">
+              {es ? "Verificación" : "Verification"}
+            </Link>
+            <Link href="/contact">{es ? "Contacto" : "Contact"}</Link>
           </nav>
+          <LanguageSelect locale={locale} />
         </header>
         <main id="main">{children}</main>
         <footer className="container footer">
-          <nav aria-label="Footer">
-            <Link href="/how-it-works">How it works</Link>
-            <Link href="/privacy">Privacy</Link>
-            <Link href="/verification">Security & verification</Link>
-            <Link href="/proxy-language">View proxy language</Link>
-            <Link href="/contact">Contact</Link>
+          <nav aria-label={es ? "Pie de página" : "Footer"}>
+            <Link href="/how-it-works">
+              {es ? "Cómo funciona" : "How it works"}
+            </Link>
+            <Link href="/privacy">{es ? "Privacidad" : "Privacy"}</Link>
+            <Link href="/verification">
+              {es ? "Seguridad y verificación" : "Security & verification"}
+            </Link>
+            <Link href="/proxy-language">
+              {es ? "Ver el texto del poder" : "View proxy language"}
+            </Link>
+            <Link href="/contact">{es ? "Contacto" : "Contact"}</Link>
           </nav>
           <p>
-            Independent website operated by {siteOperatorName}. Association
-            validation is required for all proxies.
+            {es
+              ? `Sitio independiente operado por ${siteOperatorName}. Todos los poderes requieren validación por parte de la Asociación.`
+              : `Independent website operated by ${siteOperatorName}. Association validation is required for all proxies.`}
           </p>
         </footer>
       </body>

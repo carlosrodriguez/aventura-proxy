@@ -21,9 +21,26 @@ export function proxy(req: NextRequest) {
     ...(dev || localPreview ? [] : ["upgrade-insecure-requests"]),
   ].join("; ");
   const headers = new Headers(req.headers);
+  const requestedLanguage = req.nextUrl.searchParams.get("lang");
+  const language =
+    requestedLanguage === "en" || requestedLanguage === "es"
+      ? requestedLanguage
+      : req.cookies.get("site-language")?.value === "es"
+        ? "es"
+        : "en";
+  headers.set("x-site-language", language);
   headers.set("x-nonce", nonce);
   headers.set("Content-Security-Policy", csp);
   const res = NextResponse.next({ request: { headers } });
+  if (requestedLanguage === "en" || requestedLanguage === "es") {
+    res.cookies.set("site-language", language, {
+      path: "/",
+      httpOnly: true,
+      sameSite: "lax",
+      secure: !dev && !localPreview,
+      maxAge: 60 * 60 * 24 * 180,
+    });
+  }
   res.headers.set("Content-Security-Policy", csp);
   res.headers.set("Cache-Control", "no-store, max-age=0");
   return res;

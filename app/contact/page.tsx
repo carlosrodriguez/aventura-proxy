@@ -1,10 +1,7 @@
+import { getLocale } from "@/lib/i18n/locale";
 import { siteOperatorName } from "@/lib/config";
-export default async function Contact({
-  searchParams,
-}: {
-  searchParams: Promise<{ lang?: string }>;
-}) {
-  const es = (await searchParams).lang === "es";
+export default async function Contact() {
+  const es = (await getLocale()) === "es";
   const proxyholderEmail = process.env.PROXYHOLDER_CONTACT_EMAIL;
   const email = process.env.CONTACT_EMAIL;
   return (

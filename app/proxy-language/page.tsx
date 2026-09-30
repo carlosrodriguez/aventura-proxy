@@ -1,11 +1,17 @@
+import { getLocale } from "@/lib/i18n/locale";
 import { proxyConfig, siteOperatorName } from "@/lib/config";
 export const dynamic = "force-dynamic";
-export default function Language() {
+export default async function Language() {
+  const es = (await getLocale()) === "es";
   return (
-    <article className="container document-page" lang="en">
+    <article className="container document-page">
       <section aria-labelledby="limited-proxy-heading">
-        <h1 id="limited-proxy-heading">The limited proxy you are signing</h1>
-        <div className="official-document">
+        <h1 id="limited-proxy-heading">
+          {es
+            ? "El poder limitado que está firmando"
+            : "The limited proxy you are signing"}
+        </h1>
+        <div className="official-document" lang="en">
           <h2>AVENTURA ISLES MASTER HOMEOWNERS’ ASSOCIATION, INC.</h2>
           <h3>OFFICIAL ASSOCIATION LIMITED PROXY</h3>
           <p className="document-verbatim">
@@ -45,9 +51,11 @@ export default function Language() {
         </div>
       </section>
       <section aria-labelledby="amendments-heading">
-        <h2 id="amendments-heading">The proposed amendments</h2>
+        <h2 id="amendments-heading">
+          {es ? "Las enmiendas propuestas" : "The proposed amendments"}
+        </h2>
         {Object.values(proxyConfig.officialExhibits).map((exhibit) => (
-          <section className="official-document" key={exhibit.label}>
+          <section className="official-document" lang="en" key={exhibit.label}>
             <h3>{exhibit.label}</h3>
             <h4>{exhibit.title}</h4>
             <p>{exhibit.intro}</p>
@@ -74,9 +82,9 @@ export default function Language() {
         ))}
       </section>
       <aside className="independent-disclaimer">
-        This independent website is operated by {siteOperatorName}. It is not an
-        official Aventura Isles Master Homeowners’ Association website and is
-        not operated by the Association or its management company.
+        {es
+          ? `Este sitio independiente es operado por ${siteOperatorName}. No es un sitio oficial de Aventura Isles Master Homeowners’ Association ni es operado por la Asociación o su empresa administradora.`
+          : `This independent website is operated by ${siteOperatorName}. It is not an official Aventura Isles Master Homeowners’ Association website and is not operated by the Association or its management company.`}
       </aside>
     </article>
   );

@@ -1,3 +1,4 @@
+import { getLocale } from "@/lib/i18n/locale";
 import Link from "next/link";
 import { submissionsEnabled, proxyConfig } from "@/lib/config";
 import { homeCopy } from "@/lib/i18n/home";
@@ -25,37 +26,14 @@ function OfficialRedlines({ exhibit }: { exhibit: "A" | "B" | "C" }) {
   );
 }
 
-export default async function Home({
-  searchParams,
-}: {
-  searchParams: Promise<{ lang?: string | string[] }>;
-}) {
-  const locale = (await searchParams).lang === "es" ? "es" : "en";
+export default async function Home() {
+  const locale = await getLocale();
   const copy = homeCopy[locale];
   const enabled = submissionsEnabled();
   return (
     <article className="container participation-page" lang={locale}>
       <div className="participation-intro">
         <p className="eyebrow">{copy.meeting}</p>
-        <nav
-          className="language-switch"
-          aria-label={locale === "es" ? "Idioma" : "Language"}
-        >
-          <Link
-            href="/"
-            hrefLang="en"
-            aria-current={locale === "en" ? "page" : undefined}
-          >
-            English
-          </Link>
-          <Link
-            href="/?lang=es"
-            hrefLang="es"
-            aria-current={locale === "es" ? "page" : undefined}
-          >
-            Español
-          </Link>
-        </nav>
       </div>
       <section className="campaign-hero" aria-labelledby="campaign-heading">
         <h1 id="campaign-heading">
