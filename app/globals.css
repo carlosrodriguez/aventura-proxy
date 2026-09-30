@@ -935,3 +935,7 @@ td {
     line-height: 1.6;
   }
 }
+
+#faq-heading {
+  margin-bottom: 24px;
+}
