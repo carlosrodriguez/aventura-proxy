@@ -71,12 +71,11 @@ it("records Resend API rejections as failures", async () => {
   ).rejects.toThrow("Email delivery failed");
   expect(log).toHaveBeenCalledWith("transactional_email_send_failed");
 });
-it("routes all dev messages to the test inbox and labels them", async () => {
-  vi.stubEnv("EMAIL_RECIPIENT_OVERRIDE", "dev-inbox@example.org");
+it("sends verification to the entered address and labels dev messages", async () => {
   vi.stubEnv("PROXY_TEST_MODE", "true");
   state.send.mockResolvedValue({ data: { id: "test" }, error: null });
   await transactionalEmail("owner@example.org", "Verification", "Code", "dev-test");
   expect(state.send.mock.calls[0][0]).toMatchObject({
-    to: "dev-inbox@example.org", subject: "[DEV TEST] Verification",
+    to: "owner@example.org", subject: "[DEV TEST] Verification",
   });
 });
