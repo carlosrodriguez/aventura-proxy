@@ -3,7 +3,13 @@ import { useEffect, useRef, useState } from "react";
 import SignaturePad from "signature_pad";
 import { messages } from "@/lib/i18n/en";
 import Link from "next/link";
-import { authorityNotice, certification, proxyConfig } from "@/lib/config";
+import {
+  authorityNotice,
+  certification,
+  proxyConfig,
+  disclaimer,
+  siteOperatorName,
+} from "@/lib/config";
 import { propertySchema, signerSchema } from "@/lib/validation/submission";
 import { Turnstile } from "@/components/turnstile";
 import { spanishSign } from "@/lib/i18n/sign";
@@ -62,7 +68,10 @@ export function ProxyFlow({
     if (previousStep.current === step) return;
     previousStep.current = step;
     stepHeading.current?.focus({ preventScroll: true });
-    stepHeading.current?.scrollIntoView({ block: "start", behavior: "instant" });
+    stepHeading.current?.scrollIntoView({
+      block: "start",
+      behavior: "instant",
+    });
   }, [step]);
   const signatureImage = useRef("");
   useEffect(() => {
@@ -250,7 +259,11 @@ export function ProxyFlow({
         ))}
       </div>
       <div className="form-card">
-        <h2 ref={stepHeading} tabIndex={-1} className="step-title signing-step-heading">
+        <h2
+          ref={stepHeading}
+          tabIndex={-1}
+          className="step-title signing-step-heading"
+        >
           {steps[step]}
         </h2>
         {error && (
@@ -260,6 +273,11 @@ export function ProxyFlow({
         )}
         {step === 0 && (
           <>
+            <p className="note signing-disclosure">
+              {locale === "es"
+                ? `Este sitio independiente es operado por ${siteOperatorName}. No es un sitio oficial de Aventura Isles Master Homeowners’ Association ni es operado por la Asociación o su empresa administradora.`
+                : disclaimer}
+            </p>
             <div className="field">
               <label htmlFor="houseNumber">{t("House number")}</label>
               <input

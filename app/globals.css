@@ -939,3 +939,9 @@ td {
 #faq-heading {
   margin-bottom: 24px;
 }
+
+.signing-disclosure {
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}

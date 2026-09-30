@@ -233,7 +233,6 @@ export default async function Home() {
           </Link>
         </div>
         {!enabled && <p className="preview">{copy.previewNote}</p>}
-        <p className="disclaimer">{copy.disclaimer}</p>
       </section>
       <section
         className="recommendation-panel"
@@ -325,6 +324,7 @@ export default async function Home() {
           {copy.read} →
         </Link>
       </section>
+      <p className="disclaimer">{copy.disclaimer}</p>
     </article>
   );
 }
