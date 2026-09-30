@@ -1,0 +1,31 @@
+[Unit]
+Description=Aventura Isles proxy application
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=aventura
+Group=aventura
+WorkingDirectory=/srv/aventura/current/.next/standalone
+Environment=NODE_ENV=production
+Environment=PORT=8080
+Environment=HOSTNAME=127.0.0.1
+EnvironmentFile=/etc/aventura/app.env
+ExecStart=/usr/local/bin/node server.js
+Restart=always
+RestartSec=5
+TimeoutStopSec=30
+KillSignal=SIGTERM
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/srv/aventura
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=aventura
+
+[Install]
+WantedBy=multi-user.target

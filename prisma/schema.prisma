@@ -1,0 +1,93 @@
+generator client {
+ provider = "prisma-client"
+ output = "../generated/prisma"
+}
+datasource db {
+ provider = "postgresql"
+}
+enum SubmissionStatus {
+ SIGNED
+ VERIFIED
+ FINALIZED
+}
+enum AssociationStatus {
+ pending
+ accepted
+ rejected
+ duplicate
+ revoked
+}
+model ProxySubmission {
+ id String @id @default(uuid()) @db.Uuid
+ houseNumber String
+ street String
+ firstName String
+ lastName String
+ email String
+ ownershipType String
+ entityName String?
+ signerTitle String?
+ status SubmissionStatus @default(SIGNED)
+ associationStatus AssociationStatus @default(pending)
+ likelyDuplicate Boolean @default(false)
+ createdAt DateTime @default(now())
+ signedAt DateTime
+ verifiedAt DateTime?
+ finalizedAt DateTime?
+ deliveredAt DateTime?
+ receiptSentAt DateTime?
+ associationSentAt DateTime?
+ revocationRequestedAt DateTime?
+ ipAddress String
+ userAgent String
+ timezone String?
+ signatureRef String
+ finalPdfRef String?
+ auditRef String?
+ pdfSha256 String?
+ templateVersion String
+ accessExpiresAt DateTime
+ accessTokenHash String
+ verification EmailVerification?
+ events AuditEvent[]
+ @@index([houseNumber, street])
+ @@index([createdAt])
+}
+model EmailVerification {
+ id String @id @default(uuid()) @db.Uuid
+ submissionId String @unique @db.Uuid
+ submission ProxySubmission @relation(fields:[submissionId],references:[id],onDelete:Cascade)
+ codeHash String
+ expiresAt DateTime
+ attempts Int @default(0)
+ sentAt DateTime
+ verifiedAt DateTime?
+}
+model AuditEvent {
+ id String @id @default(uuid()) @db.Uuid
+ submissionId String @db.Uuid
+ submission ProxySubmission @relation(fields:[submissionId],references:[id],onDelete:Cascade)
+ eventType String
+ timestamp DateTime @default(now())
+ metadata Json
+ @@index([submissionId, timestamp])
+}
+model RateLimit {
+ key String @id
+ count Int
+ resetAt DateTime
+ @@index([resetAt])
+}
+model AdminChallenge {
+ id String @id @default(uuid()) @db.Uuid
+ email String
+ tokenHash String @unique
+ expiresAt DateTime
+ consumedAt DateTime?
+}
+model AdminSession {
+ tokenHash String @id
+ email String
+ expiresAt DateTime
+ @@index([expiresAt])
+}

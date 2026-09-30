@@ -1,0 +1,42 @@
+# DigitalOcean Droplet deployment
+
+Status: both new Droplets run the existing app through Nginx and systemd. Dev: 192.241.136.70; prod: 178.128.152.229. Dedicated project: Aventura Isles Proxy (ac8a7d87-b474-4696-99cb-a9adc70f2e55). Non-root key authentication, SSH hardening, UFW and outbound source IP checks are complete. Separate local PostgreSQL 16 databases have their initial migration applied. The approved Droplet total is $12/month before tax. Squarespace DNS records, HTTPS certificates, private object storage, Resend keys, sender verification and test delivery remain pending. Submissions and admin are disabled.
+
+Keep the existing Next.js/TypeScript, PostgreSQL, private Spaces, and Resend stack. Deploy two newly provisioned Ubuntu LTS Droplets, named `aventura-proxy-dev` and `aventura-proxy-prod`. Do not reuse existing servers. Proposed hostnames are `dev.aventuraislesproxy.com` and `vote.aventuraislesproxy.com`; domain registration and Squarespace nameservers are confirmed; A records are pending. Confirm plan/region and recurring cost before provisioning in the browser.
+
+## Provision and harden each server
+
+- Select a maintained Ubuntu LTS image, a dedicated SSH public key, and a region near the users/database. Size after inspecting available plans; allow enough RAM for the Next production build or build a Linux artifact elsewhere.
+- Record Droplet ID, region, size, and static public IPv4 separately for dev and prod. Give both public IPv4s to the user for the Stripe IP allowlist. No Stripe dependency or API calls exist in the current application. Any future Stripe code must remain server-only. Do not install a VPN or outbound proxy that changes the source IP. Recreating a Droplet changes its address and requires updating the allowlist.
+- Create a non-root administration user with SSH key authentication. Verify a second SSH session as that user before disabling root SSH or password authentication. Create a distinct, non-login `aventura` service user.
+- Apply a DigitalOcean Cloud Firewall and UFW allowing inbound TCP 22, 80, and 443 only; restrict 22 to the administrator source address when known. Permit outbound traffic needed for DNS, package updates, HTTPS APIs, private storage, and the environment’s database. Bind the application to `127.0.0.1:8080`; do not open 8080 or 5432 publicly.
+- Install Node.js 24 from the official distribution with checksum verification, the project’s pinned pnpm version, Nginx, and Certbot. PostgreSQL 16 runs on each environment’s own Droplet with separate generated credentials and loopback-only access. Private Spaces buckets and keys remain pending; no existing project resources are reused.
+
+## Install a release
+
+1. Upload a source archive free of credentials, real signatures, voting PDFs, and local generated modules. Use `/srv/aventura/releases/<release-id>`; own build files by the administration/build user, and grant the service user only the required access. Do not run package installation/build as root.
+2. Store each environment’s configuration in `/etc/aventura/app.env`, owned by `root:aventura`, mode `0640`, under a `0750` directory. Populate the matching `.env.example` privately; do not commit or log values. Configure Resend keys separately. Keep ENABLE_SUBMISSIONS and ENABLE_ADMIN false initially. Dev’s Association recipient is empty to prevent test proxies reaching management.
+3. Run frozen-lockfile install, lint, typecheck, tests, and production build on Linux. Supply that environment’s public Turnstile key while building. Run `pnpm db:migrate` using the same environment’s database. Use systemd `EnvironmentFile` or a protected wrapper to supply variables; avoid sourcing arbitrary secret files as shell code.
+4. Copy `.next/static` into `.next/standalone/.next/static`, and `public` into `.next/standalone/public` if present. Check the traced Noto Sans font is in the standalone runtime. Keep a trusted full checkout for migrations and the existing daily retention command.
+5. Point `/srv/aventura/current` at the release. Install `aventura.service`, run daemon-reload, enable/start the service, and inspect journald without publishing secrets. Verify `http://127.0.0.1:8080/api/health`.
+6. Render `nginx-http.conf.template` with the correct hostname. Test with `nginx -t` before reload. Create the ACME webroot. Add each hostname’s DNS A record pointing to its own Droplet IP; remove conflicting AAAA records if IPv6 is not configured.
+7. Once DNS resolves correctly, run Certbot’s Nginx integration for that hostname with HTTPS redirect and a user-provided renewal contact. Test TLS and `certbot renew --dry-run`; enable automatic renewal. Check `/api/health`, security headers, preview flow, server-side origin validation, and nonpublic admin access over HTTPS.
+8. Verify service recovery after crash and reboot, confirm firewall policy, and compare each server’s outbound IPv4 to its recorded public IP. Run retention daily using the existing script with environment-specific credentials. Check real PostgreSQL migration/backup restore and private Spaces access before enabling data collection.
+
+## Resend verification and delivery
+
+Squarespace manages DNS. Resend domains have been created for: `mail.aventuraislesproxy.com` (prod) and `dev-mail.aventuraislesproxy.com` (dev), subject to account plan domain limits. Create separate, domain-scoped send-only API keys, storing only in the matching `RESEND_API_KEY`. All application sends already pass through `lib/email/index.ts`.
+
+Retrieve the exact SPF, DKIM, and required return-path MX records from the real Resend domain objects; DKIM values cannot be invented. Add DMARC at the correct sending-domain `_dmarc` name, initially `v=DMARC1; p=none;` unless an existing policy must be preserved. Add an aggregate reporting address only if a working mailbox is supplied. Do not overwrite unrelated DNS records. Supply the user an exact name/type/value/priority/TTL table after generating account-specific records.
+
+Confirm sending-domain status is verified in Resend and DNS values resolve publicly before sending. Send exactly one clearly marked test message from each environment to a recipient supplied by the user. Log message IDs and delivery events. Provider delivery status alone does not establish inbox placement: confirm inbox-versus-spam with the recipient or authorized mailbox access. Do not send test messages to Association management.
+
+HTTP routes schedule transactional sends through the central email module using Next.js after(). Saved submission/finalization responses no longer wait for Resend; failures produce sanitized logs and submission audit events. Receipt delivery markers remain unset on failure so existing retries remain available. This is lifecycle-managed background work, not a durable queue: an interrupted process can lose pending tasks, so monitor outstanding receipts and retry failed delivery through the existing admin controls. OTP resend stays rate-limited. Do not replace the email provider or introduce a different application architecture. Existing idempotency keys and delivery markers must remain correct; failed mail must stay retryable. Verify the selected Resend account’s current quota and count OTP, receipts, admin links, and Association copies toward it.
+
+## Rollback and remaining launch gates
+
+Retain the prior release and revert the current symlink/restart on failed health or critical flow checks. Back up the database before migrations and test restore; do not blindly reverse a migration or discard signed records. Keep preview live while Exhibit B, the named proxyholder, official template review, and service secrets remain unresolved. HTTPS hosting does not by itself enable proxy submissions.
+
+Record actual dev/prod URLs, Droplet IDs/IPs, database/bucket separation, certificate dates/renewal test, Resend domain/key IDs (never key values), exact DNS records, test delivery/inbox confirmation, release checksum, and smoke-test results here as deployment progresses.
+
+Official references: https://docs.digitalocean.com/products/droplets/how-to/add-ssh-keys/ ; https://docs.digitalocean.com/products/networking/firewalls/how-to/configure-rules/ ; https://resend.com/docs/dashboard/domains/introduction ; https://resend.com/docs/dashboard/domains/dmarc
