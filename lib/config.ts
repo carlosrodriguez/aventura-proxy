@@ -27,8 +27,8 @@ export const proxyConfig = {
   },
   officialProxyWording:
     "The undersigned Owner(s) or designated Voting Member of Aventura Isles Master Homeowners’ Association, Inc. (the “Association”) hereby appoints (select either “a” or “b” below – if neither option is selected, or if “b” is selected and a proxyholder name is not included, then the President of the Association (or, in his/her absence, any Board Member as designated by the Board) shall be deemed the appointed proxyholder):\n\n(a) the President of the Association (or, in his/her absence, any Board Member as designated by the Board); OR\n\n(b) ____________________, (if you check “b,” write in the name of your proxyholder and make sure that such proxyholder will be attending the meeting)\n\nas my proxyholder, with power of substitution, for and in the name and place of the undersigned, to appear at the Association’s membership meeting to be held on October 6th, 2026, at 6:15pm, or immediately following the Special Board Meeting at the Aventura Isles pool area located at 605 NE 193 Street, Miami, Florida 33179, and any adjournment thereof. The proxyholder named above has the authority to establish quorum, vote, and act for me to the same extent that I would if personally present, with power of substitution, except that my proxyholder’s voting authority is limited as indicated below.\n\nLIMITED POWERS. [FOR YOUR VOTE TO BE COUNTED ON THE FOLLOWING ISSUES, YOU MUST INDICATE YOUR PREFERENCE IN THE BLANK(S) PROVIDED BELOW.]\n\nI SPECIFICALLY AUTHORIZE AND INSTRUCT MY PROXYHOLDER TO CAST MY VOTE IN REFERENCE TO THE FOLLOWING MATTERS AS INDICATED BELOW:",
-  templateVersion: "draft-official-packet-2026-09-29-v2",
-  reviewed: false,
+  templateVersion: "official-packet-2026-09-29-v2",
+  reviewed: true,
   proxyholderSelection: "b",
   get executionProxyWording(): string {
     return proxyConfig.officialProxyWording.replace(

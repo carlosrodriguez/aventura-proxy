@@ -36,6 +36,20 @@ export async function generateProxy(
   const clean = (s: string) =>
     s.replace(/[‘’]/g, "'").replace(/[“”]/g, '"').replace(/[—–]/g, "-");
   function line(text: string, size = 11) {
+    // Keep each paragraph together when it can fit on a fresh page.
+    const estimatedRows = clean(text).split(/\s+/).reduce(
+      (state, word) => {
+        const next = state.row ? `${state.row} ${word}` : word;
+        return font.widthOfTextAtSize(next, size) > 510
+          ? { rows: state.rows + 1, row: word }
+          : { rows: state.rows, row: next };
+      }, { rows: 1, row: "" },
+    ).rows;
+    const height = estimatedRows * (size + 5) + 8;
+    if (height <= 685 && y - height < 65) {
+      page = pdf.addPage([612, 792]);
+      y = 750;
+    }
     const words = clean(text).split(/\s+/);
     let row = "";
     for (const word of words) {
@@ -84,6 +98,10 @@ export async function generateProxy(
     line(`Proxyholder selection: (${proxyConfig.proxyholderSelection})`);
   line(proxyConfig.executionProxyWording ?? proxyConfig.officialProxyWording);
   for (const p of proxyConfig.proposals) {
+    if (y < 165) {
+      page = pdf.addPage([612, 792]);
+      y = 750;
+    }
     line(`${p.label}: ${p.vote}`, 13);
     line(p.language);
   }

@@ -37,12 +37,13 @@ it("preserves amendment redlines without presenting deleted text as new text", (
     change: "added",
   });
 });
-it("does not enable submissions while template review remains outstanding", () => {
+it("requires a resolved proxyholder and configured environment after template review", () => {
   vi.stubEnv("ENABLE_SUBMISSIONS", "true");
   expect(proxyConfig.officialExhibits.B.sections[0].segments).toContainEqual({
     text: "entire membership of the ASSOCIATION", change: "deleted",
   });
-  expect(proxyConfig.reviewed).toBe(false);
+  expect(proxyConfig.reviewed).toBe(true);
+  vi.stubEnv("PROXYHOLDER_NAME", "TBD");
   expect(officialTemplateReady()).toBe(false);
   expect(submissionsEnabled()).toBe(false);
   vi.unstubAllEnvs();
