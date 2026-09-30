@@ -39,7 +39,10 @@ export function proxy(req: NextRequest) {
     path.startsWith("/api/admin/") ||
     path === "/robots.txt" ||
     path === "/closed";
-  const destination = req.nextUrl.clone();
+  const destination = new URL(
+    req.nextUrl.pathname + req.nextUrl.search,
+    process.env.APP_URL || req.url,
+  );
   destination.pathname = "/closed";
   const res =
     closed && !operational
@@ -48,7 +51,7 @@ export function proxy(req: NextRequest) {
             { error: "Proxy collection is closed" },
             { status: 503 },
           )
-        : NextResponse.rewrite(destination, { request: { headers } })
+        : NextResponse.redirect(destination)
       : NextResponse.next({ request: { headers } });
   if (requestedLanguage === "en" || requestedLanguage === "es") {
     res.cookies.set("site-language", language, {
