@@ -860,3 +860,39 @@ td {
     letter-spacing: 0.06em;
   }
 }
+
+.governing-overview {
+  margin: 0 0 42px;
+}
+.governing-overview > h2 {
+  max-width: 900px;
+  font-size: clamp(26px, 3.2vw, 40px);
+  line-height: 1.2;
+}
+.document-definitions {
+  margin: 24px 0;
+}
+.document-definitions > div {
+  padding: 16px 0;
+  border-top: 1px solid #d9e1d8;
+}
+.document-definitions dt {
+  font-weight: 700;
+}
+.document-definitions dd {
+  margin: 6px 0 0;
+}
+.business-comparison {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px;
+}
+.business-comparison h3 {
+  font-size: 20px;
+}
+@media (max-width: 759px) {
+  .business-comparison {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+}

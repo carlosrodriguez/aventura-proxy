@@ -2,15 +2,40 @@ export const homeCopy = {
   en: {
     meeting: "October 6 · Limited proxy",
     title: "Today vs. Proposed",
-    campaignVote: "A proxy for NO",
-    campaignMeeting: "October 6 Special Membership Meeting",
+    campaignVote: "Vote NO.",
+    campaignMeeting:
+      "Changing our community’s rules should take broad support.",
     campaignIntro:
-      "Use a limited proxy to authorize someone to represent your home and vote NO on the proposed amendments at the October 6 meeting.",
+      "For the October 6 meeting, complete a limited proxy appointing Jenny Ghetea to represent your home and vote NO on Exhibits A, B, and C.",
     whyIntro: "Here’s why we recommend NO.",
-    directProxy: "Skip to your NO proxy",
+    directProxy: "Complete my NO proxy",
     directPreview: "Skip to preview your NO proxy",
     independentNote:
       "An independent homeowner initiative. Not an official Association website.",
+    documentsTitle:
+      "Running the community and changing its governing documents are different decisions.",
+    documentsIntro:
+      "The governing documents are the documents that establish the community’s rights, obligations and decision-making rules. These proposals concern how owners approve changes to them.",
+    documents: [
+      {
+        title: "Declaration · Exhibit A",
+        body: "Sets the community’s recorded property restrictions, obligations and rights.",
+      },
+      {
+        title: "Articles of Incorporation · Exhibit B",
+        body: "Establish the Association as a corporation and describe its organizational framework.",
+      },
+      {
+        title: "By-Laws · Exhibit C",
+        body: "Describe how the Association operates, including meetings, voting, elections and amendment procedures.",
+      },
+    ],
+    boardTodayTitle: "What the Board can do today",
+    boardToday:
+      "The Board can carry out routine Association business within its existing powers. These amendments are not required for that work. Decisions requiring an owner vote must still follow the applicable rules.",
+    amendmentChoiceTitle: "What owners are being asked to change",
+    amendmentChoice:
+      "The proposals would lower the homeowner support needed for future amendments to these documents. They do not give the Board unlimited authority to change the documents on its own. Our concern is the smaller group of participating homeowners that could approve future amendments affecting everyone.",
     today: "Today",
     todayLead:
       "Enough homes must participate to hold a membership meeting. More homes must vote YES to change the governing documents.",
@@ -51,7 +76,7 @@ export const homeCopy = {
     takeawayMiddle: "of the community could make a decision for",
     takeawayAfter: "of the community.",
     accuracy:
-      "Specific higher voting requirements and legal protections would still apply.",
+      "This example concerns future amendments if the proposals pass. The October 6 vote must meet the current approval requirements. Specific higher voting requirements and legal protections would still apply. With more homes represented, more YES votes would be needed.",
     why: "Why we recommend NO",
     reasons: [
       "These amendments would allow future changes to the community’s governing documents to pass with as few as 66 YES votes at a meeting with minimum participation.",
@@ -60,10 +85,8 @@ export const homeCopy = {
     ],
     participationTitle: "Participation is possible. Let’s work for it.",
     participationArgument: [
-      "The current Board has been elected twice under the existing rules. That does not mean reaching quorum is always easy, but it is a reason to question the claim that holding elections is nearly impossible.",
-      "Expecting a vote to fail is an opinion about turnout. If a vote is not called because it is expected to fail, that does not show that owners were asked and the required support could not be reached. Owners should be shown which votes were held, how many lots participated, and which requirements were not met.",
-      "This amendment campaign shows that organized outreach takes effort. We believe that same effort should first go toward informing owners and encouraging participation under the current rules, before lowering the support needed to change the governing documents that affect us all.",
-      "The Board already has authority to conduct routine Association business under the current rules. These amendments are not needed for routine Board business. They would lower participation for membership meetings and reduce the owner support needed for future document amendments. We believe changing the rules for everyone should continue to require support from a majority of the community.",
+      "The current Board has been elected twice under the existing rules. Elections and amendment votes have different requirements, so those elections do not prove every amendment can pass.",
+      "We believe organized outreach should first encourage owners to participate before reducing the support needed to change the governing documents that affect everyone.",
     ],
     recommendation: "Vote NO to keep the current protections in place.",
     how: "How does this work?",
@@ -141,7 +164,7 @@ export const homeCopy = {
       },
     ],
     read: "Read the official language and redlines",
-    begin: "Begin limited proxy",
+    begin: "Complete my NO proxy",
     preview: "Preview the proxy process",
     previewNote:
       "Preview only · Submissions are disabled. No proxy will be finalized or emailed.",
@@ -151,15 +174,40 @@ export const homeCopy = {
   es: {
     meeting: "6 de octubre · Poder de representación limitado",
     title: "Hoy vs. lo propuesto",
-    campaignVote: "Un poder para votar NO",
-    campaignMeeting: "Reunión especial de propietarios · 6 de octubre",
+    campaignVote: "Vote NO.",
+    campaignMeeting:
+      "Cambiar las reglas de nuestra comunidad debe requerir un amplio respaldo.",
     campaignIntro:
-      "Con un poder limitado, autorice a otra persona a representar su vivienda y votar NO a las enmiendas propuestas en la reunión del 6 de octubre.",
+      "Para la reunión del 6 de octubre, complete un poder limitado que designe a Jenny Ghetea para representar su vivienda y votar NO a los anexos A, B y C.",
     whyIntro: "Estas son las razones por las que recomendamos NO.",
-    directProxy: "Ir directamente a su poder con instrucciones de votar NO",
+    directProxy: "Completar mi poder para votar NO",
     directPreview: "Ver su poder con instrucciones de votar NO",
     independentNote:
       "Una iniciativa independiente de propietarios. No es un sitio oficial de la Asociación.",
+    documentsTitle:
+      "Gestionar la comunidad y modificar sus documentos son decisiones distintas.",
+    documentsIntro:
+      "Los documentos que rigen la comunidad establecen sus derechos, obligaciones y reglas para tomar decisiones. Estas propuestas cambiarían cómo los propietarios aprueban modificaciones a esos documentos.",
+    documents: [
+      {
+        title: "Declaración · Anexo A",
+        body: "Establece las restricciones, obligaciones y derechos registrados que corresponden a las propiedades de la comunidad.",
+      },
+      {
+        title: "Acta constitutiva · Anexo B",
+        body: "Constituye la Asociación como una corporación y describe su estructura organizativa.",
+      },
+      {
+        title: "Estatutos · Anexo C",
+        body: "Describen cómo funciona la Asociación: reuniones, votaciones, elecciones y procedimientos para modificar los propios estatutos.",
+      },
+    ],
+    boardTodayTitle: "Qué puede hacer la Junta hoy",
+    boardToday:
+      "La Junta puede gestionar los asuntos habituales de la Asociación dentro de sus facultades actuales. Estas enmiendas no son necesarias para ese trabajo. Las decisiones que requieren el voto de los propietarios deben seguir cumpliendo las reglas aplicables.",
+    amendmentChoiceTitle: "Qué se pide a los propietarios que cambien",
+    amendmentChoice:
+      "Las propuestas reducirían el respaldo de los propietarios necesario para futuras enmiendas a estos documentos. No darían a la Junta autoridad ilimitada para modificarlos por su cuenta. Nos preocupa que un grupo menor de propietarios participantes pueda aprobar futuras enmiendas que afecten a todos.",
     today: "Hoy",
     todayLead:
       "Una reunión de propietarios necesita una participación mínima. Cambiar los documentos de la comunidad exige el voto a favor de más viviendas.",
@@ -203,7 +251,7 @@ export const homeCopy = {
     takeawayMiddle: "de la comunidad podría decidir por el",
     takeawayAfter: "de la comunidad.",
     accuracy:
-      "Seguirían vigentes los requisitos específicos de votación superior y las protecciones legales.",
+      "Este ejemplo se refiere a futuras enmiendas si se aprueban las propuestas. La votación del 6 de octubre debe cumplir los requisitos actuales. Seguirían vigentes los requisitos específicos de mayor aprobación y las protecciones legales. Si participan más viviendas, se necesitarían más votos a favor.",
     why: "Por qué recomendamos votar NO",
     reasons: [
       "Estas enmiendas permitirían aprobar futuros cambios a los documentos que rigen la comunidad con apenas 66 votos a favor en una reunión con la participación mínima.",
@@ -213,10 +261,8 @@ export const homeCopy = {
     participationTitle:
       "La participación es posible. Trabajemos para lograrla.",
     participationArgument: [
-      "La Junta actual ha sido elegida dos veces bajo las reglas vigentes. Eso no significa que alcanzar el quórum siempre sea fácil, pero sí es una razón para cuestionar la afirmación de que celebrar elecciones es casi imposible.",
-      "Prever que una votación fracasará es una opinión sobre la participación. Si no se convoca una votación porque se espera que fracase, eso no demuestra que se haya consultado a los propietarios y no se haya logrado el apoyo necesario. Los propietarios deberían conocer qué votaciones se celebraron, cuántos lotes participaron y qué requisitos no se cumplieron.",
-      "Esta campaña de enmiendas demuestra que organizar la comunicación con los propietarios requiere esfuerzo. Creemos que ese mismo esfuerzo debe dirigirse primero a informar a los propietarios y fomentar su participación bajo las reglas actuales, antes de reducir el apoyo necesario para modificar los documentos que nos afectan a todos.",
-      "La Junta ya puede gestionar los asuntos habituales de la Asociación bajo las reglas actuales. No necesita estas enmiendas para hacerlo. Las propuestas reducirían la participación necesaria para las reuniones de propietarios y el respaldo exigido para futuros cambios a los documentos. Creemos que cambiar las reglas para todos debe seguir requiriendo el apoyo de la mayoría de la comunidad.",
+      "La Junta actual ha sido elegida dos veces bajo las reglas vigentes. Las elecciones y las votaciones de enmiendas tienen requisitos distintos; esas elecciones no demuestran que cualquier enmienda pueda aprobarse.",
+      "Creemos que primero se debe informar y movilizar a los propietarios para fomentar su participación, antes de reducir el respaldo necesario para modificar los documentos que nos afectan a todos.",
     ],
     recommendation: "Vote NO para mantener las protecciones actuales.",
     how: "¿Cómo funciona?",
@@ -294,7 +340,7 @@ export const homeCopy = {
       },
     ],
     read: "Leer el texto oficial y los cambios marcados",
-    begin: "Comenzar el poder de representación",
+    begin: "Completar mi poder para votar NO",
     preview: "Ver el proceso de representación",
     previewNote:
       "Vista previa · Los envíos están desactivados. No se finalizará ni se enviará por correo ningún poder de representación.",

@@ -65,8 +65,33 @@ export default async function Home() {
       </section>
       <div className="comparison-heading" id="why-no">
         <p className="eyebrow">{copy.whyIntro}</p>
-        <h2 className="comparison-title">{copy.title}</h2>
       </div>
+      <section
+        className="governing-overview"
+        aria-labelledby="documents-heading"
+      >
+        <h2 id="documents-heading">{copy.documentsTitle}</h2>
+        <p>{copy.documentsIntro}</p>
+        <dl className="document-definitions">
+          {copy.documents.map((document) => (
+            <div key={document.title}>
+              <dt>{document.title}</dt>
+              <dd>{document.body}</dd>
+            </div>
+          ))}
+        </dl>
+        <div className="business-comparison">
+          <section>
+            <h3>{copy.boardTodayTitle}</h3>
+            <p>{copy.boardToday}</p>
+          </section>
+          <section>
+            <h3>{copy.amendmentChoiceTitle}</h3>
+            <p>{copy.amendmentChoice}</p>
+          </section>
+        </div>
+      </section>
+      <h2 className="comparison-title">{copy.title}</h2>
       <section className="today-panel" aria-labelledby="today-heading">
         <div>
           <h2 className="eyebrow" id="today-heading">
@@ -89,15 +114,6 @@ export default async function Home() {
             </section>
           </div>
           <p className="note">{copy.todayProtection}</p>
-          <h3>{copy.businessTitle}</h3>
-          <p>{copy.businessExplanation}</p>
-          <p className="note">
-            <a href="https://www.leg.state.fl.us/statutes/index.cfm?App_mode=Display_Statute&URL=0700-0799/0720/Sections/0720.303.html">
-              {locale === "es"
-                ? "Ley de Florida: facultades de la Asociación y reuniones de la Junta"
-                : "Florida law: Association powers and Board meetings"}
-            </a>
-          </p>
         </div>
       </section>
       <section className="proposed-panel" aria-labelledby="proposed-heading">
