@@ -83,6 +83,8 @@ export async function generateProxy(
     page.drawText(text, { x: 50, y, size, font, color: rgb(0.08, 0.12, 0.16) });
     y -= size + 5;
   }
+  if (process.env.PROXY_TEST_MODE === "true")
+    line("DEV TEST ONLY - NOT FOR ASSOCIATION SUBMISSION", 12);
   line(proxyConfig.association, 15);
   line("LIMITED PROXY", 18);
   line(

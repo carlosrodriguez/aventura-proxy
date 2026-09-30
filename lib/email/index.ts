@@ -36,8 +36,8 @@ export async function transactionalEmail(
     const result = await new Resend(process.env.RESEND_API_KEY).emails.send(
       {
         from: process.env.EMAIL_FROM,
-        to,
-        subject,
+        to: process.env.EMAIL_RECIPIENT_OVERRIDE || to,
+        subject: process.env.PROXY_TEST_MODE === "true" ? `[DEV TEST] ${subject}` : subject,
         text,
         attachments: attachment
           ? [
