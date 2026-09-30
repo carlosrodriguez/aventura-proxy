@@ -15,13 +15,13 @@ export const homeCopy = {
     todayLead:
       "Holding a meeting and changing the governing documents have two different requirements.",
     todayRule:
-      "To hold the meeting: at least one-third of lots must be represented in person or by proxy.",
+      "Document wording: the supplied By-Laws state one-third. Florida Statutes section 720.306 sets a 30% quorum unless the By-Laws provide a lower number.",
     todayApproval:
       "To amend the documents: the current Declaration requires approval by a majority of owners; the current By-Laws require a majority of the entire membership—not just those represented at the meeting.",
     todayProtection:
       "Why keep this? A smaller group can attend a meeting, but it cannot amend these documents without support from a majority of the community. The proposed changes would let a majority of the smaller group represented at a meeting approve amendments, subject to specific higher voting requirements.",
     currentShare: "⅓",
-    currentShareLabel: "of the lots",
+    currentShareLabel: "in the supplied By-Laws",
     proposed: "Proposed change",
     stepOne: "Step 1",
     stepOneTitle: "Lower the minimum participation to 20%.",
@@ -82,6 +82,54 @@ export const homeCopy = {
         body: "The proposed By-Laws amendment sets the general quorum at 20% of the lots. It also changes By-Laws amendment approval from a majority of the entire membership to a majority of lots represented at a meeting with quorum.",
       },
     ],
+    comparisons: [
+      {
+        current: "Approval by a majority of owners.",
+        proposed:
+          "Approval by a majority of lots represented at a meeting with quorum.",
+        effect:
+          "A smaller participating group could approve Declaration amendments. The stated protection for higher voting thresholds remains.",
+      },
+      {
+        current: "Approval by a majority of the entire membership.",
+        proposed:
+          "Approval by a majority of lots represented at a meeting with quorum.",
+        effect:
+          "Articles amendments could pass without support from a majority of the entire community.",
+      },
+      {
+        current:
+          "The supplied text says one-third quorum; By-Laws amendments need a majority of the entire membership.",
+        proposed:
+          "20% quorum; amendment approval by a majority of represented lots.",
+        effect:
+          "With 654 eligible lots and 131 represented, 66 YES votes could approve a future amendment, subject to other applicable requirements.",
+      },
+    ],
+    faqsTitle: "Common questions",
+    faqs: [
+      {
+        question: "Is quorum the same as amendment approval?",
+        answer:
+          "No. Quorum lets a meeting conduct business; approval is the support needed to pass a proposal. The supplied By-Laws say one-third quorum, while Florida section 720.306 sets 30% unless the By-Laws provide less. This vote must use the current approval requirements; the 131 → 66 example concerns future amendments if these proposals pass.",
+      },
+      {
+        question:
+          "Would this give the Board authority to change documents on its own?",
+        answer:
+          "These amendments do not give the Board a new power to amend documents without a membership vote. Our concern is the smaller group of represented lots that could approve future amendments.",
+      },
+      {
+        question: "Could changes happen without telling owners?",
+        answer:
+          "Required notice and amendment materials would still have to be provided. Florida law generally requires at least 14 days’ notice of a membership meeting. Lower thresholds do not remove those requirements.",
+      },
+      {
+        question: "What does lower participation change?",
+        answer:
+          "At minimum proposed participation, 66 of 131 represented eligible lots could approve an amendment affecting all 654 homes, unless another requirement applies. With more lots represented, more YES votes would be needed. We favor organized outreach and broader support for changes to the governing documents.",
+      },
+    ],
     read: "Read the official language and redlines",
     begin: "Begin limited proxy",
     preview: "Preview the proxy process",
@@ -106,13 +154,13 @@ export const homeCopy = {
     todayLead:
       "Celebrar una reunión y cambiar los documentos que rigen la comunidad tienen requisitos distintos.",
     todayRule:
-      "Para celebrar la reunión: al menos un tercio de las viviendas debe estar representado en persona o mediante un poder.",
+      "Texto del documento: los Estatutos suministrados indican un tercio. La sección 720.306 de la ley de Florida establece un quórum del 30%, salvo que los Estatutos indiquen un porcentaje menor.",
     todayApproval:
       "Para modificar los documentos: la Declaración actual exige la aprobación de la mayoría de los propietarios; los Estatutos actuales exigen la mayoría de todos los miembros, no solo de quienes estén representados en la reunión.",
     todayProtection:
       "¿Por qué conservar esta protección? Un grupo más pequeño puede participar en una reunión, pero no puede modificar estos documentos sin el apoyo de la mayoría de la comunidad. Los cambios propuestos permitirían aprobar enmiendas con la mayoría del grupo representado en la reunión, salvo los casos que exijan una votación superior.",
     currentShare: "⅓",
-    currentShareLabel: "de los lotes",
+    currentShareLabel: "en los Estatutos suministrados",
     proposed: "Cambio propuesto",
     stepOne: "Paso 1",
     stepOneTitle: "Reducir la participación mínima al 20%.",
@@ -175,6 +223,53 @@ export const homeCopy = {
         title:
           "Menos participación y un grupo más pequeño para aprobar cambios",
         body: "El cambio propuesto a los estatutos fija el quórum general en el 20% de los lotes. Además, sustituye la aprobación de cambios a los estatutos por mayoría de todos los miembros por la aprobación de la mayoría de los lotes representados en una reunión con quórum.",
+      },
+    ],
+    comparisons: [
+      {
+        current: "Aprobación de la mayoría de los propietarios.",
+        proposed:
+          "Aprobación de la mayoría de los lotes representados en una reunión con quórum.",
+        effect:
+          "Un grupo participante más pequeño podría aprobar cambios a la Declaración. Se conserva la protección indicada para requisitos de votación superiores.",
+      },
+      {
+        current: "Aprobación de la mayoría de todos los miembros.",
+        proposed:
+          "Aprobación de la mayoría de los lotes representados en una reunión con quórum.",
+        effect:
+          "Los cambios al acta constitutiva podrían aprobarse sin el respaldo de la mayoría de toda la comunidad.",
+      },
+      {
+        current:
+          "El texto suministrado indica un tercio de quórum; las enmiendas a los Estatutos requieren la mayoría de todos los miembros.",
+        proposed:
+          "Quórum del 20%; aprobación de enmiendas por la mayoría de los lotes representados.",
+        effect:
+          "Con 654 lotes con derecho a voto y 131 representados, 66 votos a favor podrían aprobar una futura enmienda, sujetos a los demás requisitos aplicables.",
+      },
+    ],
+    faqsTitle: "Preguntas frecuentes",
+    faqs: [
+      {
+        question: "¿El quórum es lo mismo que la aprobación de una enmienda?",
+        answer:
+          "No. El quórum permite tratar asuntos en una reunión; la aprobación es el respaldo necesario para adoptar una propuesta. Los Estatutos suministrados indican un tercio de quórum, mientras que la sección 720.306 de Florida establece el 30%, salvo que los Estatutos indiquen menos. Esta votación debe cumplir los requisitos actuales; el ejemplo 131 → 66 se refiere a futuras enmiendas si se aprueban estas propuestas.",
+      },
+      {
+        question: "¿La Junta podría cambiar los documentos por su cuenta?",
+        answer:
+          "Estas enmiendas no otorgan a la Junta un nuevo poder para modificar los documentos sin una votación de los miembros. Nuestra preocupación es que un grupo menor de lotes representados podría aprobar futuras enmiendas.",
+      },
+      {
+        question: "¿Se podrían hacer cambios sin avisar a los propietarios?",
+        answer:
+          "Seguirían siendo obligatorios el aviso y los documentos de las enmiendas. La ley de Florida generalmente exige avisar con al menos 14 días de anticipación de una reunión de miembros. Reducir los porcentajes no elimina esos requisitos.",
+      },
+      {
+        question: "¿Qué cambia cuando participa menos gente?",
+        answer:
+          "Con la participación mínima propuesta, 66 de 131 lotes representados con derecho a voto podrían aprobar una enmienda que afecte a las 654 viviendas, salvo que se aplique otro requisito. Si hay más lotes representados, se necesitarían más votos a favor. Defendemos informar y movilizar a los propietarios para lograr mayor respaldo a los cambios.",
       },
     ],
     read: "Leer el texto oficial y los cambios marcados",

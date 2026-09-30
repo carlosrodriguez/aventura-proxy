@@ -6,7 +6,7 @@ import Link from "next/link";
 import { authorityNotice, certification, proxyConfig } from "@/lib/config";
 import { propertySchema, signerSchema } from "@/lib/validation/submission";
 import { Turnstile } from "@/components/turnstile";
-const steps = messages.steps;
+import { spanishSign } from "@/lib/i18n/sign";
 const initial = {
   houseNumber: "",
   street: "",
@@ -27,11 +27,22 @@ export function ProxyFlow({
   enabled,
   siteKey,
   nonce,
+  locale = "en",
+  proxyholder,
+  testMode = false,
 }: {
   enabled: boolean;
   siteKey: string;
   nonce: string;
+  locale?: "en" | "es";
+  proxyholder: string;
+  testMode?: boolean;
 }) {
+  const t = (value: string) =>
+    locale === "es"
+      ? `${value.startsWith(" ") ? " " : ""}${spanishSign[value.trim()] ?? value.trim()}${value.endsWith(" ") ? " " : ""}`
+      : value;
+  const steps = messages.steps.map(t);
   const [step, setStep] = useState(0),
     [data, setData] = useState(initial),
     [error, setError] = useState(""),
@@ -137,7 +148,7 @@ export function ProxyFlow({
               "Your signature was saved, but the verification email could not be sent. Wait 60 seconds and use Resend code.",
             );
         } catch (e) {
-          setError(e instanceof Error ? e.message : "Request failed");
+          setError(e instanceof Error ? e.message : t("Request failed"));
         } finally {
           setBusy(false);
         }
@@ -157,7 +168,7 @@ export function ProxyFlow({
       await call("/api/proxy/verify", { code });
       setStep(5);
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Verification unsuccessful");
+      setError(e instanceof Error ? e.message : t("Verification unsuccessful"));
     } finally {
       setBusy(false);
     }
@@ -166,35 +177,55 @@ export function ProxyFlow({
     data.ownershipType,
   );
   return (
-    <div className="form-shell">
-      <Link href="/">← Back to overview</Link>
-      <h1 className="step-title">Your limited proxy</h1>
+    <div className="form-shell" lang={locale}>
+      <Link href={locale === "es" ? "/?lang=es" : "/"}>
+        {t("← Back to overview")}
+      </Link>
+      <h1 className="step-title">{t("Your limited proxy")}</h1>
+      {testMode && (
+        <p className="preview">
+          {locale === "es"
+            ? "PRUEBA DE DESARROLLO · Este poder no se enviará a la Asociación."
+            : "DEV TEST · This proxy will not be sent to the Association."}
+        </p>
+      )}
+      <p className="note">
+        {locale === "es"
+          ? `Usted designa a ${proxyholder} para representarle y votar NO a los anexos A, B y C.`
+          : `You appoint ${proxyholder} to represent you and vote NO on Exhibits A, B, and C.`}
+      </p>
       {!enabled && (
         <p className="preview">
-          Preview mode · Entries stay in this browser tab. No submission, code,
-          or PDF is sent.
+          {t(
+            " Preview mode · Entries stay in this browser tab. No submission, code, or PDF is sent. ",
+          )}
         </p>
       )}
       <p className="note" aria-live="polite">
-        Step {step + 1} of 6 · {steps[step]}
+        {t(" Step ")}
+        {step + 1}
+        {t(" of 6 · ")}
+        {steps[step]}
       </p>
       <div className="progress" aria-hidden="true">
         {steps.map((s, i) => (
-          <span key={s} className={i <= step ? "active" : ""} />
+          <span key={s} className={i <= step ? t("active") : t("")} />
         ))}
       </div>
       <div className="form-card">
         <h2 className="step-title">{steps[step]}</h2>
         {error && (
           <p className="error" role="alert">
-            {error}
+            {t(error)}
           </p>
         )}
         {step === 0 && (
           <>
-            <p>Identify your property. This checks address format only.</p>
+            <p>
+              {t("Identify your property. This checks address format only.")}
+            </p>
             <div className="field">
-              <label htmlFor="houseNumber">House number</label>
+              <label htmlFor="houseNumber">{t("House number")}</label>
               <input
                 id="houseNumber"
                 value={data.houseNumber}
@@ -205,21 +236,24 @@ export function ProxyFlow({
               />
             </div>
             <div className="field">
-              <label htmlFor="street">Street</label>
+              <label htmlFor="street">{t("Street")}</label>
               <select
                 id="street"
                 value={data.street}
                 onChange={(e) => update("street", e.target.value)}
               >
-                <option value="">Select your street</option>
+                <option value="">{t("Select your street")}</option>
                 {proxyConfig.allowedStreets.map((s) => (
-                  <option key={s}>{s}</option>
+                  <option key={s} value={s}>
+                    {t(s)}
+                  </option>
                 ))}
               </select>
             </div>
             <p className="note">
-              We do not look up owners or access the Association’s member
-              database.
+              {t(
+                " We do not look up owners or access the Association’s member database. ",
+              )}
             </p>
           </>
         )}
@@ -229,13 +263,13 @@ export function ProxyFlow({
               {(["firstName", "lastName"] as const).map((k) => (
                 <div className="field" key={k}>
                   <label htmlFor={k}>
-                    {k === "firstName" ? "First name" : "Last name"}
+                    {k === "firstName" ? t("First name") : t("Last name")}
                   </label>
                   <input
                     id={k}
                     value={data[k]}
                     autoComplete={
-                      k === "firstName" ? "given-name" : "family-name"
+                      k === "firstName" ? t("given-name") : t("family-name")
                     }
                     maxLength={100}
                     onChange={(e) => update(k, e.target.value)}
@@ -244,7 +278,7 @@ export function ProxyFlow({
               ))}
             </div>
             <div className="field">
-              <label htmlFor="email">Email address</label>
+              <label htmlFor="email">{t("Email address")}</label>
               <input
                 id="email"
                 type="email"
@@ -256,7 +290,7 @@ export function ProxyFlow({
             </div>
             <div className="field">
               <label htmlFor="ownershipType">
-                Property ownership type (optional)
+                {t(" Property ownership type (optional) ")}
               </label>
               <select
                 id="ownershipType"
@@ -271,7 +305,9 @@ export function ProxyFlow({
                   "Corporation",
                   "Other",
                 ].map((s) => (
-                  <option key={s}>{s}</option>
+                  <option key={s} value={s}>
+                    {t(s)}
+                  </option>
                 ))}
               </select>
             </div>
@@ -280,8 +316,8 @@ export function ProxyFlow({
                 <div className="field" key={k}>
                   <label htmlFor={k}>
                     {k === "entityName"
-                      ? "Entity name"
-                      : "Signer title / capacity"}
+                      ? t("Entity name")
+                      : t("Signer title / capacity")}
                   </label>
                   <input
                     id={k}
@@ -291,28 +327,34 @@ export function ProxyFlow({
                 </div>
               ))}
             <p className="note">
-              The Association will independently determine whether the signer is
-              authorized to vote for this property.
+              {t(
+                " The Association will independently determine whether the signer is authorized to vote for this property. ",
+              )}
             </p>
           </>
         )}
         {step === 2 && (
           <>
             <p>
-              This limited proxy directs a NO vote on all three proposals. These
-              instructions are fixed.
+              {t(
+                " This limited proxy directs a NO vote on all three proposals. These instructions are fixed. ",
+              )}
             </p>
             {proxyConfig.proposals.map((p) => (
               <div className="card" key={p.label}>
                 <h3>
-                  {p.label} — {p.vote}
+                  {p.label}
+                  {t(" — ")}
+                  {p.vote}
                 </h3>
-                <p className="note">{p.language}</p>
+                <p className="note" lang="en">
+                  {p.language}
+                </p>
               </div>
             ))}
             <p>
               <Link href="/proxy-language" target="_blank">
-                View the complete proxy template
+                {t(" View the complete proxy template ")}
               </Link>
             </p>
           </>
@@ -328,9 +370,11 @@ export function ProxyFlow({
               <br />
               {data.email}
             </p>
-            <label htmlFor="signature">Draw your signature</label>
+            <label htmlFor="signature">{t("Draw your signature")}</label>
             <p className="note">
-              Use a finger, stylus, or mouse. Typed signatures are not accepted.
+              {t(
+                " Use a finger, stylus, or mouse. Typed signatures are not accepted. ",
+              )}
             </p>
             <canvas
               id="signature"
@@ -346,10 +390,10 @@ export function ProxyFlow({
                 setSigned(false);
               }}
             >
-              Clear signature
+              {t(" Clear signature ")}
             </button>
             <span className="sr-only" aria-live="polite">
-              {signed ? "Signature captured" : "Signature empty"}
+              {signed ? t("Signature captured") : t("Signature empty")}
             </span>
             <div className="check">
               <input
@@ -358,29 +402,34 @@ export function ProxyFlow({
                 checked={certified}
                 onChange={(e) => setCertified(e.target.checked)}
               />
-              <label htmlFor="certified">{certification}</label>
+              <label htmlFor="certified">{t(certification)}</label>
             </div>
             {enabled && (
               <Turnstile siteKey={siteKey} nonce={nonce} onToken={setToken} />
             )}
             <p className="note">
               {enabled
-                ? "Continuing submits your signature and sends an email verification code."
-                : "This signature is a local preview and will not be saved or submitted."}
+                ? t(
+                    "Continuing submits your signature and sends an email verification code.",
+                  )
+                : t(
+                    "This signature is a local preview and will not be saved or submitted.",
+                  )}
             </p>
           </>
         )}
         {step === 4 && (
           <>
-            <p>{authorityNotice}</p>
+            <p>{t(authorityNotice)}</p>
             {enabled ? (
               <>
                 <p>
-                  Enter the six-digit code sent to {data.email}. It expires in
-                  10 minutes.
+                  {locale === "es"
+                    ? `Introduzca el código enviado a ${data.email}. Caduca en 10 minutos.`
+                    : `Enter the six-digit code sent to ${data.email}. It expires in 10 minutes.`}
                 </p>
                 <div className="field">
-                  <label htmlFor="code">Verification code</label>
+                  <label htmlFor="code">{t("Verification code")}</label>
                   <input
                     id="code"
                     value={code}
@@ -400,29 +449,30 @@ export function ProxyFlow({
                       setError("");
                     } catch (e) {
                       setError(
-                        e instanceof Error ? e.message : "Request failed",
+                        e instanceof Error ? e.message : t("Request failed"),
                       );
                     } finally {
                       setBusy(false);
                     }
                   }}
                 >
-                  Resend code
+                  {t(" Resend code ")}
                 </button>
               </>
             ) : (
               <p className="preview">
-                No verification code was sent. Continue to preview the
-                completion screen.
+                {t(
+                  " No verification code was sent. Continue to preview the completion screen. ",
+                )}
               </p>
             )}
             <div className="actions">
               <button disabled={busy} onClick={verify}>
                 {busy
-                  ? "Verifying…"
+                  ? t("Verifying…")
                   : enabled
-                    ? "Verify & finalize"
-                    : "Preview completion"}
+                    ? t("Verify & finalize")
+                    : t("Preview completion")}
               </button>
             </div>
           </>
@@ -430,14 +480,20 @@ export function ProxyFlow({
         {step === 5 && (
           <>
             <h3>
-              {enabled ? "Your proxy has been finalized" : "Preview complete"}
+              {enabled
+                ? t("Your proxy has been finalized")
+                : t("Preview complete")}
             </h3>
             <p>
               {enabled
-                ? `Submission ID: ${id}. A copy will arrive by email. Association validation is still required.`
-                : "No proxy was finalized, emailed, or delivered. Submissions remain disabled until the official template is complete and reviewed."}
+                ? locale === "es"
+                  ? `ID de envío: ${id}. Recibirá una copia por correo. La Asociación debe validar el poder.`
+                  : `Submission ID: ${id}. A copy will arrive by email. Association validation is still required.`
+                : t(
+                    "No proxy was finalized, emailed, or delivered. Submissions remain disabled until the official template is complete and reviewed.",
+                  )}
             </p>
-            <p>{authorityNotice}</p>
+            <p>{t(authorityNotice)}</p>
             {enabled && (
               <button
                 onClick={async () => {
@@ -446,19 +502,29 @@ export function ProxyFlow({
                     if (result.url) window.location.assign(result.url);
                   } catch (e) {
                     setError(
-                      e instanceof Error ? e.message : "Download unavailable",
+                      e instanceof Error
+                        ? e.message
+                        : t("Download unavailable"),
                     );
                   }
                 }}
               >
-                Download signed proxy
+                {t(" Download signed proxy ")}
               </button>
             )}
             <p>
-              <Link href="/revocation">Correction or revocation request</Link>
+              {t(
+                " Contact Jenny Ghetea directly about correcting or withdrawing a proxy you have given her. Contact does not automatically revoke a proxy. ",
+              )}
+              <Link href={locale === "es" ? "/contact?lang=es" : "/contact"}>
+                {t("Contact information")}
+              </Link>
             </p>
-            <Link className="button secondary" href="/">
-              Return to overview
+            <Link
+              className="button secondary"
+              href={locale === "es" ? "/?lang=es" : "/"}
+            >
+              {t(" Return to overview ")}
             </Link>
           </>
         )}
@@ -473,17 +539,17 @@ export function ProxyFlow({
                   setStep((v) => v - 1);
                 }}
               >
-                Back
+                {t(" Back ")}
               </button>
             )}
             <button disabled={busy} onClick={next}>
               {busy
-                ? "Submitting…"
+                ? t("Submitting…")
                 : step === 3
                   ? enabled
-                    ? "Send verification code"
-                    : "Continue preview"
-                  : "Continue"}
+                    ? t("Send verification code")
+                    : t("Continue preview")
+                  : t("Continue")}
             </button>
           </div>
         )}

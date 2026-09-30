@@ -1,32 +1,47 @@
 import { siteOperatorName } from "@/lib/config";
-
-export default function Contact() {
+export default async function Contact({
+  searchParams,
+}: {
+  searchParams: Promise<{ lang?: string }>;
+}) {
+  const es = (await searchParams).lang === "es";
+  const proxyholderEmail = process.env.PROXYHOLDER_CONTACT_EMAIL;
   const email = process.env.CONTACT_EMAIL;
   return (
-    <article className="container prose">
-      <h1>Contact</h1>
-      <h2>Proxy submission and Association records</h2>
+    <article className="container prose" lang={es ? "es" : "en"}>
+      <h1>{es ? "Contacto" : "Contact"}</h1>
+      <h2>
+        {es
+          ? "Corregir o retirar un poder"
+          : "Correcting or withdrawing a proxy"}
+      </h2>
       <p>
-        Submit your completed, signed and dated proxy to Association management,
-        or deliver or mail it to the Management Office, 605 NE 193 Street,
-        Miami, FL 33179. Contact management about the official revocation
-        procedure and records held by the Association.
+        {es
+          ? "Contacte directamente a Jenny Ghetea sobre cualquier corrección o retiro de un poder que le haya otorgado. Contactarla no revoca automáticamente el poder. Este sitio no cancela poderes ni registra solicitudes de revocación."
+          : "Contact Jenny Ghetea directly about correcting or withdrawing a proxy you have given her. Contacting her does not automatically revoke the proxy. This website does not cancel proxies or record revocation requests."}
       </p>
-      {email ? (
+      {proxyholderEmail ? (
+        <p>
+          <a href={`mailto:${proxyholderEmail}`}>{proxyholderEmail}</a>
+        </p>
+      ) : (
+        <p>
+          {es
+            ? "Aún no se han publicado los datos de contacto de Jenny. Solicite su contacto directo a la persona que le compartió esta iniciativa."
+            : "Jenny’s contact details have not been published yet. Ask the person who shared this initiative for her direct contact information."}
+        </p>
+      )}
+      <h2>{es ? "Otras preguntas" : "Other questions"}</h2>
+      {email && (
         <p>
           <a href={`mailto:${email}`}>{email}</a>
         </p>
-      ) : (
-        <p className="preview">Association contact is not configured.</p>
       )}
       <p>
-        This independent website is operated by {siteOperatorName}. The
-        management email is a proxy submission destination and does not identify
-        the site operator.
-      </p>
-      <p>
-        A revocation request to this site does not itself legally revoke a
-        proxy.
+        {es
+          ? "Este sitio independiente es operado por"
+          : "This independent website is operated by"}{" "}
+        {siteOperatorName}.
       </p>
     </article>
   );

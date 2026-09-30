@@ -35,7 +35,7 @@ export default function Privacy() {
         </li>
         <li>
           Submission ID, template version, file hash, duplicate flags,
-          validation status, and revocation requests: supports traceability and
+          validation status, and historical revocation records: supports traceability and
           record administration.
         </li>
       </ul>

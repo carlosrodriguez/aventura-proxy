@@ -38,7 +38,6 @@ export default function RootLayout({
             <Link href="/verification">Security & verification</Link>
             <Link href="/proxy-language">View proxy language</Link>
             <Link href="/contact">Contact</Link>
-            <Link href="/revocation">Request revocation</Link>
           </nav>
           <p>
             Independent website operated by {siteOperatorName}. Association

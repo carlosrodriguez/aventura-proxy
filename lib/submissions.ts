@@ -11,7 +11,7 @@ import {
   randomToken,
   sha256,
 } from "@/lib/security/crypto";
-import { proxyConfig, submissionsEnabled } from "@/lib/config";
+import { proxyConfig, submissionsEnabled, certification } from "@/lib/config";
 import type { EmailDispatcher } from "@/lib/email";
 import { sendEmail, receiptText } from "@/lib/email";
 import { putPrivate, readPrivate, deletePrivate } from "@/lib/storage";
@@ -120,6 +120,8 @@ export async function createSubmission(
               eventType: "SIGNED",
               metadata: {
                 certification: true,
+                certificationText: certification,
+                electronicConsent: true,
                 likelyDuplicate: duplicates.length > 0,
               },
             },

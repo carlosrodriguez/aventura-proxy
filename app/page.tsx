@@ -63,8 +63,22 @@ export default async function Home({
           <span className="campaign-meeting">{copy.campaignMeeting}</span>
         </h1>
         <p className="campaign-intro">{copy.campaignIntro}</p>
+        <p className="note">
+          {locale === "es"
+            ? "6 de octubre de 2026 · 6:15 p. m., o inmediatamente después de la reunión especial de la Junta"
+            : "October 6, 2026 · 6:15pm, or immediately following the Special Board Meeting"}
+          <br />
+          605 NE 193 Street, Miami, FL 33179
+          <br />
+          {locale === "es"
+            ? "Representante designada"
+            : "Named proxyholder"}: {proxyConfig.proxyholder}
+        </p>
         <div className="proxy-shortcut">
-          <Link className="button secondary" href="/sign">
+          <Link
+            className="button secondary"
+            href={locale === "es" ? "/sign?lang=es" : "/sign"}
+          >
             {enabled ? copy.directProxy : copy.directPreview}{" "}
             <span aria-hidden="true">→</span>
           </Link>
@@ -144,7 +158,10 @@ export default async function Home({
         ))}
         <p className="vote-recommendation">{copy.recommendation}</p>
         <div className="proxy-shortcut">
-          <Link className="button secondary" href="/sign">
+          <Link
+            className="button secondary"
+            href={locale === "es" ? "/sign?lang=es" : "/sign"}
+          >
             {enabled ? copy.begin : copy.preview}{" "}
             <span aria-hidden="true">→</span>
           </Link>
@@ -169,6 +186,22 @@ export default async function Home({
           ))}
         </div>
       </details>
+      <section className="section" aria-labelledby="faq-heading">
+        <h2 id="faq-heading">{copy.faqsTitle}</h2>
+        {copy.faqs.map((faq) => (
+          <details className="participation-details" key={faq.question}>
+            <summary>{faq.question}</summary>
+            <p>{faq.answer}</p>
+          </details>
+        ))}
+        <p className="note">
+          <a href="https://www.leg.state.fl.us/statutes/index.cfm?App_mode=Display_Statute&URL=0700-0799/0720/Sections/0720.306.html">
+            {locale === "es"
+              ? "Ley de Florida: sección 720.306"
+              : "Florida Statutes section 720.306"}
+          </a>
+        </p>
+      </section>
       <section
         className="section exhibit-explanations"
         aria-labelledby="exhibits-heading"
@@ -180,7 +213,26 @@ export default async function Home({
             <section className="card" key={exhibit.label}>
               <p className="eyebrow">{exhibit.label}</p>
               <h3>{exhibit.title}</h3>
-              <p>{exhibit.body}</p>
+              <dl>
+                <dt>
+                  <strong>
+                    {locale === "es" ? "Regla actual" : "Current rule"}
+                  </strong>
+                </dt>
+                <dd>{copy.comparisons[index].current}</dd>
+                <dt>
+                  <strong>
+                    {locale === "es" ? "Regla propuesta" : "Proposed rule"}
+                  </strong>
+                </dt>
+                <dd>{copy.comparisons[index].proposed}</dd>
+                <dt>
+                  <strong>
+                    {locale === "es" ? "Efecto práctico" : "Practical effect"}
+                  </strong>
+                </dt>
+                <dd>{copy.comparisons[index].effect}</dd>
+              </dl>
               {
                 <details className="exhibit-wording">
                   <summary>

@@ -28,7 +28,8 @@ export const proxyConfig = {
   officialProxyWording:
     "The undersigned Owner(s) or designated Voting Member of Aventura Isles Master Homeowners’ Association, Inc. (the “Association”) hereby appoints (select either “a” or “b” below – if neither option is selected, or if “b” is selected and a proxyholder name is not included, then the President of the Association (or, in his/her absence, any Board Member as designated by the Board) shall be deemed the appointed proxyholder):\n\n(a) the President of the Association (or, in his/her absence, any Board Member as designated by the Board); OR\n\n(b) ____________________, (if you check “b,” write in the name of your proxyholder and make sure that such proxyholder will be attending the meeting)\n\nas my proxyholder, with power of substitution, for and in the name and place of the undersigned, to appear at the Association’s membership meeting to be held on October 6th, 2026, at 6:15pm, or immediately following the Special Board Meeting at the Aventura Isles pool area located at 605 NE 193 Street, Miami, Florida 33179, and any adjournment thereof. The proxyholder named above has the authority to establish quorum, vote, and act for me to the same extent that I would if personally present, with power of substitution, except that my proxyholder’s voting authority is limited as indicated below.\n\nLIMITED POWERS. [FOR YOUR VOTE TO BE COUNTED ON THE FOLLOWING ISSUES, YOU MUST INDICATE YOUR PREFERENCE IN THE BLANK(S) PROVIDED BELOW.]\n\nI SPECIFICALLY AUTHORIZE AND INSTRUCT MY PROXYHOLDER TO CAST MY VOTE IN REFERENCE TO THE FOLLOWING MATTERS AS INDICATED BELOW:",
   templateVersion: "official-original-page-2026-09-29-v3",
-  proxyTemplateSha256: "86a47814102b218ef10b36500a923c61ac3916b1bb1cdee4c933ea2ebc398a23",
+  proxyTemplateSha256:
+    "86a47814102b218ef10b36500a923c61ac3916b1bb1cdee4c933ea2ebc398a23",
   reviewed: true,
   proxyholderSelection: "b",
   get executionProxyWording(): string {
@@ -94,20 +95,31 @@ export const proxyConfig = {
     B: {
       label: "Exhibit B",
       sourcePage: 4,
-      title: "Proposed Amendments to the Articles of Incorporation of Aventura Isles Master Homeowners’ Association, Inc. (the “Articles”)",
-      intro: "All other Sections of the Articles shall remain unchanged. In the event of any conflict or inconsistency between the below amendments and the corresponding provisions of the Articles, the terms and provisions of the below amendments shall govern and control.",
+      title:
+        "Proposed Amendments to the Articles of Incorporation of Aventura Isles Master Homeowners’ Association, Inc. (the “Articles”)",
+      intro:
+        "All other Sections of the Articles shall remain unchanged. In the event of any conflict or inconsistency between the below amendments and the corresponding provisions of the Articles, the terms and provisions of the below amendments shall govern and control.",
       note: "Note: Text appearing underlined is new text; Text appearing with strikethrough is deleted text; and Text appearing without underlining or strikethrough is existing text and remains unchanged.",
-      language: "11.3 At such meeting, a vote of the members entitled to vote thereon shall be taken on the proposed amendment. The proposed amendment shall be adopted upon receiving the affirmative vote of a majority of the votes of the entire membership of the ASSOCIATION [deleted]; LOTS represented at a meeting at which a quorum has been attained [added].",
-      sections: [{
-        heading: "Section 11.3 of the Articles is hereby amended as follows:",
-        segments: [
-          { text: "11.3 At such meeting, a vote of the members entitled to vote thereon shall be taken on the proposed amendment. The proposed amendment shall be adopted upon receiving the affirmative vote of a majority of the votes of the ", change: "unchanged" },
-          { text: "entire membership of the ASSOCIATION", change: "deleted" },
-          { text: " ", change: "unchanged" },
-          { text: "LOTS represented at a meeting at which a quorum has been attained", change: "added" },
-          { text: ".", change: "unchanged" },
-        ],
-      }],
+      language:
+        "11.3 At such meeting, a vote of the members entitled to vote thereon shall be taken on the proposed amendment. The proposed amendment shall be adopted upon receiving the affirmative vote of a majority of the votes of the entire membership of the ASSOCIATION [deleted]; LOTS represented at a meeting at which a quorum has been attained [added].",
+      sections: [
+        {
+          heading: "Section 11.3 of the Articles is hereby amended as follows:",
+          segments: [
+            {
+              text: "11.3 At such meeting, a vote of the members entitled to vote thereon shall be taken on the proposed amendment. The proposed amendment shall be adopted upon receiving the affirmative vote of a majority of the votes of the ",
+              change: "unchanged",
+            },
+            { text: "entire membership of the ASSOCIATION", change: "deleted" },
+            { text: " ", change: "unchanged" },
+            {
+              text: "LOTS represented at a meeting at which a quorum has been attained",
+              change: "added",
+            },
+            { text: ".", change: "unchanged" },
+          ],
+        },
+      ],
     },
     C: {
       label: "Exhibit C",
@@ -202,7 +214,7 @@ export const disclaimer = `This independent website is operated by ${siteOperato
 export const authorityNotice =
   "Email verification confirms access to this email address. It does not establish property ownership or voting authority. The Association must independently validate the proxy.";
 export const certification =
-  "I certify that I am the owner or authorized voting member for the property identified above and that I am authorizing this limited proxy.";
+  "I certify that I am the owner or authorized voting member for the property identified above and that I am authorizing this limited proxy. I consent to sign electronically and receive a copy by email.";
 export function officialTemplateReady(): boolean {
   return (
     proxyholderReady() &&
