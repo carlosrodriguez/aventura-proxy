@@ -508,13 +508,14 @@ td {
 }
 .recommendation-panel {
   padding: 48px 0 36px;
-  max-width: 760px;
+  max-width: 860px;
 }
 .recommendation-panel h2 {
   font-size: clamp(1.8rem, 4vw, 2.5rem);
 }
 .recommendation-panel > p:not(.preview):not(.disclaimer) {
   font-size: 18px;
+  text-wrap: pretty;
 }
 .recommendation-panel .vote-recommendation {
   font-weight: 700;
@@ -688,3 +689,6 @@ td {
 }
 
 .proxy-shortcut .button { font-size: 0.95rem; padding: 0.65rem 1rem; }
+
+.participation-page h1, .participation-page h2, .participation-page h3 { text-wrap: balance; }
+.recommendation-panel .disclaimer { text-wrap: pretty; }
