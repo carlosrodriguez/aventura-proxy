@@ -636,3 +636,53 @@ td {
   color: #235c52;
   text-underline-offset: 3px;
 }
+.campaign-hero {
+  padding: 12px 0 38px;
+}
+.campaign-hero h1 {
+  margin: 12px 0 24px;
+}
+.campaign-vote {
+  display: block;
+  font-size: clamp(4.3rem, 15vw, 7.4rem);
+  line-height: 1;
+  letter-spacing: -0.055em;
+  font-weight: 800;
+}
+.campaign-meeting {
+  display: block;
+  font-size: clamp(1.4rem, 4vw, 2.15rem);
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+  margin-top: 18px;
+  max-width: 720px;
+}
+.campaign-intro {
+  font-size: 18px;
+  max-width: 620px;
+  color: var(--muted);
+}
+.campaign-hero .actions {
+  margin: 24px 0 16px;
+}
+.campaign-hero .note {
+  font-size: 13px;
+  max-width: 660px;
+}
+.comparison-heading {
+  padding-top: 28px;
+  border-top: 1px solid #d9e1d8;
+  scroll-margin-top: 24px;
+}
+.comparison-heading .eyebrow {
+  margin: 0;
+}
+.comparison-heading .comparison-title {
+  font-size: clamp(2rem, 5vw, 3.1rem);
+  margin: 12px 0 28px;
+}
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}

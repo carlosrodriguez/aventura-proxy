@@ -2,6 +2,16 @@ export const homeCopy = {
   en: {
     meeting: "October 6 · Community vote",
     title: "Today vs. Proposed",
+    campaignVote: "Vote NO",
+    campaignMeeting: "October 6 Special Membership Meeting",
+    campaignIntro:
+      "We recommend voting NO on the proposed amendments. Here’s why.",
+    whyIntro: "Here’s why",
+    directProxy: "Go directly to proxy",
+    directPreview: "Go directly to proxy preview",
+    whyLink: "See why NO",
+    independentNote:
+      "An independent homeowner initiative. Not an official Association website.",
     today: "Today",
     todayLead:
       "A large part of the community has to participate before membership business can move forward.",
@@ -71,6 +81,16 @@ export const homeCopy = {
   es: {
     meeting: "6 de octubre · Votación de la comunidad",
     title: "Hoy vs. lo propuesto",
+    campaignVote: "Vote NO",
+    campaignMeeting: "Reunión especial de propietarios · 6 de octubre",
+    campaignIntro:
+      "Recomendamos votar NO a las enmiendas propuestas. Estas son las razones.",
+    whyIntro: "Por qué votar NO",
+    directProxy: "Ir directamente al poder de representación",
+    directPreview: "Ir directamente a la vista previa del poder",
+    whyLink: "Conozca las razones",
+    independentNote:
+      "Una iniciativa independiente de propietarios. No es un sitio oficial de la Asociación.",
     today: "Hoy",
     todayLead:
       "Una parte importante de la comunidad debe participar para que se puedan tomar decisiones en una reunión de propietarios.",

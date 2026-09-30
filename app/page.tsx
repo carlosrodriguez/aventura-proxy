@@ -57,7 +57,27 @@ export default async function Home({
           </Link>
         </nav>
       </div>
-      <h1 className="comparison-title">{copy.title}</h1>
+      <section className="campaign-hero" aria-labelledby="campaign-heading">
+        <h1 id="campaign-heading">
+          <span className="campaign-vote">{copy.campaignVote}</span>{" "}
+          <span className="campaign-meeting">{copy.campaignMeeting}</span>
+        </h1>
+        <p className="campaign-intro">{copy.campaignIntro}</p>
+        <div className="actions">
+          <Link className="button" href="/sign">
+            {enabled ? copy.directProxy : copy.directPreview}{" "}
+            <span aria-hidden="true">→</span>
+          </Link>
+          <a className="button secondary" href="#why-no">
+            {copy.whyLink} <span aria-hidden="true">↓</span>
+          </a>
+        </div>
+        <p className="note">{copy.independentNote}</p>
+      </section>
+      <div className="comparison-heading" id="why-no">
+        <p className="eyebrow">{copy.whyIntro}</p>
+        <h2 className="comparison-title">{copy.title}</h2>
+      </div>
       <section className="today-panel" aria-labelledby="today-heading">
         <div>
           <h2 className="eyebrow" id="today-heading">
