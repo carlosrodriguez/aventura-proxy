@@ -18,6 +18,7 @@ export default async function RootLayout({
 }) {
   const locale = await getLocale();
   const es = locale === "es";
+  const closed = process.env.SITE_STATE === "closed";
   return (
     <html lang={locale}>
       <body>
@@ -33,32 +34,36 @@ export default async function RootLayout({
                 : "Independent homeowner initiative"}
             </small>
           </Link>
-          <nav
-            className="nav"
-            aria-label={es ? "Navegación principal" : "Main navigation"}
-          >
-            <Link className="header-proxy-link" href="/sign">
-              {es ? "Completar poder NO" : "Complete NO proxy"}
-            </Link>
-            <Link href="/verification">
-              {es ? "Cómo protegemos su poder" : "How we protect your proxy"}
-            </Link>
-            <Link href="/contact">{es ? "Contacto" : "Contact"}</Link>
-          </nav>
+          {!closed && (
+            <nav
+              className="nav"
+              aria-label={es ? "Navegación principal" : "Main navigation"}
+            >
+              <Link className="header-proxy-link" href="/sign">
+                {es ? "Completar poder NO" : "Complete NO proxy"}
+              </Link>
+              <Link href="/verification">
+                {es ? "Cómo protegemos su poder" : "How we protect your proxy"}
+              </Link>
+              <Link href="/contact">{es ? "Contacto" : "Contact"}</Link>
+            </nav>
+          )}
           <LanguageSelect locale={locale} />
         </header>
         <main id="main">{children}</main>
         <footer className="container footer">
-          <nav aria-label={es ? "Pie de página" : "Footer"}>
-            <Link href="/privacy">{es ? "Privacidad" : "Privacy"}</Link>
-            <Link href="/verification">
-              {es ? "Cómo protegemos su poder" : "How we protect your proxy"}
-            </Link>
-            <Link href="/proxy-language">
-              {es ? "Ver el texto del poder" : "View proxy language"}
-            </Link>
-            <Link href="/contact">{es ? "Contacto" : "Contact"}</Link>
-          </nav>
+          {!closed && (
+            <nav aria-label={es ? "Pie de página" : "Footer"}>
+              <Link href="/privacy">{es ? "Privacidad" : "Privacy"}</Link>
+              <Link href="/verification">
+                {es ? "Cómo protegemos su poder" : "How we protect your proxy"}
+              </Link>
+              <Link href="/proxy-language">
+                {es ? "Ver el texto del poder" : "View proxy language"}
+              </Link>
+              <Link href="/contact">{es ? "Contacto" : "Contact"}</Link>
+            </nav>
+          )}
           <p>
             {es
               ? `Sitio independiente operado por ${siteOperatorName}. Todos los poderes requieren validación por parte de la Asociación.`

@@ -31,7 +31,25 @@ export function proxy(req: NextRequest) {
   headers.set("x-site-language", language);
   headers.set("x-nonce", nonce);
   headers.set("Content-Security-Policy", csp);
-  const res = NextResponse.next({ request: { headers } });
+  const path = req.nextUrl.pathname;
+  const closed = process.env.SITE_STATE === "closed";
+  const operational =
+    path === "/api/health" ||
+    path.startsWith("/admin") ||
+    path.startsWith("/api/admin/") ||
+    path === "/robots.txt" ||
+    path === "/closed";
+  const destination = req.nextUrl.clone();
+  destination.pathname = "/closed";
+  const res =
+    closed && !operational
+      ? path.startsWith("/api/")
+        ? NextResponse.json(
+            { error: "Proxy collection is closed" },
+            { status: 503 },
+          )
+        : NextResponse.rewrite(destination, { request: { headers } })
+      : NextResponse.next({ request: { headers } });
   if (requestedLanguage === "en" || requestedLanguage === "es") {
     res.cookies.set("site-language", language, {
       path: "/",

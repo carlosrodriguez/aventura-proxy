@@ -241,6 +241,7 @@ export function submissionsEnabled(): boolean {
     "PROXY_TEMPLATE_PATH",
   ];
   if (
+    process.env.SITE_STATE === "closed" ||
     process.env.ENABLE_SUBMISSIONS !== "true" ||
     !officialTemplateReady() ||
     required.some((key) => !process.env[key])
