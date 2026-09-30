@@ -27,7 +27,7 @@ export const homeCopy = {
       },
       {
         title: "By-Laws · Exhibit C",
-        body: "Describe how the Association operates, including meetings, voting, elections and amendment procedures.",
+        body: "The Association’s operating rules. They describe how meetings happen, how owners vote, how elections work and how the By-Laws themselves can be changed. These rules help determine how homeowners take part in community decisions.",
       },
     ],
     boardTodayTitle: "What the Board can do today",
@@ -36,13 +36,23 @@ export const homeCopy = {
     amendmentChoiceTitle: "What owners are being asked to change",
     amendmentChoice:
       "The proposals would lower the homeowner support needed for future amendments to these documents. They do not give the Board unlimited authority to change the documents on its own. Our concern is the smaller group of participating homeowners that could approve future amendments affecting everyone.",
+    bylawsChangeTitle:
+      "This changes how easily the By-Laws can be changed again.",
+    bylawsCurrent:
+      "Today, changing the By-Laws requires approval from a majority of the entire membership. The proposal would allow approval by a majority of the eligible lots represented at a meeting with quorum.",
+    bylawsExample:
+      "With 654 eligible homes and the proposed minimum of 131 represented, 66 YES votes could approve a future By-Laws amendment, subject to applicable legal requirements.",
+    bylawsConsequence:
+      "A smaller group could change the Association’s operating rules for everyone without support from a majority of the community.",
+    bylawsPosition:
+      "We believe the rules for how our community makes decisions should require broad homeowner support to change. That is why we recommend NO.",
     today: "Today",
     todayLead:
       "Enough homes must participate to hold a membership meeting. More homes must vote YES to change the governing documents.",
     todayRule:
       "Document wording: the supplied By-Laws state one-third. Florida Statutes section 720.306 sets a 30% quorum unless the By-Laws provide a lower number.",
     todayApproval:
-      "To amend the documents: the current Declaration requires approval by a majority of owners; the current By-Laws require a majority of the entire membership—not just those represented at the meeting.",
+      "To amend the documents: the current Declaration requires approval by a majority of owners; the current By-Laws require a majority of the entire membership, not just those represented at the meeting.",
     businessTitle: "The HOA can already conduct routine business",
     businessExplanation:
       "The Board can carry out routine Association business using its existing authority. These amendments are not required for that work. Decisions that require an owner vote must still follow the applicable voting rules.",
@@ -56,7 +66,7 @@ export const homeCopy = {
     amendmentRequirement: "To approve document amendments",
     amendmentNumber: "328 YES",
     amendmentParticipation:
-      "A majority of all 654 eligible homes—not just those at the meeting. YES votes can be cast in person or by proxy.",
+      "A majority of all 654 eligible homes, not just those at the meeting. YES votes can be cast in person or by proxy.",
     proposed: "Proposed change",
     stepOne: "Step 1",
     stepOneTitle: "Lower the minimum participation to 20%.",
@@ -199,7 +209,7 @@ export const homeCopy = {
       },
       {
         title: "Estatutos · Anexo C",
-        body: "Describen cómo funciona la Asociación: reuniones, votaciones, elecciones y procedimientos para modificar los propios estatutos.",
+        body: "Son las reglas de funcionamiento de la Asociación. Describen cómo se celebran las reuniones, cómo votan los propietarios, cómo funcionan las elecciones y cómo se pueden modificar los propios estatutos. Estas reglas determinan cómo participan los propietarios en las decisiones de la comunidad.",
       },
     ],
     boardTodayTitle: "Qué puede hacer la Junta hoy",
@@ -208,6 +218,16 @@ export const homeCopy = {
     amendmentChoiceTitle: "Qué se pide a los propietarios que cambien",
     amendmentChoice:
       "Las propuestas reducirían el respaldo de los propietarios necesario para futuras enmiendas a estos documentos. No darían a la Junta autoridad ilimitada para modificarlos por su cuenta. Nos preocupa que un grupo menor de propietarios participantes pueda aprobar futuras enmiendas que afecten a todos.",
+    bylawsChangeTitle:
+      "También sería más fácil volver a cambiar los estatutos.",
+    bylawsCurrent:
+      "Hoy, modificar los estatutos exige la aprobación de la mayoría de todos los miembros. La propuesta permitiría aprobar cambios con la mayoría de los lotes con derecho a voto representados en una reunión con quórum.",
+    bylawsExample:
+      "Con 654 viviendas con derecho a voto y el mínimo propuesto de 131 representadas, 66 votos a favor podrían aprobar una futura enmienda a los estatutos, sujeta a los requisitos legales aplicables.",
+    bylawsConsequence:
+      "Un grupo más pequeño podría cambiar las reglas de funcionamiento de la Asociación para todos sin el respaldo de la mayoría de la comunidad.",
+    bylawsPosition:
+      "Creemos que cambiar las reglas sobre cómo decidimos como comunidad debe requerir un amplio respaldo de los propietarios. Por eso recomendamos NO.",
     today: "Hoy",
     todayLead:
       "Una reunión de propietarios necesita una participación mínima. Cambiar los documentos de la comunidad exige el voto a favor de más viviendas.",

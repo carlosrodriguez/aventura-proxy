@@ -91,6 +91,16 @@ export default async function Home() {
           </section>
         </div>
       </section>
+      <section
+        className="governing-overview"
+        aria-labelledby="bylaws-change-heading"
+      >
+        <h2 id="bylaws-change-heading">{copy.bylawsChangeTitle}</h2>
+        <p>{copy.bylawsCurrent}</p>
+        <p>{copy.bylawsExample}</p>
+        <p>{copy.bylawsConsequence}</p>
+        <p className="vote-recommendation">{copy.bylawsPosition}</p>
+      </section>
       <h2 className="comparison-title">{copy.title}</h2>
       <section className="today-panel" aria-labelledby="today-heading">
         <div>
