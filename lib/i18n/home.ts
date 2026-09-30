@@ -13,18 +13,25 @@ export const homeCopy = {
       "An independent homeowner initiative. Not an official Association website.",
     today: "Today",
     todayLead:
-      "Holding a meeting and changing the governing documents have two different requirements.",
+      "Enough homes must participate to hold a membership meeting. More homes must vote YES to change the governing documents.",
     todayRule:
       "Document wording: the supplied By-Laws state one-third. Florida Statutes section 720.306 sets a 30% quorum unless the By-Laws provide a lower number.",
     todayApproval:
       "To amend the documents: the current Declaration requires approval by a majority of owners; the current By-Laws require a majority of the entire membership—not just those represented at the meeting.",
+    businessTitle: "The HOA can already conduct routine business",
+    businessExplanation:
+      "The Board can carry out routine Association business using its existing authority. These amendments are not required for that work. Decisions that require an owner vote must still follow the applicable voting rules.",
     todayProtection:
       "Why keep this? A smaller group can attend a meeting, but it cannot amend these documents without support from a majority of the community. The proposed changes would let a majority of the smaller group represented at a meeting approve amendments, subject to specific higher voting requirements.",
-    meetingRequirement: "To hold a meeting",
-    meetingParticipation: "Lots represented in person or by proxy count toward quorum.",
+    meetingRequirement: "Quorum: participation needed for a membership meeting",
+    meetingNumber: "⅓",
+    meetingNumberLabel: "of lots in the current By-Laws",
+    meetingParticipation:
+      "Lots represented in person or by proxy count toward quorum.",
     amendmentRequirement: "To approve document amendments",
     amendmentNumber: "328 YES",
-    amendmentParticipation: "A majority of all 654 eligible homes—not just those at the meeting. YES votes can be cast in person or by proxy.",
+    amendmentParticipation:
+      "A majority of all 654 eligible homes—not just those at the meeting. YES votes can be cast in person or by proxy.",
     proposed: "Proposed change",
     stepOne: "Step 1",
     stepOneTitle: "Lower the minimum participation to 20%.",
@@ -56,7 +63,7 @@ export const homeCopy = {
       "The current Board has been elected twice under the existing rules. That does not mean reaching quorum is always easy, but it is a reason to question the claim that holding elections is nearly impossible.",
       "Expecting a vote to fail is an opinion about turnout. If a vote is not called because it is expected to fail, that does not show that owners were asked and the required support could not be reached. Owners should be shown which votes were held, how many lots participated, and which requirements were not met.",
       "This amendment campaign shows that organized outreach takes effort. We believe that same effort should first go toward informing owners and encouraging participation under the current rules, before lowering the support needed to change the governing documents that affect us all.",
-      "Making meetings easier to hold and making governing documents easier to amend are separate choices. Successful elections do not prove that every amendment can pass; concerns about turnout do not, by themselves, justify letting a smaller group change the rules for everyone.",
+      "The Board already has authority to conduct routine Association business under the current rules. These amendments are not needed for routine Board business. They would lower participation for membership meetings and reduce the owner support needed for future document amendments. We believe changing the rules for everyone should continue to require support from a majority of the community.",
     ],
     recommendation: "Vote NO to keep the current protections in place.",
     how: "How does this work?",
@@ -155,18 +162,26 @@ export const homeCopy = {
       "Una iniciativa independiente de propietarios. No es un sitio oficial de la Asociación.",
     today: "Hoy",
     todayLead:
-      "Celebrar una reunión y cambiar los documentos que rigen la comunidad tienen requisitos distintos.",
+      "Una reunión de propietarios necesita una participación mínima. Cambiar los documentos de la comunidad exige el voto a favor de más viviendas.",
     todayRule:
       "Texto del documento: los Estatutos suministrados indican un tercio. La sección 720.306 de la ley de Florida establece un quórum del 30%, salvo que los Estatutos indiquen un porcentaje menor.",
     todayApproval:
       "Para modificar los documentos: la Declaración actual exige la aprobación de la mayoría de los propietarios; los Estatutos actuales exigen la mayoría de todos los miembros, no solo de quienes estén representados en la reunión.",
+    businessTitle: "La Asociación ya puede gestionar sus asuntos habituales",
+    businessExplanation:
+      "La Junta puede atender los asuntos habituales de la Asociación con las facultades que ya tiene. No necesita estas enmiendas para ese trabajo. Las decisiones que requieren una votación de propietarios deben respetar las reglas aplicables.",
     todayProtection:
       "¿Por qué conservar esta protección? Un grupo más pequeño puede participar en una reunión, pero no puede modificar estos documentos sin el apoyo de la mayoría de la comunidad. Los cambios propuestos permitirían aprobar enmiendas con la mayoría del grupo representado en la reunión, salvo los casos que exijan una votación superior.",
-    meetingRequirement: "Para celebrar una reunión",
-    meetingParticipation: "Las viviendas representadas en persona o mediante un poder cuentan para el quórum.",
+    meetingRequirement:
+      "Quórum: participación necesaria para una reunión de propietarios",
+    meetingNumber: "⅓",
+    meetingNumberLabel: "de los lotes en los Estatutos actuales",
+    meetingParticipation:
+      "Las viviendas representadas en persona o mediante un poder cuentan para el quórum.",
     amendmentRequirement: "Para aprobar cambios a los documentos",
     amendmentNumber: "328 SÍ",
-    amendmentParticipation: "La mayoría de las 654 viviendas con derecho a voto, no solo de las presentes en la reunión. Se puede votar SÍ en persona o mediante un poder.",
+    amendmentParticipation:
+      "La mayoría de las 654 viviendas con derecho a voto, no solo de las presentes en la reunión. Se puede votar SÍ en persona o mediante un poder.",
     proposed: "Cambio propuesto",
     stepOne: "Paso 1",
     stepOneTitle: "Reducir la participación mínima al 20%.",
@@ -201,7 +216,7 @@ export const homeCopy = {
       "La Junta actual ha sido elegida dos veces bajo las reglas vigentes. Eso no significa que alcanzar el quórum siempre sea fácil, pero sí es una razón para cuestionar la afirmación de que celebrar elecciones es casi imposible.",
       "Prever que una votación fracasará es una opinión sobre la participación. Si no se convoca una votación porque se espera que fracase, eso no demuestra que se haya consultado a los propietarios y no se haya logrado el apoyo necesario. Los propietarios deberían conocer qué votaciones se celebraron, cuántos lotes participaron y qué requisitos no se cumplieron.",
       "Esta campaña de enmiendas demuestra que organizar la comunicación con los propietarios requiere esfuerzo. Creemos que ese mismo esfuerzo debe dirigirse primero a informar a los propietarios y fomentar su participación bajo las reglas actuales, antes de reducir el apoyo necesario para modificar los documentos que nos afectan a todos.",
-      "Facilitar la celebración de reuniones y facilitar las modificaciones a los documentos de la comunidad son decisiones distintas. Las elecciones celebradas no demuestran que cualquier enmienda pueda aprobarse; las dudas sobre la participación no justifican, por sí solas, permitir que un grupo más pequeño cambie las reglas para todos.",
+      "La Junta ya puede gestionar los asuntos habituales de la Asociación bajo las reglas actuales. No necesita estas enmiendas para hacerlo. Las propuestas reducirían la participación necesaria para las reuniones de propietarios y el respaldo exigido para futuros cambios a los documentos. Creemos que cambiar las reglas para todos debe seguir requiriendo el apoyo de la mayoría de la comunidad.",
     ],
     recommendation: "Vote NO para mantener las protecciones actuales.",
     how: "¿Cómo funciona?",

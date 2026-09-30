@@ -98,6 +98,8 @@ export default async function Home({
           <div className="today-requirements">
             <section>
               <h3>{copy.meetingRequirement}</h3>
+              <p className="approval-number">{copy.meetingNumber}</p>
+              <p>{copy.meetingNumberLabel}</p>
               <p>{copy.meetingParticipation}</p>
               <p className="note">{copy.todayRule}</p>
             </section>
@@ -109,6 +111,15 @@ export default async function Home({
             </section>
           </div>
           <p className="note">{copy.todayProtection}</p>
+          <h3>{copy.businessTitle}</h3>
+          <p>{copy.businessExplanation}</p>
+          <p className="note">
+            <a href="https://www.leg.state.fl.us/statutes/index.cfm?App_mode=Display_Statute&URL=0700-0799/0720/Sections/0720.303.html">
+              {locale === "es"
+                ? "Ley de Florida: facultades de la Asociación y reuniones de la Junta"
+                : "Florida law: Association powers and Board meetings"}
+            </a>
+          </p>
         </div>
       </section>
       <section className="proposed-panel" aria-labelledby="proposed-heading">
