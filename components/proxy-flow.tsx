@@ -163,8 +163,18 @@ export function ProxyFlow({
       }
     }
     if (step === 3) {
-      const details = propertySchema.safeParse(data);
-      const person = signerSchema.safeParse(data);
+      const details = propertySchema.safeParse({
+        houseNumber: data.houseNumber,
+        street: data.street,
+      });
+      const person = signerSchema.safeParse({
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        ownershipType: data.ownershipType,
+        entityName: data.entityName,
+        signerTitle: data.signerTitle,
+      });
       if (!details.success || !person.success) {
         setError(
           !details.success
@@ -549,8 +559,18 @@ export function ProxyFlow({
                   type="button"
                   className="secondary"
                   onClick={() => {
-                    const property = propertySchema.safeParse(data);
-                    const signer = signerSchema.safeParse(data);
+                    const property = propertySchema.safeParse({
+                      houseNumber: data.houseNumber,
+                      street: data.street,
+                    });
+                    const signer = signerSchema.safeParse({
+                      firstName: data.firstName,
+                      lastName: data.lastName,
+                      email: data.email,
+                      ownershipType: data.ownershipType,
+                      entityName: data.entityName,
+                      signerTitle: data.signerTitle,
+                    });
                     if (!property.success || !signer.success) {
                       setError(
                         !property.success
@@ -646,8 +666,18 @@ export function ProxyFlow({
                 <button
                   disabled={busy}
                   onClick={async () => {
-                    const property = propertySchema.safeParse(data);
-                    const signer = signerSchema.safeParse(data);
+                    const property = propertySchema.safeParse({
+                      houseNumber: data.houseNumber,
+                      street: data.street,
+                    });
+                    const signer = signerSchema.safeParse({
+                      firstName: data.firstName,
+                      lastName: data.lastName,
+                      email: data.email,
+                      ownershipType: data.ownershipType,
+                      entityName: data.entityName,
+                      signerTitle: data.signerTitle,
+                    });
                     if (!property.success || !signer.success) {
                       setError(
                         !property.success
