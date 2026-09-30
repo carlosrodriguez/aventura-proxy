@@ -117,6 +117,24 @@ vi.mock("@/lib/db", () => {
     }),
   };
 });
+vi.mock("@/lib/pdf/proxy", async (importOriginal) => {
+  const original = await importOriginal<typeof import("@/lib/pdf/proxy")>();
+  return {
+    ...original,
+    generateProxy: async (
+      details: import("@/lib/pdf/proxy").ProxyDetails,
+      signature: Uint8Array,
+    ) => {
+      const fixture = await PDFDocument.create();
+      fixture.addPage([780, 1000]);
+      return original.fillOfficialProxy(
+        await fixture.save(),
+        details,
+        signature,
+      );
+    },
+  };
+});
 import {
   verifySubmission,
   finalizeSubmission,

@@ -150,7 +150,7 @@ export async function createSubmission(
     try {
       await sendEmail(
         data.email,
-        "Verify your limited proxy email",
+        "Your Aventura Isles proxy verification code",
         `Your verification code is ${code}. It expires in 10 minutes. Email verification is not proof of property ownership.`,
         `otp-${id}-${sentAt.getTime()}`,
       );
@@ -250,7 +250,7 @@ export async function resendOtp(
     try {
       await sendEmail(
         issued.email,
-        "Verify your limited proxy email",
+        "Your Aventura Isles proxy verification code",
         `Your code is ${issued.code}. Expires in 10 minutes. Email verification is not proof of property ownership.`,
         `otp-${id}-${issued.sentAt.getTime()}`,
       );

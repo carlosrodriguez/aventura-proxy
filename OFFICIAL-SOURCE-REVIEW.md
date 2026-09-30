@@ -30,3 +30,7 @@ This packet shows the existing Section 3.2 quorum as one-third, unlike the earli
 ## Dev execution review completed
 
 The generated two-page execution PDF was visually reviewed against the newly supplied proxy wording, with option (b), the configured named proxyholder, all three NO selections, signature and date, and the filing/revocation/expiration note. Paragraphs and proposal blocks remain together across page breaks. The template is marked reviewed as official-packet-2026-09-29-v2. Production remains disabled. Dev uses PROXY_TEST_MODE=true to mark PDFs and subjects as test-only, and PROXY_DELIVERY_EMAIL routes the management delivery copy to the configured test inbox. Verification and signer receipts go to the entered email address.
+
+## Original form execution
+
+The reconstructed PDF generator is replaced with an overlay on the exact proxy page extracted from page 7 of the newer packet. The original page is installed privately outside the repository using PROXY_TEMPLATE_PATH. Its SHA-256 is pinned in configuration. It is not an AcroForm; the original scanned page content is preserved and the entered values are drawn into its printed blanks. The substitution section is left unfilled. Dev adds a TEST ONLY label in the blank upper margin. Existing completed submissions retain their original PDF and template version.

@@ -23,6 +23,28 @@ export async function sendEmail(
   if (!submissionsEnabled()) throw new Error("Submissions disabled");
   await transactionalEmail(to, subject, text, key, attachment);
 }
+export function emailContent(text: string) {
+  const body = `Aventura Isles Proxy\nIndependent website operated by SAPSLAB SERVICES LLC\n\n${text}\n\nThis message relates to a limited proxy requested at aventuraislesproxy.com for the October 6, 2026 meeting. If you did not request this, contact the site operator. This is not an official Association website.`;
+  const escape = (value: string) =>
+    value.replace(
+      /[&<>"']/g,
+      (character) =>
+        ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#39;",
+        })[character]!,
+    );
+  return {
+    text: body,
+    html: `<!doctype html><html lang="en"><body style="font-family:Arial,sans-serif;color:#183b3a;line-height:1.6"><main style="max-width:600px;margin:24px auto;padding:24px"><h1 style="font-size:22px">Aventura Isles Proxy</h1>${body
+      .split("\n\n")
+      .map((paragraph) => `<p>${escape(paragraph).replace(/\n/g, "<br>")}</p>`)
+      .join("")}</main></body></html>`,
+  };
+}
 export async function transactionalEmail(
   to: string,
   subject: string,
@@ -37,8 +59,12 @@ export async function transactionalEmail(
       {
         from: process.env.EMAIL_FROM,
         to,
-        subject: process.env.PROXY_TEST_MODE === "true" ? `[DEV TEST] ${subject}` : subject,
-        text,
+        subject:
+          process.env.PROXY_TEST_MODE === "true"
+            ? `[DEV TEST] ${subject}`
+            : subject,
+        ...emailContent(text),
+        replyTo: process.env.CONTACT_EMAIL || undefined,
         attachments: attachment
           ? [
               {

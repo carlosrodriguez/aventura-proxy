@@ -13,7 +13,7 @@ vi.mock("resend", () => ({
     emails = { send: state.send };
   },
 }));
-import { deferEmail, transactionalEmail } from "@/lib/email";
+import { deferEmail, transactionalEmail, emailContent } from "@/lib/email";
 beforeEach(() => {
   state.jobs.length = 0;
   state.send.mockReset();
@@ -74,8 +74,21 @@ it("records Resend API rejections as failures", async () => {
 it("sends verification to the entered address and labels dev messages", async () => {
   vi.stubEnv("PROXY_TEST_MODE", "true");
   state.send.mockResolvedValue({ data: { id: "test" }, error: null });
-  await transactionalEmail("owner@example.org", "Verification", "Code", "dev-test");
+  await transactionalEmail(
+    "owner@example.org",
+    "Verification",
+    "Code",
+    "dev-test",
+  );
   expect(state.send.mock.calls[0][0]).toMatchObject({
-    to: "owner@example.org", subject: "[DEV TEST] Verification",
+    to: "owner@example.org",
+    subject: "[DEV TEST] Verification",
   });
+});
+
+it("escapes dynamic email text and provides matching plain and HTML content", () => {
+  const content = emailContent("Code <123456> & details");
+  expect(content.text).toContain("Code <123456> & details");
+  expect(content.html).toContain("Code &lt;123456&gt; &amp; details");
+  expect(content.html).toContain("SAPSLAB SERVICES LLC");
 });
