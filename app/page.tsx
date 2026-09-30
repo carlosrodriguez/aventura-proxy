@@ -209,7 +209,9 @@ export default async function Home({
         {copy.faqs.map((faq) => (
           <details className="participation-details" key={faq.question}>
             <summary>{faq.question}</summary>
-            <p>{faq.answer}</p>
+            <div>
+              <p>{faq.answer}</p>
+            </div>
           </details>
         ))}
         <p className="note">

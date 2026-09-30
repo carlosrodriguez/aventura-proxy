@@ -810,3 +810,25 @@ td {
 .document-page .independent-disclaimer {
   margin-top: 48px;
 }
+
+/* Keep expanded disclosure copy inside the same gutter as its heading. */
+.participation-details summary {
+  line-height: 1.4;
+}
+.participation-details > div > p:first-child {
+  margin-top: 0;
+}
+.participation-details > div > p:last-child {
+  margin-bottom: 0;
+}
+.section .participation-details {
+  margin-bottom: 16px;
+}
+@media (max-width: 759px) {
+  .participation-details summary {
+    padding: 18px;
+  }
+  .participation-details > div {
+    padding: 0 18px 18px;
+  }
+}
