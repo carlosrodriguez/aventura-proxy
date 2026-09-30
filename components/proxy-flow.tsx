@@ -273,6 +273,23 @@ export function ProxyFlow({
         )}
         {step === 0 && (
           <>
+            <p>
+              {locale === "es" ? (
+                <>
+                  Al completar y firmar este poder limitado, usted designa a{" "}
+                  <strong>Jenny Ghetea</strong> para representar su vivienda y
+                  votar <strong>NO a los Exhibits A, B y C</strong> en la
+                  reunión del 6 de octubre.
+                </>
+              ) : (
+                <>
+                  By completing and signing this limited proxy, you appoint{" "}
+                  <strong>Jenny Ghetea</strong> to represent your home and vote{" "}
+                  <strong>NO on Exhibits A, B, and C</strong> at the October 6
+                  meeting.
+                </>
+              )}
+            </p>
             <p className="note signing-disclosure">
               {locale === "es"
                 ? `Este sitio independiente es operado por ${siteOperatorName}. No es un sitio oficial de Aventura Isles Master Homeowners’ Association ni es operado por la Asociación o su empresa administradora.`
