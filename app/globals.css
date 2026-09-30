@@ -896,3 +896,19 @@ td {
     gap: 8px;
   }
 }
+
+@media (max-width: 759px) {
+  .governing-overview p,
+  .governing-overview dd {
+    font-size: 18px;
+    line-height: 1.65;
+  }
+  .participation-page .note,
+  .participation-page .accuracy-note,
+  .participation-page .disclaimer,
+  .participation-page .representation-note,
+  .participation-page .official-redlines blockquote {
+    font-size: 16px;
+    line-height: 1.6;
+  }
+}

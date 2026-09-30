@@ -3,6 +3,20 @@ import Link from "next/link";
 import { submissionsEnabled, proxyConfig } from "@/lib/config";
 import { homeCopy } from "@/lib/i18n/home";
 
+function Emphasized({ text, phrases }: { text: string; phrases: string[] }) {
+  const matching = phrases.filter((phrase) => text.includes(phrase));
+  if (!matching.length) return text;
+  const pattern = new RegExp(
+    `(${matching.map((phrase) => phrase.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|")})`,
+    "g",
+  );
+  return text
+    .split(pattern)
+    .map((part, index) =>
+      matching.includes(part) ? <strong key={index}>{part}</strong> : part,
+    );
+}
+
 function OfficialRedlines({ exhibit }: { exhibit: "A" | "B" | "C" }) {
   return (
     <div className="official-redlines" lang="en">
@@ -30,6 +44,28 @@ export default async function Home() {
   const locale = await getLocale();
   const copy = homeCopy[locale];
   const enabled = submissionsEnabled();
+  const emphasis =
+    locale === "es"
+      ? [
+          "mayoría de todos los miembros",
+          "mayoría de los lotes con derecho a voto representados",
+          "66 votos a favor",
+          "futura enmienda a los estatutos",
+          "para todos",
+          "sin el respaldo de la mayoría de la comunidad",
+          "amplio respaldo de los propietarios",
+          "Por eso recomendamos NO.",
+        ]
+      : [
+          "majority of the entire membership",
+          "majority of the eligible lots represented",
+          "66 YES votes",
+          "future By-Laws amendment",
+          "for everyone",
+          "without support from a majority of the community",
+          "broad homeowner support",
+          "That is why we recommend NO.",
+        ];
   return (
     <article className="container participation-page" lang={locale}>
       <div className="participation-intro">
@@ -96,10 +132,18 @@ export default async function Home() {
         aria-labelledby="bylaws-change-heading"
       >
         <h2 id="bylaws-change-heading">{copy.bylawsChangeTitle}</h2>
-        <p>{copy.bylawsCurrent}</p>
-        <p>{copy.bylawsExample}</p>
-        <p>{copy.bylawsConsequence}</p>
-        <p className="vote-recommendation">{copy.bylawsPosition}</p>
+        <p>
+          <Emphasized text={copy.bylawsCurrent} phrases={emphasis} />
+        </p>
+        <p>
+          <Emphasized text={copy.bylawsExample} phrases={emphasis} />
+        </p>
+        <p>
+          <Emphasized text={copy.bylawsConsequence} phrases={emphasis} />
+        </p>
+        <p className="vote-recommendation">
+          <Emphasized text={copy.bylawsPosition} phrases={emphasis} />
+        </p>
       </section>
       <h2 className="comparison-title">{copy.title}</h2>
       <section className="today-panel" aria-labelledby="today-heading">
