@@ -1,15 +1,14 @@
 export const homeCopy = {
   en: {
-    meeting: "October 6 · Community vote",
+    meeting: "October 6 · Limited proxy",
     title: "Today vs. Proposed",
-    campaignVote: "Vote NO",
+    campaignVote: "A proxy for NO",
     campaignMeeting: "October 6 Special Membership Meeting",
     campaignIntro:
-      "We recommend voting NO on the proposed amendments. Here’s why.",
+      "Use a limited proxy to authorize someone to represent your home and vote NO on the proposed amendments at the October 6 meeting. Here’s why we recommend NO.",
     whyIntro: "Here’s why",
-    directProxy: "Go directly to proxy",
-    directPreview: "Go directly to proxy preview",
-    whyLink: "See why NO",
+    directProxy: "Skip to your NO proxy",
+    directPreview: "Skip to preview your NO proxy",
     independentNote:
       "An independent homeowner initiative. Not an official Association website.",
     today: "Today",
@@ -79,16 +78,15 @@ export const homeCopy = {
       "This independent website is operated by SAPSLAB SERVICES LLC. It is not an official Aventura Isles Master Homeowners’ Association website and is not operated by the Association or its management company.",
   },
   es: {
-    meeting: "6 de octubre · Votación de la comunidad",
+    meeting: "6 de octubre · Poder de representación limitado",
     title: "Hoy vs. lo propuesto",
-    campaignVote: "Vote NO",
+    campaignVote: "Un poder para votar NO",
     campaignMeeting: "Reunión especial de propietarios · 6 de octubre",
     campaignIntro:
-      "Recomendamos votar NO a las enmiendas propuestas. Estas son las razones.",
+      "Con un poder limitado, autorice a otra persona a representar su vivienda y votar NO a las enmiendas propuestas en la reunión del 6 de octubre. Estas son las razones por las que recomendamos NO.",
     whyIntro: "Por qué votar NO",
-    directProxy: "Ir directamente al poder de representación",
-    directPreview: "Ir directamente a la vista previa del poder",
-    whyLink: "Conozca las razones",
+    directProxy: "Ir directamente a su poder con instrucciones de votar NO",
+    directPreview: "Ver su poder con instrucciones de votar NO",
     independentNote:
       "Una iniciativa independiente de propietarios. No es un sitio oficial de la Asociación.",
     today: "Hoy",

@@ -63,14 +63,11 @@ export default async function Home({
           <span className="campaign-meeting">{copy.campaignMeeting}</span>
         </h1>
         <p className="campaign-intro">{copy.campaignIntro}</p>
-        <div className="actions">
-          <Link className="button" href="/sign">
+        <div className="proxy-shortcut">
+          <Link className="button secondary" href="/sign">
             {enabled ? copy.directProxy : copy.directPreview}{" "}
             <span aria-hidden="true">→</span>
           </Link>
-          <a className="button secondary" href="#why-no">
-            {copy.whyLink} <span aria-hidden="true">↓</span>
-          </a>
         </div>
         <p className="note">{copy.independentNote}</p>
       </section>
@@ -147,8 +144,8 @@ export default async function Home({
           <p key={reason}>{reason}</p>
         ))}
         <p className="vote-recommendation">{copy.recommendation}</p>
-        <div className="actions">
-          <Link className="button" href="/sign">
+        <div className="proxy-shortcut">
+          <Link className="button secondary" href="/sign">
             {enabled ? copy.begin : copy.preview}{" "}
             <span aria-hidden="true">→</span>
           </Link>

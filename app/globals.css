@@ -662,7 +662,7 @@ td {
   max-width: 620px;
   color: var(--muted);
 }
-.campaign-hero .actions {
+.campaign-hero .proxy-shortcut {
   margin: 24px 0 16px;
 }
 .campaign-hero .note {
@@ -686,3 +686,5 @@ td {
     scroll-behavior: smooth;
   }
 }
+
+.proxy-shortcut .button { font-size: 0.95rem; padding: 0.65rem 1rem; }
