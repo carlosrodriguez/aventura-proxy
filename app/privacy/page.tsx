@@ -1,6 +1,7 @@
 import { getLocale } from "@/lib/i18n/locale";
-import { retentionDays, siteOperatorName } from "@/lib/config";
+import { siteOperatorName } from "@/lib/config";
 export default async function Privacy() {
+  const testMode = process.env.PROXY_TEST_MODE === "true";
   const es = (await getLocale()) === "es";
   if (es)
     return (
@@ -50,20 +51,30 @@ export default async function Privacy() {
         </ul>
         <h2>Conservación y destinatarios</h2>
         <p>
-          El plazo configurado de conservación es de {retentionDays()} días
-          desde la creación. El operador ejecuta diariamente un proceso para
-          eliminar registros y archivos privados vencidos. Las copias de
-          respaldo de la infraestructura siguen el ciclo configurado por el
-          proveedor, que el operador debe documentar antes del lanzamiento.
+          {testMode
+            ? "Durante las pruebas, la copia de entrega va al destinatario de prueba configurado; no se presenta a la Asociación."
+            : "Jenny Ghetea recibe una copia para imprimirla y presentarla en la reunión."}
         </p>
         <p>
-          El firmante recibe el PDF finalizado. Los administradores autorizados
-          pueden acceder a los registros. Si está configurado, el poder
-          finalizado se envía por correo a la Asociación o a su administración
-          para una validación independiente. Los proveedores de alojamiento,
-          almacenamiento privado, correo transaccional y protección contra bots
-          procesan los datos necesarios para prestar esos servicios. No se
-          utilizan herramientas de análisis de terceros con fines publicitarios.
+          Conservamos los poderes completados y los registros de firma durante
+          esta campaña para apoyar la entrega, la revisión y la resolución de
+          preguntas. No los eliminamos automáticamente después de imprimirlos ni
+          al terminar la reunión de octubre. Después de la reunión, el operador
+          revisará qué datos deben conservarse y cuáles pueden eliminarse,
+          teniendo en cuenta las preguntas o controversias pendientes y los
+          requisitos aplicables. La revisión también incluirá las copias de
+          respaldo.
+        </p>
+        <p>
+          El firmante recibe el PDF finalizado. Jenny Ghetea recibe una copia
+          para imprimirla y presentarla en la reunión. Los administradores
+          autorizados pueden acceder a los registros. Si está configurado, el
+          poder finalizado se envía por correo a la Asociación o a su
+          administración para una validación independiente. Los proveedores de
+          alojamiento, almacenamiento privado, correo transaccional y protección
+          contra bots procesan los datos necesarios para prestar esos servicios.
+          No se utilizan herramientas de análisis de terceros con fines
+          publicitarios.
         </p>
         <p>
           Las cookies de sesión HttpOnly autorizan el acceso al envío y el
@@ -128,14 +139,22 @@ export default async function Privacy() {
       </ul>
       <h2>Retention and recipients</h2>
       <p>
-        The configured site retention period is {retentionDays()} days from
-        creation. The operator runs a daily retention job to remove expired
-        records and private files. Infrastructure backup copies follow the
-        provider’s separately configured backup lifecycle, which the operator
-        must document before launch.
+        {testMode
+          ? "During testing, the delivery copy goes to the configured test recipient and is not submitted to the Association."
+          : "Jenny Ghetea receives a copy for printing and presentation at the meeting."}
       </p>
       <p>
-        The signer receives the finalized PDF. Authorized administrators can
+        We retain completed proxies and signing records during this campaign to
+        support delivery, review, and resolution of questions. We do not
+        automatically delete them when printed or when the October meeting ends.
+        After the meeting, the operator will review what needs to be retained
+        and what can be deleted, taking account of unresolved questions or
+        disputes and applicable requirements. That review will also cover backup
+        copies.
+      </p>
+      <p>
+        The signer receives the finalized PDF. Jenny Ghetea receives a copy for
+        printing and presentation at the meeting. Authorized administrators can
         access records. If configured, a finalized proxy is emailed to the
         Association or management for independent validation. Hosting, private
         storage, transactional email, and bot-protection providers process data

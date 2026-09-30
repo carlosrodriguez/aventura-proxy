@@ -68,3 +68,26 @@ it("separates limiter keys and enforces concurrent increments", async () => {
   expect(result.filter((r) => r.status === "rejected")).toHaveLength(3);
   await expect(rateLimit("separate-key", 1, 600)).resolves.toBeUndefined();
 });
+it("adds independent receipt, print, and filing timestamps without changing existing records", async () => {
+  await state.database!.exec(
+    await readFile(
+      new URL(
+        "../../prisma/migrations/20260930010000_proxy_handoff/migration.sql",
+        import.meta.url,
+      ),
+      "utf8",
+    ),
+  );
+  const result = await state.database!.query<{ column_name: string }>(
+    `SELECT column_name FROM information_schema.columns WHERE table_name='ProxySubmission'`,
+  );
+  expect(result.rows.map((r) => r.column_name)).toEqual(
+    expect.arrayContaining([
+      "holderReceivedAt",
+      "printedAt",
+      "filedAt",
+      "associationSentAt",
+      "deliveredAt",
+    ]),
+  );
+});

@@ -35,6 +35,9 @@ model ProxySubmission {
  verifiedAt DateTime?
  finalizedAt DateTime?
  deliveredAt DateTime?
+ holderReceivedAt DateTime?
+ printedAt DateTime?
+ filedAt DateTime?
  receiptSentAt DateTime?
  associationSentAt DateTime?
  revocationRequestedAt DateTime?

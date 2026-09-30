@@ -12,8 +12,9 @@ export default async function Admin() {
     <article className="container prose">
       <h1>Proxy administration</h1>
       <p>
-        Finalized documents cannot be edited. Validation status is a manual
-        Association decision.
+        Reconcile finalized proxies with Jenny Ghetea’s received and printed
+        copies. Filing and Association acceptance are recorded separately.
+        Finalized documents cannot be edited.
       </p>
       <AdminPanel />
     </article>

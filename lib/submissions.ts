@@ -419,7 +419,7 @@ export async function deliverReceipt(id: string) {
     const now = new Date();
     await db().proxySubmission.update({
       where: { id },
-      data: { associationSentAt: now, deliveredAt: now },
+      data: { associationSentAt: now },
     });
     await event(id, "ASSOCIATION_EMAIL_SENT", {});
   }

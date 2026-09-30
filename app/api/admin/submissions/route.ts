@@ -40,6 +40,10 @@ export async function GET(req: NextRequest) {
         "signedAt",
         "verifiedAt",
         "finalizedAt",
+        "associationSentAt",
+        "holderReceivedAt",
+        "printedAt",
+        "filedAt",
         "deliveredAt",
         "pdfSha256",
       ] as const;
@@ -72,6 +76,10 @@ export async function GET(req: NextRequest) {
         status: s.status,
         associationStatus: s.associationStatus,
         likelyDuplicate: s.likelyDuplicate,
+        associationSentAt: s.associationSentAt,
+        holderReceivedAt: s.holderReceivedAt,
+        printedAt: s.printedAt,
+        filedAt: s.filedAt,
         deliveredAt: s.deliveredAt,
         revocationRequestedAt: s.revocationRequestedAt,
         events: s.events,
@@ -89,7 +97,14 @@ export async function POST(req: NextRequest) {
     const p = z
       .object({
         id: z.uuid(),
-        action: z.enum(["download", "delivered", "validation", "retry-email"]),
+        action: z.enum([
+          "download",
+          "received",
+          "printed",
+          "filed",
+          "validation",
+          "retry-email",
+        ]),
         status: z
           .enum(["pending", "accepted", "rejected", "duplicate", "revoked"])
           .optional(),
@@ -112,26 +127,37 @@ export async function POST(req: NextRequest) {
     }
     if (action === "validation" && !status)
       throw new HttpError(400, "Status required");
-    if (action === "delivered" && s.status !== "FINALIZED")
+    if (
+      ["received", "printed", "filed"].includes(action) &&
+      s.status !== "FINALIZED"
+    )
       throw new HttpError(409, "Not finalized");
     await db().$transaction([
       db().proxySubmission.update({
         where: { id },
         data:
-          action === "delivered"
-            ? { deliveredAt: new Date() }
-            : { associationStatus: status },
+          action === "received"
+            ? { holderReceivedAt: s.holderReceivedAt ?? new Date() }
+            : action === "printed"
+              ? { printedAt: s.printedAt ?? new Date() }
+              : action === "filed"
+                ? { filedAt: s.filedAt ?? new Date() }
+                : { associationStatus: status },
       }),
       db().auditEvent.create({
         data: {
           submissionId: id,
           eventType:
-            action === "delivered"
-              ? "MANUALLY_MARKED_DELIVERED"
-              : "ASSOCIATION_STATUS_CHANGED",
+            action === "received"
+              ? "HOLDER_RECEIPT_CONFIRMED"
+              : action === "printed"
+                ? "PRINT_CONFIRMED"
+                : action === "filed"
+                  ? "FILING_CONFIRMED"
+                  : "ASSOCIATION_STATUS_CHANGED",
           metadata: {
             admin: admin.email,
-            status: status ?? "delivered",
+            status: status ?? action,
             previousStatus: s.associationStatus,
           },
         },

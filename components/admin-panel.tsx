@@ -8,6 +8,10 @@ type Row = {
   status: string;
   associationStatus: string;
   likelyDuplicate: boolean;
+  associationSentAt: string | null;
+  holderReceivedAt: string | null;
+  printedAt: string | null;
+  filedAt: string | null;
   deliveredAt: string | null;
   revocationRequestedAt: string | null;
   events: Array<{
@@ -73,6 +77,21 @@ export function AdminPanel() {
         </button>
       </div>
       <p role="alert">{error}</p>
+      <p>
+        On this page:{" "}
+        <strong>
+          {rows.filter((s) => s.status === "FINALIZED").length} finalized
+        </strong>{" "}
+        · {rows.filter((s) => s.holderReceivedAt).length} received by Jenny ·{" "}
+        <strong>{rows.filter((s) => s.printedAt).length} printed</strong> ·{" "}
+        {rows.filter((s) => s.filedAt).length} filed.
+      </p>
+      <p>
+        Use the complete CSV manifest to reconcile every finalized proxy against
+        Jenny’s printed copies. Confirm receipt, printing, and filing only after
+        checking with Jenny. Email sending does not confirm receipt or
+        acceptance.
+      </p>
       <div className="table-wrap">
         <table>
           <thead>
@@ -138,13 +157,34 @@ export function AdminPanel() {
                   >
                     Download
                   </button>
-                  <button
-                    className="secondary"
-                    disabled={s.status !== "FINALIZED"}
-                    onClick={() => void action(s.id, "delivered")}
-                  >
-                    {s.deliveredAt ? "Delivered" : "Mark delivered"}
-                  </button>
+                  <p>
+                    Email copy:{" "}
+                    {s.associationSentAt ? "Sent to provider" : "Not sent"}
+                  </p>
+                  {(
+                    [
+                      ["received", "Jenny received", s.holderReceivedAt],
+                      ["printed", "Printed", s.printedAt],
+                      ["filed", "Filed with Association", s.filedAt],
+                    ] as const
+                  ).map(([key, label, timestamp]) => (
+                    <div key={key}>
+                      <button
+                        className="secondary"
+                        disabled={
+                          s.status !== "FINALIZED" || Boolean(timestamp)
+                        }
+                        onClick={() => void action(s.id, key)}
+                      >
+                        {timestamp ? label : `Confirm: ${label}`}
+                      </button>
+                      {timestamp && (
+                        <p className="note">
+                          {new Date(timestamp).toLocaleString()}
+                        </p>
+                      )}
+                    </div>
+                  ))}
                   <button
                     className="secondary"
                     disabled={s.status !== "FINALIZED"}

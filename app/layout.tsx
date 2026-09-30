@@ -40,11 +40,8 @@ export default async function RootLayout({
             <Link className="header-proxy-link" href="/sign">
               {es ? "Completar poder NO" : "Complete NO proxy"}
             </Link>
-            <Link href="/how-it-works">
-              {es ? "Cómo funciona" : "How it works"}
-            </Link>
             <Link href="/verification">
-              {es ? "Verificación" : "Verification"}
+              {es ? "Cómo protegemos su poder" : "How we protect your proxy"}
             </Link>
             <Link href="/contact">{es ? "Contacto" : "Contact"}</Link>
           </nav>
@@ -53,12 +50,9 @@ export default async function RootLayout({
         <main id="main">{children}</main>
         <footer className="container footer">
           <nav aria-label={es ? "Pie de página" : "Footer"}>
-            <Link href="/how-it-works">
-              {es ? "Cómo funciona" : "How it works"}
-            </Link>
             <Link href="/privacy">{es ? "Privacidad" : "Privacy"}</Link>
             <Link href="/verification">
-              {es ? "Seguridad y verificación" : "Security & verification"}
+              {es ? "Cómo protegemos su poder" : "How we protect your proxy"}
             </Link>
             <Link href="/proxy-language">
               {es ? "Ver el texto del poder" : "View proxy language"}

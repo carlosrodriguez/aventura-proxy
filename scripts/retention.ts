@@ -8,6 +8,12 @@ const prisma = new PrismaClient({
   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL }),
 });
 async function run() {
+  if (process.env.ENABLE_RETENTION_DELETION !== "true") {
+    console.log(
+      "Record deletion is disabled pending campaign-close retention review.",
+    );
+    return;
+  }
   const cutoff = new Date(Date.now() - retentionDays() * 86400000);
   const rows = await prisma.proxySubmission.findMany({
     where: { createdAt: { lt: cutoff } },
