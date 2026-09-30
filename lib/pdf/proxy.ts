@@ -18,7 +18,7 @@ export type ProxyDetails = {
 export async function fillOfficialProxy(
   template: Uint8Array,
   details: ProxyDetails,
-  signature: Uint8Array,
+  signature: Uint8Array | null,
 ): Promise<Uint8Array> {
   const pdf = await PDFDocument.load(template);
   if (pdf.getPageCount() !== 1)
@@ -70,14 +70,18 @@ export async function fillOfficialProxy(
   field(`${details.firstName} ${details.lastName}`, 121, 342, 199);
   if (details.entityName) field(details.entityName, 186, 319, 180);
   if (details.signerTitle) field(details.signerTitle, 511, 319, 161);
-  const image = await pdf.embedPng(signature);
-  const scaled = image.scaleToFit(245, 23);
-  page.drawImage(image, {
-    x: 426,
-    y: 341,
-    width: scaled.width,
-    height: scaled.height,
-  });
+  if (signature) {
+    const image = await pdf.embedPng(signature);
+    const scaled = image.scaleToFit(245, 23);
+    page.drawImage(image, {
+      x: 426,
+      y: 341,
+      width: scaled.width,
+      height: scaled.height,
+    });
+  } else {
+    field("PREVIEW - NOT SIGNED", 90, 890, 600, 12);
+  }
   if (process.env.PROXY_TEST_MODE === "true")
     field("DEV TEST ONLY - NOT FOR ASSOCIATION SUBMISSION", 90, 918, 600, 12);
   pdf.setTitle("Completed official limited proxy");
@@ -88,7 +92,7 @@ export async function fillOfficialProxy(
 }
 export async function generateProxy(
   details: ProxyDetails,
-  signature: Uint8Array,
+  signature: Uint8Array | null,
 ): Promise<Uint8Array> {
   if (!officialTemplateReady())
     throw new Error("Official template not reviewed");

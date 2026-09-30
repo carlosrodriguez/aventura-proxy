@@ -1,4 +1,17 @@
 export const spanishSign: Record<string, string> = {
+  "Aventura Isles Property Address":
+    "Dirección de la propiedad en Aventura Isles",
+  "Review your proxy": "Revise su poder",
+  "Preview your filled proxy": "Ver el poder con sus datos",
+  "Open PDF preview": "Abrir la vista previa del PDF",
+  "Unsigned proxy preview": "Vista previa del poder sin firmar",
+  "Back to edit": "Volver para editar",
+  "Didn't get your code? Check your junk or spam folder.":
+    "¿No recibió el código? Revise la carpeta de correo no deseado o spam.",
+  "A new code has been requested. Use the most recent email.":
+    "Se ha solicitado un nuevo código. Utilice el correo más reciente.",
+  "Email verification confirms access to this email address. It does not establish property ownership or voting authority. The Association must independently validate the proxy.":
+    "La verificación confirma el acceso a este correo. No acredita la propiedad ni el derecho a votar. La Asociación debe validar el poder de forma independiente.",
   "← Back to overview": "← Volver al resumen",
   "Your limited proxy": "Su poder limitado",
   Step: "Paso",

@@ -5,6 +5,7 @@ import {
   authenticateSubmission,
   event,
   resendOtp,
+  restartSubmission,
   verifySubmission,
   finalizeSubmission,
 } from "@/lib/submissions";
@@ -15,6 +16,7 @@ import {
   jsonBody,
   originCheck,
   rateLimit,
+  cookieOptions,
 } from "@/lib/security/http";
 import { verifySchema } from "@/lib/validation/submission";
 import { temporaryUrl } from "@/lib/storage";
@@ -41,8 +43,16 @@ export async function POST(
     }
     if (action === "resend") {
       await rateLimit(`resend:${s.id}`, 5, 3600);
-      await resendOtp(s.id, deferEmail);
-      return NextResponse.json({ ok: true });
+      return NextResponse.json({
+        ok: true,
+        ...(await resendOtp(s.id, deferEmail)),
+      });
+    }
+    if (action === "restart") {
+      await restartSubmission(s.id);
+      const response = NextResponse.json({ ok: true });
+      response.cookies.set("proxy_access", "", { ...cookieOptions, maxAge: 0 });
+      return response;
     }
     if (action === "finalize")
       return NextResponse.json(await finalizeSubmission(s.id, deferEmail));

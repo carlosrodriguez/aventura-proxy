@@ -13,7 +13,7 @@ export function proxy(req: NextRequest) {
     "font-src 'self'",
     "connect-src 'self' https://challenges.cloudflare.com " +
       (dev ? "ws: wss:" : ""),
-    "frame-src https://challenges.cloudflare.com",
+    "frame-src 'self' blob: https://challenges.cloudflare.com",
     "frame-ancestors 'none'",
     "object-src 'none'",
     "base-uri 'none'",

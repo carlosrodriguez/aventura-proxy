@@ -26,7 +26,7 @@ export const proxyConfig = {
     return resolveProxyholderName();
   },
   officialProxyWording:
-    "The undersigned Owner(s) or designated Voting Member of Aventura Isles Master Homeowners’ Association, Inc. (the “Association”) hereby appoints (select either “a” or “b” below – if neither option is selected, or if “b” is selected and a proxyholder name is not included, then the President of the Association (or, in his/her absence, any Board Member as designated by the Board) shall be deemed the appointed proxyholder):\n\n(a) the President of the Association (or, in his/her absence, any Board Member as designated by the Board); OR\n\n(b) ____________________, (if you check “b,” write in the name of your proxyholder and make sure that such proxyholder will be attending the meeting)\n\nas my proxyholder, with power of substitution, for and in the name and place of the undersigned, to appear at the Association’s membership meeting to be held on October 6th, 2026, at 6:15pm, or immediately following the Special Board Meeting at the Aventura Isles pool area located at 605 NE 193 Street, Miami, Florida 33179, and any adjournment thereof. The proxyholder named above has the authority to establish quorum, vote, and act for me to the same extent that I would if personally present, with power of substitution, except that my proxyholder’s voting authority is limited as indicated below.\n\nLIMITED POWERS. [FOR YOUR VOTE TO BE COUNTED ON THE FOLLOWING ISSUES, YOU MUST INDICATE YOUR PREFERENCE IN THE BLANK(S) PROVIDED BELOW.]\n\nI SPECIFICALLY AUTHORIZE AND INSTRUCT MY PROXYHOLDER TO CAST MY VOTE IN REFERENCE TO THE FOLLOWING MATTERS AS INDICATED BELOW:",
+    "The undersigned Owner(s) or designated Voting Member of Aventura Isles Master Homeowners’ Association, Inc. (the “Association”) hereby appoints (select either “a” or “b” below – if neither option is selected, or if “b” is selected and a proxyholder name is not included, then the President of the Association (or, in his/her absence, any Board Member as designated by the Board) shall be deemed the appointed proxyholder):\n\n(a) the President of the Association (or, in his/her absence, any Board Member as designated by the Board), OR\n\n(b) ____________________, (if you check “b,” write in the name of your proxyholder and make sure that such proxyholder will be attending the meeting)\n\nas my proxyholder, with power of substitution, for and in the name and place of the undersigned, to appear at the Association’s membership meeting to be held on October 6th, 2026, at 6:15pm, or immediately following the Special Board Meeting at the Aventura Isles pool area located at 605 NE 193 Street, Miami, Florida 33179, and any adjournment thereof. The proxyholder named above has the authority to establish quorum, vote, and act for me to the same extent that I would if personally present, with power of substitution, except that my proxyholder’s voting authority is limited as indicated below.\n\nLIMITED POWERS. [FOR YOUR VOTE TO BE COUNTED ON THE FOLLOWING ISSUES, YOU MUST INDICATE YOUR PREFERENCE IN THE BLANK(S) PROVIDED BELOW.]\n\nI SPECIFICALLY AUTHORIZE AND INSTRUCT MY PROXYHOLDER TO CAST MY VOTE IN REFERENCE TO THE FOLLOWING MATTERS AS INDICATED BELOW:",
   templateVersion: "official-original-page-2026-09-29-v3",
   proxyTemplateSha256:
     "86a47814102b218ef10b36500a923c61ac3916b1bb1cdee4c933ea2ebc398a23",
@@ -85,7 +85,7 @@ export const proxyConfig = {
               change: "added",
             },
             {
-              text: " to approve any action, such provision may not be amended to require a lesser vote, and may not be deleted, without the same number of votes required to approve such action. In addition, so long as DECLARANT has the right to appoint a majority of the directors of the Association as provided in the ARTICLES, this DECLARATION may be amended from time to time, by DECLARANT without the consent of the ASSOCIATION or any OWNER, and no amendment may be made by the OWNERS without the written joinder of DECLARANT. Such right of DECLARANT to amend this DECLARATION shall specifically include, but shall not be limited to, (i) amendments adding any property which will be developed in a similar manner as the SUBJECT PROPERTY, or deleting any property from the SUBJECT PROPERTY which will be developed differently than the SUBJECT PROPERTY (provided that any such amendments shall require the joinder of the owners of such property or any portion thereof if the owners are different than DECLARANT and further provided that DECLARANT shall not have the obligation to add any property or delete any property from the SUBJECT PROPERTY), and (ii) amendments required by INSTITUTIONAL LENDER or governmental authority in order to comply with the requirements of same. In order to be effective, any amendment to this DECLARATION must first be recorded in the public records of the county in which the SUBJECT PROPERTY is located, and, in the case of an amendment made by the OWNERS, such amendment shall contain a certification by the President and Secretary of the ASSOCIATION that the amendment was duly adopted.",
+              text: " to approve any action, such provision may not be amended to require a lesser vote, and may not be deleted, without the same number of votes required to approve such action. In addition, so long as DECLARANT has the right to appoint a majority of the directors of the Association as provided in the ARTICLES, this DECLARATION may be amended from time to time, by DECLARANT and without the consent of the ASSOCIATION or any OWNER, and no amendment may be made by the OWNERS without the written joinder of DECLARANT. Such right of DECLARANT to amend this DECLARATION shall specifically include, but shall not be limited to, (i) amendments adding any property which will be developed in a similar manner as the SUBJECT PROPERTY, or deleting any property from the SUBJECT PROPERTY which will be developed differently than the SUBJECT PROPERTY (provided that any such amendment shall require the joinder of the owners of such property or any portion thereof if the owners are different than DECLARANT, and further provided that DECLARANT shall not have the obligation to add any property or delete any property from the SUBJECT PROPERTY), and (ii) amendments required by INSTITUTIONAL LENDER or governmental authority in order to comply with the requirements of same. In order to be effective, any amendment to this DECLARATION must first be recorded in the public records of the county in which the SUBJECT PROPERTY is located, and, in the case of an amendment made by the OWNERS, such amendment shall contain a certification by the President and Secretary of the ASSOCIATION that the amendment was duly adopted.",
               change: "unchanged",
             },
           ],
@@ -134,7 +134,7 @@ export const proxyConfig = {
           heading: "Section 3.2 of the By-Laws is hereby amended as follows:",
           segments: [
             {
-              text: "3.2 Majority Vote and Quorum Requirements.\n\nThe acts approved by a majority of the votes present in person or by proxy at a meeting at which a quorum is present shall be binding upon all members and OWNERS for all purposes, except where otherwise provided by law, in the DECLARATION, in the ARTICLES, or in these BY-LAWS. Unless otherwise provided, at any regular or special meeting, the presence in person or by proxy of persons entitled to cast the votes of ",
+              text: "3.2 Majority Vote and Quorum Requirements.\n\nThe acts approved by a majority of the votes present in person or by proxy at a meeting at which a quorum is present shall be binding upon all members and OWNERS for all purposes, except where otherwise provided by law, in the DECLARATION, in the ARTICLES, or in these BYLAWS. Unless otherwise provided, at any regular or special meeting, the presence in person or by proxy of persons entitled to cast the votes of ",
               change: "unchanged",
             },
             {
@@ -166,10 +166,10 @@ export const proxyConfig = {
             { text: " ", change: "unchanged" },
             {
               text: " These ",
-              change: "unchanged",
+              change: "added",
             },
             {
-              text: "BY-LAWS may be amended upon the approval of at least a majority of the LOTS represented at a meeting at which a quorum has been attained.",
+              text: "BYLAWS may be amended upon the approval of at least a majority of the LOTS represented at a meeting at which a quorum has been attained.",
               change: "added",
             },
           ],
@@ -195,7 +195,7 @@ export const proxyConfig = {
       label: "Exhibit C",
       vote: "NO",
       language:
-        "Should the Association amend the By-laws in accordance with the proposed amendments in Exhibit “C” attached to the Notice of Meeting for October 6th, 2026, at 6:15pm, and for of which I acknowledge receipt?",
+        "Should the Association amend the By-Laws in accordance with the proposed amendments in Exhibit “C” attached to the Notice of Meeting for October 6th, 2026, at 6:15pm, and for of which I acknowledge receipt?",
     },
   ],
   allowedStreets: [

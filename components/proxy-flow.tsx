@@ -52,6 +52,21 @@ export function ProxyFlow({
     [code, setCode] = useState(""),
     [id, setId] = useState(""),
     [signed, setSigned] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState("");
+  const [resendAt, setResendAt] = useState(0);
+  const [now, setNow] = useState(0);
+  const [notice, setNotice] = useState("");
+  const signatureImage = useRef("");
+  useEffect(() => {
+    const timer = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(timer);
+  }, []);
+  useEffect(
+    () => () => {
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+    },
+    [previewUrl],
+  );
   const canvas = useRef<HTMLCanvasElement>(null),
     pad = useRef<SignaturePad | null>(null);
   useEffect(() => {
@@ -67,9 +82,12 @@ export function ProxyFlow({
       maxWidth: 2.5,
     });
     pad.current = signature;
-    signature.addEventListener("endStroke", () =>
-      setSigned(!signature.isEmpty()),
-    );
+    if (signatureImage.current)
+      void signature.fromDataURL(signatureImage.current);
+    signature.addEventListener("endStroke", () => {
+      setSigned(!signature.isEmpty());
+      signatureImage.current = signature.toDataURL();
+    });
     return () => {
       signature.off();
       pad.current = null;
@@ -77,11 +95,20 @@ export function ProxyFlow({
   }, [step]);
   function update(key: keyof typeof initial, value: string) {
     setData((v) => ({ ...v, [key]: value }));
+    setPreviewUrl("");
+    signatureImage.current = "";
+    setSigned(false);
+    setCertified(false);
   }
   async function call(
     path: string,
     body: unknown,
-  ): Promise<{ id?: string; url?: string; codeSent?: boolean }> {
+  ): Promise<{
+    id?: string;
+    url?: string;
+    nextResendAt?: number;
+    codeSent?: boolean;
+  }> {
     const res = await fetch(path, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -91,6 +118,7 @@ export function ProxyFlow({
       error?: string;
       id?: string;
       url?: string;
+      nextResendAt?: number;
       codeSent?: boolean;
     };
     if (!res.ok) throw new Error(json.error ?? "Request failed");
@@ -142,10 +170,11 @@ export function ProxyFlow({
             turnstileToken: token,
           });
           setId(result.id ?? "");
+          setResendAt(Date.now() + 30000);
           setStep(4);
           if (result.codeSent === false)
             setError(
-              "Your signature was saved, but the verification email could not be sent. Wait 60 seconds and use Resend code.",
+              "Your signature was saved, but the verification email could not be sent. Please use Resend code when available.",
             );
         } catch (e) {
           setError(e instanceof Error ? e.message : t("Request failed"));
@@ -221,9 +250,6 @@ export function ProxyFlow({
         )}
         {step === 0 && (
           <>
-            <p>
-              {t("Identify your property. This checks address format only.")}
-            </p>
             <div className="field">
               <label htmlFor="houseNumber">{t("House number")}</label>
               <input
@@ -340,6 +366,43 @@ export function ProxyFlow({
                 " This limited proxy directs a NO vote on all three proposals. These instructions are fixed. ",
               )}
             </p>
+            <p>
+              {locale === "es"
+                ? `Reunión del 6 de octubre de 2026. Usted designa a ${proxyholder} y le indica votar NO a los anexos A, B y C.`
+                : `October 6, 2026 meeting. You appoint ${proxyholder} and instruct NO on Exhibits A, B, and C.`}
+            </p>
+            <button
+              className="secondary"
+              disabled={busy}
+              onClick={async () => {
+                setBusy(true);
+                setError("");
+                try {
+                  const response = await fetch("/api/proxy-preview", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data),
+                  });
+                  if (!response.ok)
+                    throw new Error("Preview unavailable. Please try again.");
+                  setPreviewUrl(URL.createObjectURL(await response.blob()));
+                } catch (e) {
+                  setError(e instanceof Error ? e.message : "Request failed");
+                } finally {
+                  setBusy(false);
+                }
+              }}
+            >
+              {t("Preview your filled proxy")}
+            </button>
+            {previewUrl && (
+              <div className="proxy-document-preview">
+                <a href={previewUrl} target="_blank" rel="noopener">
+                  {t("Open PDF preview")}
+                </a>
+                <iframe src={previewUrl} title={t("Unsigned proxy preview")} />
+              </div>
+            )}
             {proxyConfig.proposals.map((p) => (
               <div className="card" key={p.label}>
                 <h3>
@@ -387,6 +450,7 @@ export function ProxyFlow({
               type="button"
               onClick={() => {
                 pad.current?.clear();
+                signatureImage.current = "";
                 setSigned(false);
               }}
             >
@@ -420,13 +484,12 @@ export function ProxyFlow({
         )}
         {step === 4 && (
           <>
-            <p>{t(authorityNotice)}</p>
             {enabled ? (
               <>
                 <p>
                   {locale === "es"
-                    ? `Introduzca el código enviado a ${data.email}. Caduca en 10 minutos.`
-                    : `Enter the six-digit code sent to ${data.email}. It expires in 10 minutes.`}
+                    ? `Revise su correo ${data.email} e introduzca el código de seis dígitos. Caduca en 10 minutos.`
+                    : `Please check ${data.email} for your six-digit code. The code expires in 10 minutes.`}
                 </p>
                 <div className="field">
                   <label htmlFor="code">{t("Verification code")}</label>
@@ -439,13 +502,22 @@ export function ProxyFlow({
                     onChange={(e) => setCode(e.target.value.replace(/\D/g, ""))}
                   />
                 </div>
+                <p className="note">
+                  {t("Didn't get your code? Check your junk or spam folder.")}
+                </p>
+                {notice && <p role="status">{t(notice)}</p>}
                 <button
                   className="secondary"
-                  disabled={busy}
+                  disabled={busy || now < resendAt}
                   onClick={async () => {
                     setBusy(true);
                     try {
-                      await call("/api/proxy/resend", {});
+                      const result = await call("/api/proxy/resend", {});
+                      setResendAt(result.nextResendAt ?? Date.now() + 120000);
+                      setCode("");
+                      setNotice(
+                        "A new code has been requested. Use the most recent email.",
+                      );
                       setError("");
                     } catch (e) {
                       setError(
@@ -456,8 +528,16 @@ export function ProxyFlow({
                     }
                   }}
                 >
-                  {t(" Resend code ")}
+                  {t("Resend code")}
+                  {now < resendAt
+                    ? ` (${Math.ceil((resendAt - now) / 1000)}s)`
+                    : ""}
                 </button>
+                <p className="verification-footnote">
+                  {t(
+                    "Email verification confirms access to this email address. It does not establish property ownership or voting authority. The Association must independently validate the proxy.",
+                  )}
+                </p>
               </>
             ) : (
               <p className="preview">
@@ -467,6 +547,31 @@ export function ProxyFlow({
               </p>
             )}
             <div className="actions">
+              <button
+                className="secondary"
+                disabled={busy}
+                onClick={async () => {
+                  setBusy(true);
+                  setError("");
+                  try {
+                    if (enabled) await call("/api/proxy/restart", {});
+                    setId("");
+                    setCode("");
+                    setToken("");
+                    setCertified(false);
+                    setSigned(false);
+                    signatureImage.current = "";
+                    setNotice("");
+                    setStep(3);
+                  } catch (e) {
+                    setError(e instanceof Error ? e.message : "Request failed");
+                  } finally {
+                    setBusy(false);
+                  }
+                }}
+              >
+                {t("Back to edit")}
+              </button>
               <button disabled={busy} onClick={verify}>
                 {busy
                   ? t("Verifying…")

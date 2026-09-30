@@ -175,6 +175,8 @@ export async function verifySubmission(
       where: { id },
       include: { verification: true },
     });
+    if (s.accessExpiresAt <= new Date())
+      throw new HttpError(401, "Access unavailable");
     if (s.status !== "SIGNED")
       return s.status === "VERIFIED" || s.status === "FINALIZED";
     const v = s.verification;
@@ -214,6 +216,32 @@ export async function verifySubmission(
     );
   return finalizeSubmission(id, dispatchEmail);
 }
+export async function restartSubmission(id: string) {
+  assertEnabled();
+  await db().$transaction(async (tx) => {
+    await tx.$executeRaw`SELECT "id" FROM "ProxySubmission" WHERE "id"=${id}::uuid FOR UPDATE`;
+    const current = await tx.proxySubmission.findUniqueOrThrow({
+      where: { id },
+    });
+    if (current.status !== "SIGNED" || current.accessExpiresAt <= new Date())
+      throw new HttpError(409, "This proxy can no longer be edited");
+    await tx.proxySubmission.update({
+      where: { id },
+      data: {
+        accessExpiresAt: new Date(0),
+        accessTokenHash: sha256(randomToken()),
+      },
+    });
+    await tx.emailVerification.updateMany({
+      where: { submissionId: id },
+      data: { expiresAt: new Date(0) },
+    });
+    await tx.auditEvent.create({
+      data: { submissionId: id, eventType: "DRAFT_RESTARTED", metadata: {} },
+    });
+  });
+}
+
 export async function resendOtp(
   id: string,
   dispatchEmail: EmailDispatcher = immediateEmail,
@@ -225,10 +253,20 @@ export async function resendOtp(
       where: { id },
       include: { verification: true },
     });
+    if (s.accessExpiresAt <= new Date())
+      throw new HttpError(401, "Access unavailable");
     if (s.status !== "SIGNED")
       throw new HttpError(409, "Verification is already complete");
-    if (s.verification && Date.now() - s.verification.sentAt.getTime() < 60000)
-      throw new HttpError(429, "Wait 60 seconds before requesting a new code");
+    const resendCount = await tx.auditEvent.count({
+      where: { submissionId: id, eventType: "CODE_REISSUED" },
+    });
+    const cooldown =
+      resendCount === 0 ? 30000 : resendCount === 1 ? 120000 : 600000;
+    if (
+      s.verification &&
+      Date.now() - s.verification.sentAt.getTime() < cooldown
+    )
+      throw new HttpError(429, "Please wait before requesting another code");
     const code = generateOtp(),
       sentAt = new Date();
     const data = {
@@ -246,7 +284,12 @@ export async function resendOtp(
     await tx.auditEvent.create({
       data: { submissionId: id, eventType: "CODE_REISSUED", metadata: {} },
     });
-    return { email: s.email, code, sentAt };
+    return {
+      email: s.email,
+      code,
+      sentAt,
+      nextResendAt: sentAt.getTime() + (resendCount === 0 ? 120000 : 600000),
+    };
   });
   await dispatchEmail(async () => {
     try {
@@ -261,7 +304,9 @@ export async function resendOtp(
       throw new Error("Email delivery failed");
     }
   });
+  return { nextResendAt: issued.nextResendAt };
 }
+
 export async function finalizeSubmission(
   id: string,
   dispatchEmail: EmailDispatcher = immediateEmail,

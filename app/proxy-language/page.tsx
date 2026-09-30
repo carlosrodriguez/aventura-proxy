@@ -1,58 +1,63 @@
-import { proxyConfig, officialTemplateReady } from "@/lib/config";
+import { proxyConfig, siteOperatorName } from "@/lib/config";
 export const dynamic = "force-dynamic";
-
 export default function Language() {
   return (
-    <article className="container prose">
-      <h1>Proxy language</h1>
-      <p className="preview">
-        {officialTemplateReady()
-          ? "Reviewed proxy template"
-          : "Draft template · Not ready for execution until all official details are supplied and reviewed."}
-      </p>
-      <h2>{proxyConfig.association}</h2>
-      <p>
-        Special meeting: {proxyConfig.meetingDate}
-        <br />
-        Time: {proxyConfig.meetingTime}
-        <br />
-        Location: {proxyConfig.meetingLocation}
-        <br />
-        Proxyholder: {proxyConfig.proxyholder}
-      </p>
-      <p style={{ whiteSpace: "pre-wrap" }}>
-        {proxyConfig.executionProxyWording}
-      </p>
-      {proxyConfig.proposals.map((p) => (
-        <section className="card" key={p.label}>
-          <h3>
-            {p.label} — {p.vote}
-          </h3>
-          <p>{p.language}</p>
-        </section>
-      ))}
-      <p className="note">
-        The named proxyholder uses option (b). TBD is a preview placeholder; no
-        proxy can be finalized until a name is configured and the remaining
-        launch checks pass.
-      </p>
-      <h2>Official exhibit text</h2>
-      <p>
-        The supplied packet contains Exhibits A, B, and C. Underlining indicates added language; strikethrough indicates
-        deleted language.
-      </p>
-      {[proxyConfig.officialExhibits.A, proxyConfig.officialExhibits.B, proxyConfig.officialExhibits.C].map(
-        (exhibit) => (
-          <section key={exhibit.label} className="section">
-            <h3>
-              {exhibit.label}: {exhibit.title}
-            </h3>
+    <article className="container document-page" lang="en">
+      <section aria-labelledby="limited-proxy-heading">
+        <h1 id="limited-proxy-heading">The limited proxy you are signing</h1>
+        <div className="official-document">
+          <h2>AVENTURA ISLES MASTER HOMEOWNERS’ ASSOCIATION, INC.</h2>
+          <h3>OFFICIAL ASSOCIATION LIMITED PROXY</h3>
+          <p className="document-verbatim">
+            {proxyConfig.executionProxyWording}
+          </p>
+          <ol className="proxy-questions">
+            {proxyConfig.proposals.map((p) => (
+              <li key={p.label}>
+                <p>{p.language}</p>
+                <p>
+                  _____ Yes　　<strong>__X__ No</strong>
+                </p>
+              </li>
+            ))}
+          </ol>
+          <p>Date: ____________________　 Address: ____________________</p>
+          <p>
+            Print Name: ____________________　 Signature: ____________________
+          </p>
+          <p>
+            Entity Name (if applicable): ____________________　 Title (if
+            applicable): ____________________
+          </p>
+          <p>
+            <u>{proxyConfig.substitutionNotice}</u>
+          </p>
+          <h3>SUBSTITUTION OF PROXY</h3>
+          <p>{proxyConfig.substitutionWording}</p>
+          <p>Dated: ____________________</p>
+          <p>
+            Printed Name and Signature of Original Proxyholder:
+            ____________________
+          </p>
+          <p className="important-proxy-note">
+            {proxyConfig.importantProxyNote}
+          </p>
+        </div>
+      </section>
+      <section aria-labelledby="amendments-heading">
+        <h2 id="amendments-heading">The proposed amendments</h2>
+        {Object.values(proxyConfig.officialExhibits).map((exhibit) => (
+          <section className="official-document" key={exhibit.label}>
+            <h3>{exhibit.label}</h3>
+            <h4>{exhibit.title}</h4>
             <p>{exhibit.intro}</p>
-            <p>{exhibit.note}</p>
+            <p>
+              <em>{exhibit.note}</em>
+            </p>
             {exhibit.sections.map((section) => (
-              <div key={section.heading}>
-                <h3>{section.heading}</h3>
-                <p style={{ whiteSpace: "pre-wrap" }}>
+              <section key={section.heading}>
+                <h4>{section.heading}</h4>
+                <p className="document-verbatim">
                   {section.segments.map((segment, index) =>
                     segment.change === "deleted" ? (
                       <del key={index}>{segment.text}</del>
@@ -63,23 +68,16 @@ export default function Language() {
                     ),
                   )}
                 </p>
-              </div>
+              </section>
             ))}
           </section>
-        ),
-      )}
-      <h2>Important proxy note</h2>
-      <p>{proxyConfig.importantProxyNote}</p>
-      <h3>Substitution of proxy</h3>
-      <p>{proxyConfig.substitutionNotice}</p>
-      <p>{proxyConfig.substitutionWording}</p>
-      <p>
-        The website does not complete the proxyholder’s substitution section.
-      </p>
-      <p>
-        Template version: {proxyConfig.templateVersion}. This draft does not
-        invent or summarize the amendment language.
-      </p>
+        ))}
+      </section>
+      <aside className="independent-disclaimer">
+        This independent website is operated by {siteOperatorName}. It is not an
+        official Aventura Isles Master Homeowners’ Association website and is
+        not operated by the Association or its management company.
+      </aside>
     </article>
   );
 }

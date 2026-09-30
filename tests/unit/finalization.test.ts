@@ -12,6 +12,8 @@ const state = vi.hoisted(() => ({
     email: "test@example.org",
     entityName: null,
     signerTitle: null,
+    accessExpiresAt: new Date(Date.now() + 3600000),
+    accessTokenHash: "fixture-access",
     signedAt: new Date("2026-09-29T12:00:00Z"),
     verifiedAt: null as Date | null,
     status: "SIGNED",
@@ -89,6 +91,12 @@ vi.mock("@/lib/db", () => {
         Object.assign(state.row, args.data),
     },
     emailVerification: {
+      upsert: async (args: {
+        update: Partial<typeof state.row.verification>;
+      }) => Object.assign(state.row.verification, args.update),
+      updateMany: async (args: {
+        data: Partial<typeof state.row.verification>;
+      }) => Object.assign(state.row.verification, args.data),
       update: async (args: {
         data: {
           attempts?: { increment: number };
@@ -105,6 +113,8 @@ vi.mock("@/lib/db", () => {
       },
     },
     auditEvent: {
+      count: async () =>
+        state.events.filter((e) => e.eventType === "CODE_REISSUED").length,
       create: async (args: {
         data: { eventType: string; metadata: unknown };
       }) => state.events.push(args.data),
@@ -146,6 +156,7 @@ beforeEach(async () => {
   vi.stubEnv("PROXY_DELIVERY_EMAIL", "");
   Object.assign(state.row, {
     status: "SIGNED",
+    accessExpiresAt: new Date(Date.now() + 3600000),
     verifiedAt: null,
     finalizedAt: null,
     finalPdfRef: null,
@@ -264,6 +275,52 @@ describe("server-side verification and PDF finalization", () => {
     state.row.templateVersion = "old-version";
     await expect(finalizeSubmission(state.row.id)).rejects.toThrow(
       "Template changed",
+    );
+  });
+});
+
+describe("draft editing and code resend protections", () => {
+  it("enforces progressive 30-second, 2-minute, and 10-minute resend waits", async () => {
+    const { resendOtp } = await import("@/lib/submissions");
+    await expect(resendOtp(state.row.id)).rejects.toThrow("Please wait");
+    state.row.verification.sentAt = new Date(Date.now() - 31000);
+    const first = await resendOtp(state.row.id);
+    expect(first.nextResendAt - state.row.verification.sentAt.getTime()).toBe(
+      120000,
+    );
+    const oldHash = state.row.verification.codeHash;
+    await expect(resendOtp(state.row.id)).rejects.toThrow("Please wait");
+    state.row.verification.sentAt = new Date(Date.now() - 121000);
+    const second = await resendOtp(state.row.id);
+    expect(second.nextResendAt - state.row.verification.sentAt.getTime()).toBe(
+      600000,
+    );
+    expect(state.row.verification.codeHash).not.toBe(oldHash);
+    state.row.verification.sentAt = new Date(Date.now() - 121000);
+    await expect(resendOtp(state.row.id)).rejects.toThrow("Please wait");
+    state.row.verification.sentAt = new Date(Date.now() - 601000);
+    await resendOtp(state.row.id);
+    expect(state.mail).toHaveBeenCalledTimes(3);
+  });
+  it("preserves a restarted draft but invalidates access and its verification code", async () => {
+    const { restartSubmission, verifySubmission, resendOtp } =
+      await import("@/lib/submissions");
+    await restartSubmission(state.row.id);
+    expect(state.row.status).toBe("SIGNED");
+    expect(state.events.some((e) => e.eventType === "DRAFT_RESTARTED")).toBe(
+      true,
+    );
+    await expect(verifySubmission(state.row.id, "012345")).rejects.toThrow(
+      "Access unavailable",
+    );
+    await expect(resendOtp(state.row.id)).rejects.toThrow("Access unavailable");
+    expect(state.files.has("fixture/signature.png")).toBe(true);
+  });
+  it("prevents editing finalized proxies", async () => {
+    const { restartSubmission } = await import("@/lib/submissions");
+    state.row.status = "FINALIZED";
+    await expect(restartSubmission(state.row.id)).rejects.toThrow(
+      "can no longer be edited",
     );
   });
 });
