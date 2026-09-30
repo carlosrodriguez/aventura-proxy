@@ -5,8 +5,8 @@ export const homeCopy = {
     campaignVote: "A proxy for NO",
     campaignMeeting: "October 6 Special Membership Meeting",
     campaignIntro:
-      "Use a limited proxy to authorize someone to represent your home and vote NO on the proposed amendments at the October 6 meeting. Here’s why we recommend NO.",
-    whyIntro: "Here’s why",
+      "Use a limited proxy to authorize someone to represent your home and vote NO on the proposed amendments at the October 6 meeting.",
+    whyIntro: "Here’s why we recommend NO.",
     directProxy: "Skip to your NO proxy",
     directPreview: "Skip to preview your NO proxy",
     independentNote:
@@ -20,8 +20,11 @@ export const homeCopy = {
       "To amend the documents: the current Declaration requires approval by a majority of owners; the current By-Laws require a majority of the entire membership—not just those represented at the meeting.",
     todayProtection:
       "Why keep this? A smaller group can attend a meeting, but it cannot amend these documents without support from a majority of the community. The proposed changes would let a majority of the smaller group represented at a meeting approve amendments, subject to specific higher voting requirements.",
-    currentShare: "⅓",
-    currentShareLabel: "in the supplied By-Laws",
+    meetingRequirement: "To hold a meeting",
+    meetingParticipation: "Lots represented in person or by proxy count toward quorum.",
+    amendmentRequirement: "To approve document amendments",
+    amendmentNumber: "328 YES",
+    amendmentParticipation: "A majority of all 654 eligible homes—not just those at the meeting. YES votes can be cast in person or by proxy.",
     proposed: "Proposed change",
     stepOne: "Step 1",
     stepOneTitle: "Lower the minimum participation to 20%.",
@@ -144,8 +147,8 @@ export const homeCopy = {
     campaignVote: "Un poder para votar NO",
     campaignMeeting: "Reunión especial de propietarios · 6 de octubre",
     campaignIntro:
-      "Con un poder limitado, autorice a otra persona a representar su vivienda y votar NO a las enmiendas propuestas en la reunión del 6 de octubre. Estas son las razones por las que recomendamos NO.",
-    whyIntro: "Por qué votar NO",
+      "Con un poder limitado, autorice a otra persona a representar su vivienda y votar NO a las enmiendas propuestas en la reunión del 6 de octubre.",
+    whyIntro: "Estas son las razones por las que recomendamos NO.",
     directProxy: "Ir directamente a su poder con instrucciones de votar NO",
     directPreview: "Ver su poder con instrucciones de votar NO",
     independentNote:
@@ -159,8 +162,11 @@ export const homeCopy = {
       "Para modificar los documentos: la Declaración actual exige la aprobación de la mayoría de los propietarios; los Estatutos actuales exigen la mayoría de todos los miembros, no solo de quienes estén representados en la reunión.",
     todayProtection:
       "¿Por qué conservar esta protección? Un grupo más pequeño puede participar en una reunión, pero no puede modificar estos documentos sin el apoyo de la mayoría de la comunidad. Los cambios propuestos permitirían aprobar enmiendas con la mayoría del grupo representado en la reunión, salvo los casos que exijan una votación superior.",
-    currentShare: "⅓",
-    currentShareLabel: "en los Estatutos suministrados",
+    meetingRequirement: "Para celebrar una reunión",
+    meetingParticipation: "Las viviendas representadas en persona o mediante un poder cuentan para el quórum.",
+    amendmentRequirement: "Para aprobar cambios a los documentos",
+    amendmentNumber: "328 SÍ",
+    amendmentParticipation: "La mayoría de las 654 viviendas con derecho a voto, no solo de las presentes en la reunión. Se puede votar SÍ en persona o mediante un poder.",
     proposed: "Cambio propuesto",
     stepOne: "Paso 1",
     stepOneTitle: "Reducir la participación mínima al 20%.",

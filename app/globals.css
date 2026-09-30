@@ -715,3 +715,12 @@ td {
 
 .participation-page h1, .participation-page h2, .participation-page h3 { text-wrap: balance; }
 .recommendation-panel .disclaimer { text-wrap: pretty; }
+
+.today-requirements { display: grid; gap: 24px; margin: 28px 0; }
+.today-requirements section { border-top: 1px solid #cbd8c8; padding-top: 20px; }
+.today-requirements h3 { margin: 0 0 12px; }
+.approval-number { font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 700; line-height: 1.1; margin: 18px 0; }
+@media (min-width: 760px) {
+  .today-panel { display: block; }
+  .today-requirements { grid-template-columns: 1fr 1fr; gap: 36px; }
+}

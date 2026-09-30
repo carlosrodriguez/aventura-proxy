@@ -95,14 +95,21 @@ export default async function Home({
             {copy.today}
           </h2>
           <p className="practical-lead">{copy.todayLead}</p>
-          <p>{copy.todayRule}</p>
-          <p>{copy.todayApproval}</p>
+          <div className="today-requirements">
+            <section>
+              <h3>{copy.meetingRequirement}</h3>
+              <p>{copy.meetingParticipation}</p>
+              <p className="note">{copy.todayRule}</p>
+            </section>
+            <section>
+              <h3>{copy.amendmentRequirement}</h3>
+              <p className="approval-number">{copy.amendmentNumber}</p>
+              <p>{copy.amendmentParticipation}</p>
+              <p className="note">{copy.todayApproval}</p>
+            </section>
+          </div>
           <p className="note">{copy.todayProtection}</p>
         </div>
-        <p className="current-share">
-          <strong>{copy.currentShare}</strong>
-          <span>{copy.currentShareLabel}</span>
-        </p>
       </section>
       <section className="proposed-panel" aria-labelledby="proposed-heading">
         <h2 className="eyebrow" id="proposed-heading">
