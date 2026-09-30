@@ -37,6 +37,9 @@ export default async function RootLayout({
             className="nav"
             aria-label={es ? "Navegación principal" : "Main navigation"}
           >
+            <Link className="header-proxy-link" href="/sign">
+              {es ? "Completar poder NO" : "Complete NO proxy"}
+            </Link>
             <Link href="/how-it-works">
               {es ? "Cómo funciona" : "How it works"}
             </Link>

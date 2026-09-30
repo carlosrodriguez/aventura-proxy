@@ -243,14 +243,6 @@ export default async function Home() {
           <p key={paragraph}>{paragraph}</p>
         ))}
       </section>
-      <details className="participation-details">
-        <summary>{copy.how}</summary>
-        <div>
-          {copy.explanation.map((paragraph) => (
-            <p key={paragraph}>{paragraph}</p>
-          ))}
-        </div>
-      </details>
       <section className="section" aria-labelledby="faq-heading">
         <h2 id="faq-heading">{copy.faqsTitle}</h2>
         {copy.faqs.map((faq) => (

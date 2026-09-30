@@ -945,3 +945,19 @@ td {
   line-height: 1.6;
   margin-bottom: 24px;
 }
+
+.nav {
+  align-items: center;
+  flex-wrap: wrap;
+}
+.header-proxy-link {
+  padding: 8px 12px;
+  border-radius: 7px;
+  background: var(--accent);
+  color: white;
+  font-weight: 650;
+  text-decoration: none;
+}
+.header-proxy-link:hover {
+  text-decoration: underline;
+}

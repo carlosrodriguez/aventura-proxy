@@ -100,13 +100,6 @@ export const homeCopy = {
       "Let homeowners decide on the specific changes with clear information and an opportunity to participate. We recommend making that effort before lowering the support required for future amendments to the documents that govern every home.",
     ],
     recommendation: "Vote NO to keep the current protections in place.",
-    how: "How does this work?",
-    explanation: [
-      "Quorum is the minimum participation needed for a membership meeting to conduct business. It counts lots represented in person or by proxy; it is not the number of YES votes.",
-      "A proxy authorizes another person to represent your home at that meeting. A limited proxy gives that person specific voting instructions.",
-      "For this example, 20% of 654 is 130.8, so at least 131 homes must be represented. A majority of 131 is 66. Those 66 homes are about 10.1% of 654.",
-      "The By-Laws’ general rule makes a majority decision at a meeting with quorum binding on all members and owners, except where the law or governing documents require otherwise. The example assumes 131 eligible homes are represented and voting; it does not apply to every type of decision.",
-    ],
     exhibitsLabel: "The details, farther down",
     exhibitsTitle: "What would Exhibits A, B, and C change?",
     exhibits: [
@@ -163,6 +156,11 @@ export const homeCopy = {
           "A smaller group could approve future By-Laws amendments affecting meeting, voting or election procedures, where those changes are permitted by law and the governing documents. For example, an amendment could change a meeting procedure or the approval requirements for a later amendment. With 654 eligible homes and the proposed minimum of 131 represented, 66 YES votes could approve a future By-Laws amendment. Those operating rules would apply across the Association, even without support from a majority of the community. Specific higher voting requirements and legal protections would still apply.",
       },
       {
+        question: "What is a limited proxy?",
+        answer:
+          "A proxy authorizes another person to represent your home at a meeting. A limited proxy gives that person specific voting instructions. This form appoints Jenny Ghetea for the October 6 meeting and instructs NO on Exhibits A, B, and C. Completing the form creates a signed proxy for review; the website does not count or approve your vote.",
+      },
+      {
         question: "Is quorum the same as amendment approval?",
         answer:
           "No. Quorum lets a meeting conduct business; approval is the support needed to pass a proposal. The supplied By-Laws say one-third quorum, while Florida section 720.306 sets 30% unless the By-Laws provide less. This vote must use the current approval requirements; the 131 → 66 example concerns future amendments if these proposals pass.",
@@ -181,7 +179,7 @@ export const homeCopy = {
       {
         question: "What does lower participation change?",
         answer:
-          "At minimum proposed participation, 66 of 131 represented eligible lots could approve an amendment affecting all 654 homes, unless another requirement applies. With more lots represented, more YES votes would be needed. We favor organized outreach and broader support for changes to the governing documents.",
+          "20% of 654 is 130.8, so the proposed minimum is 131 represented eligible lots. A majority of 131 is 66. At that minimum participation, 66 of 131 represented eligible lots could approve an amendment affecting all 654 homes, unless another requirement applies. With more lots represented, more YES votes would be needed. We favor organized outreach and broader support for changes to the governing documents.",
       },
     ],
     read: "Read the official language and redlines",
@@ -296,13 +294,6 @@ export const homeCopy = {
       "Dejemos que los propietarios decidan sobre los cambios concretos con información clara y una oportunidad de participar. Recomendamos hacer ese esfuerzo antes de reducir el respaldo necesario para futuras enmiendas a los documentos que rigen todas las viviendas.",
     ],
     recommendation: "Vote NO para mantener las protecciones actuales.",
-    how: "¿Cómo funciona?",
-    explanation: [
-      "El quórum es la participación mínima necesaria para que una reunión de propietarios pueda tratar los asuntos de la Asociación. Cuenta los lotes representados en persona o por poder; no es la cantidad de votos a favor.",
-      "Un poder de representación, también llamado proxy, autoriza a otra persona a representar su vivienda en esa reunión. Un poder limitado le indica específicamente cómo debe votar.",
-      "En este ejemplo, el 20% de 654 es 130,8, por lo que deben estar representadas al menos 131 viviendas. La mayoría de 131 es 66. Esas 66 viviendas equivalen a aproximadamente el 10,1% de 654.",
-      "La regla general de los estatutos establece que una decisión aprobada por mayoría en una reunión con quórum obliga a todos los miembros y propietarios, salvo que la ley o los documentos de la Asociación exijan otra cosa. El ejemplo supone que hay 131 viviendas con derecho a voto representadas y votando; no se aplica a todos los tipos de decisiones.",
-    ],
     exhibitsLabel: "Más detalles",
     exhibitsTitle: "¿Qué cambiarían los anexos A, B y C?",
     exhibits: [
@@ -360,6 +351,11 @@ export const homeCopy = {
           "Un grupo más pequeño podría aprobar futuras enmiendas a los estatutos que afecten los procedimientos de reuniones, votaciones o elecciones, cuando la ley y los documentos de la Asociación permitan esos cambios. Por ejemplo, una enmienda podría modificar un procedimiento de reunión o los requisitos de aprobación de una enmienda posterior. Con 654 viviendas con derecho a voto y el mínimo propuesto de 131 representadas, 66 votos a favor podrían aprobar una futura enmienda a los estatutos. Esas reglas de funcionamiento se aplicarían en toda la Asociación, incluso sin el respaldo de la mayoría de la comunidad. Seguirían vigentes los requisitos específicos de mayor aprobación y las protecciones legales.",
       },
       {
+        question: "¿Qué es un poder limitado?",
+        answer:
+          "Un poder autoriza a otra persona a representar su vivienda en una reunión. Un poder limitado le da instrucciones específicas de voto. Este formulario designa a Jenny Ghetea para la reunión del 6 de octubre y le indica votar NO a los anexos A, B y C. Al completarlo, se genera un poder firmado para revisión; el sitio no cuenta ni aprueba su voto.",
+      },
+      {
         question: "¿El quórum es lo mismo que la aprobación de una enmienda?",
         answer:
           "No. El quórum permite tratar asuntos en una reunión; la aprobación es el respaldo necesario para adoptar una propuesta. Los Estatutos suministrados indican un tercio de quórum, mientras que la sección 720.306 de Florida establece el 30%, salvo que los Estatutos indiquen menos. Esta votación debe cumplir los requisitos actuales; el ejemplo 131 → 66 se refiere a futuras enmiendas si se aprueban estas propuestas.",
@@ -377,7 +373,7 @@ export const homeCopy = {
       {
         question: "¿Qué cambia cuando participa menos gente?",
         answer:
-          "Con la participación mínima propuesta, 66 de 131 lotes representados con derecho a voto podrían aprobar una enmienda que afecte a las 654 viviendas, salvo que se aplique otro requisito. Si hay más lotes representados, se necesitarían más votos a favor. Defendemos informar y movilizar a los propietarios para lograr mayor respaldo a los cambios.",
+          "El 20% de 654 es 130,8, por lo que el mínimo propuesto es de 131 lotes con derecho a voto representados. La mayoría de 131 es 66. Con esa participación mínima, 66 de 131 lotes representados con derecho a voto podrían aprobar una enmienda que afecte a las 654 viviendas, salvo que se aplique otro requisito. Si hay más lotes representados, se necesitarían más votos a favor. Defendemos informar y movilizar a los propietarios para lograr mayor respaldo a los cambios.",
       },
     ],
     read: "Leer el texto oficial y los cambios marcados",
