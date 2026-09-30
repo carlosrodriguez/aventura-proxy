@@ -62,6 +62,7 @@ export function ProxyFlow({
   const [now, setNow] = useState(0);
   const [notice, setNotice] = useState("");
   const [editingReview, setEditingReview] = useState(false);
+  const [editingBeforeSign, setEditingBeforeSign] = useState(false);
   const stepHeading = useRef<HTMLHeadingElement>(null);
   const previousStep = useRef(step);
   useEffect(() => {
@@ -228,6 +229,41 @@ export function ProxyFlow({
   }
   const entity = ["Trust", "LLC", "Corporation", "Other"].includes(
     data.ownershipType,
+  );
+  const detailsSummary = (edit: () => void) => (
+    <div className="proxy-details-summary">
+      <p>
+        <strong>
+          {data.firstName} {data.lastName}
+        </strong>
+        <br />
+        {data.houseNumber} {data.street}
+        <br />
+        Miami, FL 33179
+      </p>
+      <button
+        type="button"
+        className="secondary proxy-details-edit"
+        disabled={busy}
+        onClick={edit}
+        aria-label={
+          locale === "es" ? "Editar nombre o dirección" : "Edit name or address"
+        }
+      >
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          aria-hidden="true"
+        >
+          <path d="M16 3l5 5L8 21H3v-5L16 3z" />
+          <path d="M14 5l5 5" />
+        </svg>
+      </button>
+    </div>
   );
   const reviewFields = (
     <>
@@ -501,10 +537,38 @@ export function ProxyFlow({
             </h3>
             <p>
               {locale === "es"
-                ? "Corrija cualquier error antes de firmar."
-                : "Correct any errors before signing."}
+                ? "Si necesita corregir algún dato, pulse el icono del lápiz y haga los cambios antes de firmar."
+                : "If you need to make corrections, click the pencil icon to make the needed edits before signing."}
             </p>
-            {reviewFields}
+            {!editingBeforeSign ? (
+              detailsSummary(() => setEditingBeforeSign(true))
+            ) : (
+              <>
+                {reviewFields}
+                <button
+                  type="button"
+                  className="secondary"
+                  onClick={() => {
+                    const property = propertySchema.safeParse(data);
+                    const signer = signerSchema.safeParse(data);
+                    if (!property.success || !signer.success) {
+                      setError(
+                        !property.success
+                          ? property.error.issues[0].message
+                          : !signer.success
+                            ? signer.error.issues[0].message
+                            : "Request failed",
+                      );
+                      return;
+                    }
+                    setError("");
+                    setEditingBeforeSign(false);
+                  }}
+                >
+                  {locale === "es" ? "Guardar cambios" : "Save changes"}
+                </button>
+              </>
+            )}
             <p>{data.email}</p>
             <label htmlFor="signature">{t("Draw your signature")}</label>
             <p className="note">
@@ -564,22 +628,12 @@ export function ProxyFlow({
             </h3>
             {!editingReview ? (
               <>
-                <p>
-                  <strong>
-                    {data.firstName} {data.lastName}
-                  </strong>
-                  <br />
-                  {data.houseNumber} {data.street}
-                </p>
-                <button
-                  className="secondary"
-                  disabled={busy}
-                  onClick={() => setEditingReview(true)}
-                >
+                {detailsSummary(() => setEditingReview(true))}
+                <p className="note">
                   {locale === "es"
-                    ? "Editar nombre o dirección"
-                    : "Edit name or address"}
-                </button>
+                    ? "Pulse el lápiz para corregir su nombre o dirección. Si hace cambios, deberá firmar de nuevo antes de generar el PDF."
+                    : "Click the pencil to correct your name or address. If you make changes, you will sign again before the PDF is generated."}
+                </p>
               </>
             ) : (
               <>
@@ -797,7 +851,10 @@ export function ProxyFlow({
                 {t(" Back ")}
               </button>
             )}
-            <button disabled={busy} onClick={next}>
+            <button
+              disabled={busy || (step === 3 && editingBeforeSign)}
+              onClick={next}
+            >
               {busy
                 ? t("Submitting…")
                 : step === 3
