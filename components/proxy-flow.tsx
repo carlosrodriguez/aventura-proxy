@@ -58,7 +58,6 @@ export function ProxyFlow({
     [code, setCode] = useState(""),
     [id, setId] = useState(""),
     [signed, setSigned] = useState(false);
-  const [previewUrl, setPreviewUrl] = useState("");
   const [resendAt, setResendAt] = useState(0);
   const [now, setNow] = useState(0);
   const [notice, setNotice] = useState("");
@@ -78,12 +77,6 @@ export function ProxyFlow({
     const timer = setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(timer);
   }, []);
-  useEffect(
-    () => () => {
-      if (previewUrl) URL.revokeObjectURL(previewUrl);
-    },
-    [previewUrl],
-  );
   const canvas = useRef<HTMLCanvasElement>(null),
     pad = useRef<SignaturePad | null>(null);
   useEffect(() => {
@@ -112,7 +105,6 @@ export function ProxyFlow({
   }, [step]);
   function update(key: keyof typeof initial, value: string) {
     setData((v) => ({ ...v, [key]: value }));
-    setPreviewUrl("");
     signatureImage.current = "";
     setSigned(false);
     setCertified(false);
@@ -416,51 +408,6 @@ export function ProxyFlow({
                 ? `Reunión del 6 de octubre de 2026. Usted designa a ${proxyholder} y le indica votar NO a los anexos A, B y C.`
                 : `October 6, 2026 meeting. You appoint ${proxyholder} and instruct NO on Exhibits A, B, and C.`}
             </p>
-            <button
-              className="secondary"
-              disabled={busy}
-              onClick={async () => {
-                setError("");
-                // Open synchronously from the click so Safari allows the PDF tab.
-                const previewWindow = window.open("about:blank", "_blank");
-                if (!previewWindow) {
-                  setError(
-                    "Allow this site to open PDF previews in a new tab, then try again.",
-                  );
-                  return;
-                }
-                previewWindow.opener = null;
-                previewWindow.document.title = t("Preparing your PDF…");
-                previewWindow.document.body.textContent = t(
-                  "Preparing your PDF…",
-                );
-                if (previewUrl) {
-                  previewWindow.location.replace(previewUrl);
-                  return;
-                }
-                setBusy(true);
-                try {
-                  const response = await fetch("/api/proxy-preview", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(data),
-                  });
-                  if (!response.ok)
-                    throw new Error("Preview unavailable. Please try again.");
-                  const url = URL.createObjectURL(await response.blob());
-                  setPreviewUrl(url);
-                  previewWindow.location.replace(url);
-                } catch (e) {
-                  previewWindow.close();
-                  setError(e instanceof Error ? e.message : "Request failed");
-                } finally {
-                  setBusy(false);
-                }
-              }}
-            >
-              {busy ? t("Preparing your PDF…") : t("Preview your filled proxy")}
-            </button>
-
             {proxyConfig.proposals.map((p) => (
               <div className="card" key={p.label}>
                 <h3>
