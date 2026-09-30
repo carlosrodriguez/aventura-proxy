@@ -14,7 +14,8 @@
     "db:migrate": "prisma migrate deploy",
     "db:generate": "prisma generate",
     "retention": "tsx scripts/retention.ts",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "audit:verify": "tsx scripts/audit-verify.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "3.1142.0",

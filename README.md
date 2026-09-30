@@ -139,3 +139,20 @@ The independent website operator is SAPSLAB SERVICES LLC, as supplied by the use
 Planned public domain: `aventuraislesproxy.com`. Planned application origin: `https://vote.aventuraislesproxy.com`, configured as production `APP_URL` in the Droplet environment example. Domain availability, registration, DNS, and TLS have not been confirmed. Local development retains `http://localhost:3000`.
 
 Transactional email is sent after HTTP responses using Next.js `after()` through the central Resend module. Provider failures are logged without recipient/token/attachment payloads. Failed OTP/receipt delivery produces audit events; receipts remain retryable with the existing delivery markers and idempotency keys. In-process background work is not durable across a forced crash; monitor undelivered finalized records.
+
+## Tamper-evident audit ledger
+
+Apply the `20260930000000_audit_chain` migration before enabling live submissions. Database triggers seal every audit insertion, including nested Prisma writes. Each ledger entry contains a sequence number, event ID, operation, UTC timestamp, SHA-256 digest of the canonical event contents, previous entry hash, and its own SHA-256 hash. A transaction-scoped database lock serializes appenders, and rolled-back writes leave no committed chain entries. Ordinary audit updates and ledger updates/deletes/truncation are rejected. Changes must be new events.
+
+The verifier checks chain order, hashes, current event contents, unsealed records, and matching deletion entries. Retention cascade deletions append DELETE entries automatically. The ledger retains event IDs and digests, not raw event metadata; signatures, email addresses, and source audit records remain subject to the existing retention process. Treat these pseudonymous integrity records as private operational data. Historical events are sealed as they exist at migration time; this cannot establish whether they were previously changed.
+
+```sh
+pnpm db:migrate
+pnpm audit:verify --write-checkpoint /private/operator-backups/audit-head-2026-09-30.json
+# Later, compare with a checkpoint kept outside the app server/database:
+pnpm audit:verify --checkpoint /private/operator-backups/audit-head-2026-09-30.json --write-checkpoint /private/operator-backups/audit-head-next.json
+```
+
+Use real writable paths. The command refuses to overwrite a checkpoint. Keep successive dated checkpoints in an operator-controlled location outside the application server, especially after a day of collection and at the close of collection. A trusted machine can run this command against the database and write its checkpoint locally. With no events, verification succeeds but no checkpoint can be written. Failed verification exits nonzero. Do not publish checkpoints through the website. Compare with the previous checkpoint before accepting a new one.
+
+This is tamper evidence, not certificate-backed signing or immutable storage. A plain hash chain detects accidental or unsophisticated modification. A privileged database operator can disable triggers and rewrite the chain; a previously saved external checkpoint is what exposes replacement or truncation of that checkpointed history. Events newer than the latest checkpoint do not have that external protection. The ledger does not authenticate property ownership or seal every mutable submission field; finalized PDF integrity is separately recorded by its existing hash. Verification is an operator command, not an automated alert or scheduled backup.

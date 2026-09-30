@@ -91,3 +91,15 @@ model AdminSession {
  expiresAt DateTime
  @@index([expiresAt])
 }
+
+// Written by database triggers; no relation/cascade to personal records.
+model AuditLedger {
+ sequence BigInt @id
+ eventId String @db.Uuid
+ operation String
+ recordedAt DateTime @default(dbgenerated("clock_timestamp()")) @db.Timestamptz(6)
+ payloadHash String
+ previousHash String
+ entryHash String
+ @@unique([eventId, operation])
+}
