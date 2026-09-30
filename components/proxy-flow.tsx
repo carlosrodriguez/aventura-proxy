@@ -53,6 +53,7 @@ export function ProxyFlow({
     [id, setId] = useState(""),
     [signed, setSigned] = useState(false);
   const [previewUrl, setPreviewUrl] = useState("");
+  const [previewImage, setPreviewImage] = useState("");
   const [resendAt, setResendAt] = useState(0);
   const [now, setNow] = useState(0);
   const [notice, setNotice] = useState("");
@@ -96,6 +97,7 @@ export function ProxyFlow({
   function update(key: keyof typeof initial, value: string) {
     setData((v) => ({ ...v, [key]: value }));
     setPreviewUrl("");
+    setPreviewImage("");
     signatureImage.current = "";
     setSigned(false);
     setCertified(false);
@@ -385,7 +387,19 @@ export function ProxyFlow({
                   });
                   if (!response.ok)
                     throw new Error("Preview unavailable. Please try again.");
-                  setPreviewUrl(URL.createObjectURL(await response.blob()));
+                  const preview = (await response.json()) as {
+                    pdf: string;
+                    image: string;
+                  };
+                  const pdf = Uint8Array.from(atob(preview.pdf), (character) =>
+                    character.charCodeAt(0),
+                  );
+                  setPreviewUrl(
+                    URL.createObjectURL(
+                      new Blob([pdf], { type: "application/pdf" }),
+                    ),
+                  );
+                  setPreviewImage(`data:image/png;base64,${preview.image}`);
                 } catch (e) {
                   setError(e instanceof Error ? e.message : "Request failed");
                 } finally {
@@ -400,7 +414,8 @@ export function ProxyFlow({
                 <a href={previewUrl} target="_blank" rel="noopener">
                   {t("Open PDF preview")}
                 </a>
-                <iframe src={previewUrl} title={t("Unsigned proxy preview")} />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={previewImage} alt={t("Unsigned proxy preview")} />
               </div>
             )}
             {proxyConfig.proposals.map((p) => (

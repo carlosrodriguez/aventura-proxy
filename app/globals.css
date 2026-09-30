@@ -772,9 +772,9 @@ td {
 .proxy-document-preview {
   margin-top: 20px;
 }
-.proxy-document-preview iframe {
+.proxy-document-preview img {
   width: 100%;
-  height: 760px;
+  height: auto;
   border: 1px solid #cbd8c8;
   margin-top: 12px;
 }

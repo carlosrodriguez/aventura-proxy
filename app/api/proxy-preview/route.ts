@@ -1,3 +1,8 @@
+import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { execFile } from "node:child_process";
+import { promisify } from "node:util";
 import { NextRequest } from "next/server";
 import { propertySchema, signerSchema } from "@/lib/validation/submission";
 import { generateProxy } from "@/lib/pdf/proxy";
@@ -40,13 +45,27 @@ export async function POST(req: NextRequest) {
       },
       null,
     );
-    return new Response(Buffer.from(bytes), {
-      headers: {
-        "Content-Type": "application/pdf",
-        "Cache-Control": "private, no-store",
-        "Content-Disposition": 'inline; filename="proxy-preview.pdf"',
-      },
-    });
+    const folder = await mkdtemp(join(tmpdir(), "proxy-preview-"));
+    try {
+      const source = join(folder, "preview.pdf");
+      const output = join(folder, "preview");
+      await writeFile(source, bytes, { mode: 0o600 });
+      await promisify(execFile)(
+        "/usr/bin/pdftoppm",
+        ["-singlefile", "-png", "-r", "120", source, output],
+        { timeout: 15000, maxBuffer: 1024 * 1024 },
+      );
+      const image = await readFile(`${output}.png`);
+      return Response.json(
+        {
+          pdf: Buffer.from(bytes).toString("base64"),
+          image: image.toString("base64"),
+        },
+        { headers: { "Cache-Control": "private, no-store" } },
+      );
+    } finally {
+      await rm(folder, { recursive: true, force: true });
+    }
   } catch (error) {
     return failure(
       error instanceof Error && error.name === "ZodError"

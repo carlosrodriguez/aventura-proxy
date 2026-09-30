@@ -167,8 +167,10 @@ During collection, verify the ledger against the last externally saved checkpoin
 
 ### Signing review and draft corrections
 
-Step 3 previews the actual supplied proxy with the signer’s entered fields, Jenny Ghetea under option (b), and NO selections for A/B/C. Preview PDFs are unsigned, labeled PREVIEW, generated in memory, returned with private/no-store headers, and are not stored or emailed. The signer can open the PDF separately when their mobile browser does not embed it.
+Step 3 previews the actual supplied proxy with the signer’s entered fields, Jenny Ghetea under option (b), and NO selections for A/B/C. Preview PDFs are unsigned, labeled PREVIEW, returned with private/no-store headers, and are not stored or emailed. The signer can open the PDF separately when their mobile browser does not embed it.
 
 Before finalization, Back to edit invalidates the saved draft’s access token and verification code under a row lock, records DRAFT_RESTARTED, and requires a new signature and verification code. Original signing records remain available for operator review; this action is not legal revocation of a completed proxy. Finalized proxies cannot use this action.
 
 Address entry currently validates syntax and the configured street list. It does not check whether a particular house number exists. A trusted community address roster can provide that check without sending personal data to a geocoding vendor.
+
+Install `poppler-utils` on the app server for the signing preview. The preview endpoint renders the exact unsigned PDF as a PNG with `pdftoppm`, using a private temporary directory and deleting it in a finally block. Nothing is uploaded to Spaces or emailed for a preview. The rendered image works in browsers that do not support embedded PDF viewers.
