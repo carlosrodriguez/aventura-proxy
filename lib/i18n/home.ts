@@ -153,6 +153,16 @@ export const homeCopy = {
     faqsTitle: "Common questions",
     faqs: [
       {
+        question: "What do the By-Laws govern?",
+        answer:
+          "The By-Laws are the Association’s operating rules. They describe how meetings are held, how owners vote, how elections work and how the By-Laws themselves can be amended. These procedures shape how homeowners take part in community decisions. The Declaration separately sets recorded property restrictions, obligations and rights; the Articles of Incorporation establish the Association’s corporate framework.",
+      },
+      {
+        question: "What could a smaller group change?",
+        answer:
+          "A smaller group could approve future By-Laws amendments affecting meeting, voting or election procedures, where those changes are permitted by law and the governing documents. For example, an amendment could change a meeting procedure or the approval requirements for a later amendment. With 654 eligible homes and the proposed minimum of 131 represented, 66 YES votes could approve a future By-Laws amendment. Those operating rules would apply across the Association, even without support from a majority of the community. Specific higher voting requirements and legal protections would still apply.",
+      },
+      {
         question: "Is quorum the same as amendment approval?",
         answer:
           "No. Quorum lets a meeting conduct business; approval is the support needed to pass a proposal. The supplied By-Laws say one-third quorum, while Florida section 720.306 sets 30% unless the By-Laws provide less. This vote must use the current approval requirements; the 131 → 66 example concerns future amendments if these proposals pass.",
@@ -339,6 +349,16 @@ export const homeCopy = {
     ],
     faqsTitle: "Preguntas frecuentes",
     faqs: [
+      {
+        question: "¿Qué regulan los estatutos?",
+        answer:
+          "Los estatutos son las reglas de funcionamiento de la Asociación. Describen cómo se celebran las reuniones, cómo votan los propietarios, cómo funcionan las elecciones y cómo se pueden modificar los propios estatutos. Estos procedimientos determinan cómo participan los propietarios en las decisiones de la comunidad. La Declaración establece por separado las restricciones, obligaciones y derechos registrados de las propiedades; el acta constitutiva establece la estructura corporativa de la Asociación.",
+      },
+      {
+        question: "¿Qué podría cambiar un grupo más pequeño?",
+        answer:
+          "Un grupo más pequeño podría aprobar futuras enmiendas a los estatutos que afecten los procedimientos de reuniones, votaciones o elecciones, cuando la ley y los documentos de la Asociación permitan esos cambios. Por ejemplo, una enmienda podría modificar un procedimiento de reunión o los requisitos de aprobación de una enmienda posterior. Con 654 viviendas con derecho a voto y el mínimo propuesto de 131 representadas, 66 votos a favor podrían aprobar una futura enmienda a los estatutos. Esas reglas de funcionamiento se aplicarían en toda la Asociación, incluso sin el respaldo de la mayoría de la comunidad. Seguirían vigentes los requisitos específicos de mayor aprobación y las protecciones legales.",
+      },
       {
         question: "¿El quórum es lo mismo que la aprobación de una enmienda?",
         answer:
