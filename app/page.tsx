@@ -81,7 +81,9 @@ export default async function Home({
             {copy.today}
           </h2>
           <p className="practical-lead">{copy.todayLead}</p>
-          <p className="note">{copy.todayRule}</p>
+          <p>{copy.todayRule}</p>
+          <p>{copy.todayApproval}</p>
+          <p className="note">{copy.todayProtection}</p>
         </div>
         <p className="current-share">
           <strong>{copy.currentShare}</strong>

@@ -13,9 +13,11 @@ export const homeCopy = {
       "An independent homeowner initiative. Not an official Association website.",
     today: "Today",
     todayLead:
-      "A large part of the community has to participate before membership business can move forward.",
+      "Holding a meeting and changing the governing documents have two different requirements.",
     todayRule:
-      "The supplied Exhibit C shows the current general quorum as 30% of the lots.",
+      "To hold the meeting: at least 30% of lots must be represented in person or by proxy.",
+    todayApproval: "To amend the documents: the current Declaration requires approval by a majority of owners; the current By-Laws require a majority of the entire membership—not just those represented at the meeting.",
+    todayProtection: "Why keep this? A smaller group can attend a meeting, but it cannot amend these documents without support from a majority of the community. The proposed changes would let a majority of the smaller group represented at a meeting approve amendments, subject to specific higher voting requirements.",
     currentShare: "30%",
     currentShareLabel: "of the lots",
     proposed: "Proposed change",
@@ -91,9 +93,13 @@ export const homeCopy = {
       "Una iniciativa independiente de propietarios. No es un sitio oficial de la Asociación.",
     today: "Hoy",
     todayLead:
-      "Una parte importante de la comunidad debe participar para que se puedan tomar decisiones en una reunión de propietarios.",
+      "Celebrar una reunión y cambiar los documentos que rigen la comunidad tienen requisitos distintos.",
     todayRule:
-      "El Anexo C recibido muestra que el quórum general actual es del 30% de los lotes.",
+      "Para celebrar la reunión: al menos el 30% de las viviendas debe estar representado en persona o mediante un poder.",
+    todayApproval:
+      "Para modificar los documentos: la Declaración actual exige la aprobación de la mayoría de los propietarios; los Estatutos actuales exigen la mayoría de todos los miembros, no solo de quienes estén representados en la reunión.",
+    todayProtection:
+      "¿Por qué conservar esta protección? Un grupo más pequeño puede participar en una reunión, pero no puede modificar estos documentos sin el apoyo de la mayoría de la comunidad. Los cambios propuestos permitirían aprobar enmiendas con la mayoría del grupo representado en la reunión, salvo los casos que exijan una votación superior.",
     currentShare: "30%",
     currentShareLabel: "de los lotes",
     proposed: "Cambio propuesto",
