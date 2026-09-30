@@ -559,7 +559,7 @@ export function ProxyFlow({
                 )}
               </p>
             )}
-            <div className="actions">
+            <div className="actions proxy-flow-actions">
               <button
                 className="secondary"
                 disabled={busy}
@@ -647,7 +647,7 @@ export function ProxyFlow({
           </>
         )}
         {step < 4 && (
-          <div className="actions">
+          <div className="actions proxy-flow-actions">
             {step > 0 && (
               <button
                 className="secondary"

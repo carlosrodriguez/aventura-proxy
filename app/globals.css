@@ -822,3 +822,10 @@ td {
     padding: 0 18px 18px;
   }
 }
+
+@media (max-width: 759px) {
+  .proxy-flow-actions {
+    flex-direction: column-reverse;
+    flex-wrap: nowrap;
+  }
+}
