@@ -1,0 +1,17 @@
+node_modules/
+.next/
+generated/
+.env*
+!.env.example
+*.log
+*.tsbuildinfo
+playwright-report/
+test-results/
+coverage/
+private/
+*.pdf
+*.png
+*.sqlite*
+*.dump
+*.sql.gz
+.DS_Store

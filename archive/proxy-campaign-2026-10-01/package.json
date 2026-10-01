@@ -1,5 +1,5 @@
 {
-  "name": "community-voting-platform",
+  "name": "aventura-proxy-no",
   "version": "1.0.0",
   "private": true,
   "packageManager": "pnpm@12.8.1",
@@ -10,9 +10,12 @@
     "lint": "eslint .",
     "typecheck": "prisma generate && next typegen && tsc --noEmit",
     "test": "vitest run",
-    "db:migrate": "tsx scripts/migrate.ts",
+    "test:e2e": "playwright test",
+    "db:migrate": "prisma migrate deploy",
     "db:generate": "prisma generate",
-    "format": "prettier --write ."
+    "retention": "tsx scripts/retention.ts",
+    "format": "prettier --write .",
+    "audit:verify": "tsx scripts/audit-verify.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "3.1142.0",
