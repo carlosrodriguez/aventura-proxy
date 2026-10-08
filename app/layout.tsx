@@ -19,6 +19,23 @@ export default async function RootLayout({
   const locale = await getLocale();
   const es = locale === "es";
   const closed = process.env.SITE_STATE === "closed";
+  if (closed) {
+    return (
+      <html lang="en">
+        <body style={{ margin: 0, background: "#fff", color: "#222" }}>
+          <main
+            style={{
+              minHeight: "100dvh",
+              display: "grid",
+              placeItems: "center",
+            }}
+          >
+            <p style={{ margin: 0, fontSize: "1.125rem" }}>Thank you.</p>
+          </main>
+        </body>
+      </html>
+    );
+  }
   return (
     <html lang={locale}>
       <body>
