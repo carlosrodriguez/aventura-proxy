@@ -30,3 +30,9 @@ Dev is now `SITE_STATE=open`, `ENABLE_SUBMISSIONS=true`, and `PROXY_TEST_MODE=tr
 The guided flow is now Property, Signer, Email verification, Signature, Complete. There is no separate Jenny confirmation step. A short-lived mailbox session exists before any signature or proxy submission is saved. The signing API requires a verified session for the submitted email and consumes that proof atomically with creating the signed submission. A code verification cannot generate a PDF. Existing signed records, template versions, and their legacy verification endpoints are retained for in-flight records.
 
 Apply migration `20261016000000_email_before_signing` to dev after a protected database backup. It only creates the session table and indexes. Verification attempts, expiry, and progressive resend delays remain server-enforced. Sessions are private operator records; expiry prevents use but does not promise automatic deletion. The database backup includes them. Existing test-reset controls target proxy submissions; they do not purge these mailbox sessions.
+
+### Email-first deployment validation
+
+Dev release `/srv/aventura/releases/20261015-dev-email-first`, source `26b8d1d`, is active. The additive migration applied successfully after an on-server/off-server protected backup. All 88 unit tests, lint, type checks, and the Linux build passed. Live requests to sign without verified-email credentials and to verify without a session cookie return 401. Production remains closed and unchanged.
+
+The live form was checked through Property, Signer, and Email verification, with no signature canvas or Jenny confirmation step before verification. One dev verification code was requested for the approved test recipient. Completion of that live code check awaits the recipient's code; no test signature or completed proxy was created. Existing signed records and PDF files are unchanged. Dev remains in test mode with the approved delivery override.
