@@ -1,14 +1,11 @@
 import { test, expect, type Page } from "@playwright/test";
-import { PDFDocument } from "pdf-lib";
-// Playwright modifies page props and mocks network responses only inside tests.
-// Production API flags, OTP verification, and Turnstile checks remain intact.
+// Test-only network fixtures. The real API still requires Turnstile and mailbox proof.
 async function start(page: Page) {
   await page.route("**/sign", async (route) => {
     const response = await route.fetch();
     const original = await response.text();
     const body = original.replace(/(enabled[^a-zA-Z]+)false/g, "$1true");
-    if (body === original)
-      throw new Error("Missing enabled flag in test-only page fixture");
+    if (body === original) throw new Error("Missing test enabled flag");
     await route.fulfill({ response, body });
   });
   await page.route(
@@ -19,6 +16,9 @@ async function start(page: Page) {
         body: 'window.turnstile={render:function(el,options){options.callback("test-only-token");return "test-widget";}};',
       }),
   );
+  await page.route("**/api/email-verification/start", (route) =>
+    route.fulfill({ json: { ok: true, nextResendAt: 0 } }),
+  );
   await page.goto("/sign");
   await page.getByLabel("House number").fill("19123");
   await page
@@ -28,89 +28,82 @@ async function start(page: Page) {
   await page.getByLabel("First name").fill("Test");
   await page.getByLabel("Last name").fill("Signer");
   await page.getByLabel("Email address").fill("test@example.org");
-  await page.getByRole("button", { name: "Continue", exact: true }).click();
-  await page.getByRole("button", { name: "Continue", exact: true }).click();
+  await page
+    .getByRole("button", { name: "Send verification code", exact: true })
+    .click();
+  await expect(page.locator("canvas")).toHaveCount(0);
+}
+async function verify(page: Page) {
+  await page.route("**/api/email-verification/verify", (route) =>
+    route.fulfill({ json: { ok: true } }),
+  );
+  await page.getByLabel("Verification code").fill("012345");
+  await page.getByRole("button", { name: "Verify email & continue" }).click();
+}
+async function sign(page: Page) {
   const box = await page.locator("canvas").boundingBox();
-  if (!box) throw new Error("Signature missing");
+  if (!box) throw new Error("Missing signature");
   await page.mouse.move(box.x + 20, box.y + 100);
   await page.mouse.down();
   await page.mouse.move(box.x + 90, box.y + 50);
   await page.mouse.move(box.x + 180, box.y + 120);
   await page.mouse.up();
   await page.getByLabel("I certify", { exact: false }).check();
-  await page.route("**/api/submissions", (route) =>
-    route.fulfill({ json: { id: "test-only-submission", codeSent: true } }),
-  );
-  await page.getByRole("button", { name: "Send verification code" }).click();
 }
-test("OTP failure keeps the signer on verification", async ({ page }) => {
+test("OTP failure keeps signing inaccessible", async ({ page }) => {
   await start(page);
-  await page.route("**/api/proxy/verify", (route) =>
+  await page.route("**/api/email-verification/verify", (route) =>
     route.fulfill({
       status: 400,
-      json: {
-        error: "Code could not be verified. Request a new code if needed.",
-      },
+      json: { error: "Code could not be verified" },
     }),
   );
   await page.getByLabel("Verification code").fill("999999");
-  await page.getByRole("button", { name: "Verify & finalize" }).click();
-  await expect(page.getByRole("alert")).toContainText(
-    "Code could not be verified",
-  );
-  await expect(page.getByLabel("Verification code")).toBeVisible();
+  await page.getByRole("button", { name: "Verify email & continue" }).click();
+  await expect(page.getByRole("alert")).toContainText("Code could not");
+  await expect(page.locator("canvas")).toHaveCount(0);
 });
-test("OTP expiration permits a resend", async ({ page }) => {
+test("resend is available before signing", async ({ page }) => {
   await start(page);
-  await page.route("**/api/proxy/verify", (route) =>
-    route.fulfill({
-      status: 400,
-      json: {
-        error: "Code could not be verified. Request a new code if needed.",
-      },
-    }),
-  );
   let resent = false;
-  await page.route("**/api/proxy/resend", (route) => {
+  await page.route("**/api/email-verification/resend", (route) => {
     resent = true;
-    return route.fulfill({ json: { ok: true } });
+    return route.fulfill({ json: { nextResendAt: Date.now() + 120000 } });
   });
-  await page.getByLabel("Verification code").fill("012345");
-  await page.getByRole("button", { name: "Verify & finalize" }).click();
   await page.getByRole("button", { name: "Resend code" }).click();
   await expect.poll(() => resent).toBe(true);
+  await expect(page.locator("canvas")).toHaveCount(0);
 });
-test("successful verification with mocked email and PDF download", async ({
+test("verification unlocks signing but does not create a proxy", async ({
   page,
 }) => {
+  let created = false;
+  await page.route("**/api/submissions", (route) => {
+    created = true;
+    return route.fulfill({ json: { id: "test-submission" } });
+  });
   await start(page);
-  await page.route("**/api/proxy/verify", (route) =>
-    route.fulfill({ json: { id: "test-only-submission" } }),
-  );
-  const pdf = await PDFDocument.create();
-  pdf.addPage().drawText("TEST ONLY - NOT A VOTING DOCUMENT");
-  const bytes = await pdf.save();
-  await page.route("**/api/proxy/download", (route) =>
-    route.fulfill({ json: { url: "http://localhost:3140/test-proxy.pdf" } }),
-  );
-  await page.route("**/test-proxy.pdf", (route) =>
-    route.fulfill({
-      contentType: "application/pdf",
-      headers: {
-        "Content-Disposition": 'attachment; filename="test-proxy.pdf"',
-      },
-      body: Buffer.from(bytes),
-    }),
-  );
-  await page.getByLabel("Verification code").fill("012345");
-  await page.getByRole("button", { name: "Verify & finalize" }).click();
-  await expect(page.getByText("Your proxy has been finalized")).toBeVisible();
+  await verify(page);
   await expect(
-    page.getByText("Association validation is still required.", {
-      exact: false,
-    }),
+    page.getByRole("heading", { name: "Signature", exact: true }),
   ).toBeVisible();
-  const download = page.waitForEvent("download");
-  await page.getByRole("button", { name: "Download signed proxy" }).click();
-  expect((await download).suggestedFilename()).toBe("test-proxy.pdf");
+  expect(created).toBe(false);
+  await sign(page);
+  await page.route("**/api/proxy/finalize", (route) =>
+    route.fulfill({ json: { id: "test-submission" } }),
+  );
+  await page.getByRole("button", { name: "Sign and complete proxy" }).click();
+  await expect(page.getByText("Your proxy has been finalized")).toBeVisible();
+  expect(created).toBe(true);
+});
+test("email changes require verification again", async ({ page }) => {
+  await start(page);
+  await verify(page);
+  await page.getByRole("button", { name: "Back", exact: true }).click();
+  await page.getByRole("button", { name: "Back", exact: true }).click();
+  await page.getByLabel("Email address").fill("other@example.org");
+  await expect(
+    page.getByRole("button", { name: "Send verification code" }),
+  ).toBeVisible();
+  await expect(page.locator("canvas")).toHaveCount(0);
 });

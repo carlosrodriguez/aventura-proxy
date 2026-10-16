@@ -7,9 +7,14 @@ const state = vi.hoisted(() => ({
     street: string;
     likelyDuplicate: boolean;
     templateVersion: string;
+    status?: string;
+    verifiedAt?: Date;
+    signedAt?: Date;
   }>,
   events: [] as Array<{ submissionId: string; eventType: string }>,
   locks: [] as string[],
+  proofConsumed: false,
+  proofHash: "",
 }));
 vi.mock("@/lib/config", () => ({
   submissionsEnabled: () => true,
@@ -27,6 +32,26 @@ vi.mock("@/lib/db", () => {
   const tx = {
     $executeRaw: async (_sql: TemplateStringsArray, key: string) => {
       state.locks.push(key);
+    },
+    emailSigningSession: {
+      updateMany: async ({
+        where,
+      }: {
+        where: { tokenHash: string; email: string };
+      }) => {
+        if (
+          state.proofConsumed ||
+          where.tokenHash !== state.proofHash ||
+          where.email !== "test@example.org"
+        )
+          return { count: 0 };
+        state.proofConsumed = true;
+        return { count: 1 };
+      },
+      findUniqueOrThrow: async () => ({
+        id: "verified-session",
+        verifiedAt: new Date(Date.now() - 1000),
+      }),
     },
     proxySubmission: {
       findMany: async (args: {
@@ -78,10 +103,15 @@ vi.mock("@/lib/db", () => {
     }),
   };
 });
+import { sha256 } from "@/lib/security/crypto";
+import { sendEmail } from "@/lib/email";
 import { createSubmission } from "@/lib/submissions";
 let signature = "";
 beforeEach(async () => {
   vi.stubEnv("OTP_PEPPER", "test-only-pepper-at-least-32-characters");
+  state.proofConsumed = false;
+  state.proofHash = sha256("verified-test-token");
+  vi.mocked(sendEmail).mockClear();
   state.rows.length = 0;
   state.events.length = 0;
   state.locks.length = 0;
@@ -165,4 +195,34 @@ it("does not flag a November property because it had an October proxy", async ()
     "test",
   );
   expect(state.rows.every((row) => !row.likelyDuplicate)).toBe(true);
+});
+
+it("records a signature only after consuming its verified mailbox proof", async () => {
+  const data = {
+    houseNumber: "665",
+    street: "NE 191st Street",
+    firstName: "Test",
+    lastName: "Only",
+    email: "test@example.org",
+    ownershipType: "Individual" as const,
+    signature,
+    certified: true as const,
+  };
+  await createSubmission(
+    data,
+    "test",
+    "test",
+    undefined,
+    "verified-test-token",
+  );
+  expect(state.rows[0].status).toBe("VERIFIED");
+  expect(state.rows[0].verifiedAt!.getTime()).toBeLessThan(
+    state.rows[0].signedAt!.getTime(),
+  );
+  expect(state.proofConsumed).toBe(true);
+  expect(sendEmail).not.toHaveBeenCalled();
+  await expect(
+    createSubmission(data, "test", "test", undefined, "verified-test-token"),
+  ).rejects.toThrow("Verify your email");
+  expect(state.rows).toHaveLength(1);
 });

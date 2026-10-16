@@ -16,7 +16,9 @@ async function signer(page: Page) {
 }
 async function signature(page: Page) {
   await signer(page);
-  await page.getByRole("button", { name: "Continue", exact: true }).click();
+  await page
+    .getByRole("button", { name: "Continue to signature", exact: true })
+    .click();
   const canvas = page.locator("canvas");
   const box = await canvas.boundingBox();
   if (!box) throw new Error("Missing signature canvas");
@@ -35,10 +37,6 @@ test("complete draft flow never sends data or generates a voting document", asyn
     if (req.method() === "POST") mutations.push(req.url());
   });
   await signature(page);
-  await page.getByRole("button", { name: "Continue preview" }).click();
-  await expect(
-    page.getByText("No verification code was sent.", { exact: false }),
-  ).toBeVisible();
   await page.getByRole("button", { name: "Preview completion" }).click();
   await expect(
     page.getByRole("heading", { name: "Preview complete" }),
@@ -62,6 +60,9 @@ test("invalid email", async ({ page }) => {
 test("submissions-disabled server safeguard", async ({ request }) => {
   for (const url of [
     "/api/submissions",
+    "/api/email-verification/start",
+    "/api/email-verification/verify",
+    "/api/email-verification/resend",
     "/api/proxy/verify",
     "/api/proxy/finalize",
     "/api/proxy/resend",

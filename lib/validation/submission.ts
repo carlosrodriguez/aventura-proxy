@@ -67,7 +67,8 @@ export const submissionSchema = z
     signature: signatureSchema,
     certified: z.literal(true),
     timezone: z.string().max(80).optional(),
-    turnstileToken: z.string().min(1).max(4096),
+    // Kept optional for old clients; mailbox enrollment now performs the bot check.
+    turnstileToken: z.string().min(1).max(4096).optional(),
   })
   .strict()
   .superRefine((v, c) => {

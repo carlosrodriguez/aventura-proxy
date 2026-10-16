@@ -1,5 +1,6 @@
 import "server-only";
 import sharp from "sharp";
+import { consumeVerifiedEmail } from "@/lib/email-verification";
 import { db } from "@/lib/db";
 import { HttpError } from "@/lib/security/http";
 import {
@@ -45,6 +46,7 @@ export async function createSubmission(
   ip: string,
   userAgent: string,
   dispatchEmail: EmailDispatcher = immediateEmail,
+  verifiedEmailToken?: string,
 ) {
   assertEnabled();
   const id = crypto.randomUUID(),
@@ -80,6 +82,9 @@ export async function createSubmission(
     sentAt = new Date();
   try {
     await db().$transaction(async (tx) => {
+      const proof = verifiedEmailToken
+        ? await consumeVerifiedEmail(tx, verifiedEmailToken, data.email)
+        : null;
       await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${duplicateKey(data.houseNumber, data.street)}))`;
       const duplicates = await tx.proxySubmission.findMany({
         where: {
@@ -101,6 +106,9 @@ export async function createSubmission(
           entityName: data.entityName || null,
           signerTitle: data.signerTitle || null,
           signedAt: sentAt,
+          ...(proof
+            ? { status: "VERIFIED" as const, verifiedAt: proof.verifiedAt }
+            : {}),
           ipAddress: ip,
           userAgent,
           timezone: data.timezone,
@@ -109,13 +117,17 @@ export async function createSubmission(
           accessTokenHash: sha256(token),
           accessExpiresAt: new Date(sentAt.getTime() + 3600000),
           likelyDuplicate: duplicates.length > 0,
-          verification: {
-            create: {
-              codeHash: otpHash(code, id),
-              expiresAt: new Date(sentAt.getTime() + 600000),
-              sentAt,
-            },
-          },
+          ...(proof
+            ? {}
+            : {
+                verification: {
+                  create: {
+                    codeHash: otpHash(code, id),
+                    expiresAt: new Date(sentAt.getTime() + 600000),
+                    sentAt,
+                  },
+                },
+              }),
           events: {
             create: {
               eventType: "SIGNED",
@@ -123,6 +135,13 @@ export async function createSubmission(
                 certification: true,
                 certificationText: certification,
                 electronicConsent: true,
+                ...(proof
+                  ? {
+                      emailVerifiedBeforeSigning: true,
+                      emailSessionId: proof.id,
+                      emailVerifiedAt: proof.verifiedAt!.toISOString(),
+                    }
+                  : {}),
                 likelyDuplicate: duplicates.length > 0,
               },
             },
@@ -148,6 +167,7 @@ export async function createSubmission(
     await deletePrivate(signatureRef);
     throw error;
   }
+  if (verifiedEmailToken) return { id, token, codeSent: true };
   let codeSent = true;
   await dispatchEmail(async () => {
     try {

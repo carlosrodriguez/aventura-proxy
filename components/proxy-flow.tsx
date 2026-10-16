@@ -57,11 +57,12 @@ export function ProxyFlow({
     [token, setToken] = useState(""),
     [code, setCode] = useState(""),
     [id, setId] = useState(""),
-    [signed, setSigned] = useState(false);
+    [signed, setSigned] = useState(false),
+    [verifiedEmail, setVerifiedEmail] = useState("");
   const [resendAt, setResendAt] = useState(0);
+  const [challengeKey, setChallengeKey] = useState(0);
   const [now, setNow] = useState(0);
   const [notice, setNotice] = useState("");
-  const [editingReview, setEditingReview] = useState(false);
   const [editingBeforeSign, setEditingBeforeSign] = useState(false);
   const stepHeading = useRef<HTMLHeadingElement>(null);
   const previousStep = useRef(step);
@@ -107,6 +108,8 @@ export function ProxyFlow({
   }, [step]);
   function update(key: keyof typeof initial, value: string) {
     setData((v) => ({ ...v, [key]: value }));
+    if (key === "email" && value.trim().toLowerCase() !== verifiedEmail)
+      setVerifiedEmail("");
     signatureImage.current = "";
     pad.current?.clear();
     setSigned(false);
@@ -147,6 +150,8 @@ export function ProxyFlow({
         setError(result.error.issues[0].message);
         return;
       }
+      setStep(1);
+      return;
     }
     if (step === 1) {
       const result = signerSchema.safeParse({
@@ -161,32 +166,8 @@ export function ProxyFlow({
         setError(result.error.issues[0].message);
         return;
       }
-    }
-    if (step === 3) {
-      const details = propertySchema.safeParse({
-        houseNumber: data.houseNumber,
-        street: data.street,
-      });
-      const person = signerSchema.safeParse({
-        firstName: data.firstName,
-        lastName: data.lastName,
-        email: data.email,
-        ownershipType: data.ownershipType,
-        entityName: data.entityName,
-        signerTitle: data.signerTitle,
-      });
-      if (!details.success || !person.success) {
-        setError(
-          !details.success
-            ? details.error.issues[0].message
-            : !person.success
-              ? person.error.issues[0].message
-              : "Request failed",
-        );
-        return;
-      }
-      if (!certified || !pad.current || pad.current.isEmpty()) {
-        setError("Draw your signature and confirm the certification");
+      if (verifiedEmail === data.email.trim().toLowerCase()) {
+        setStep(3);
         return;
       }
       if (enabled) {
@@ -196,41 +177,102 @@ export function ProxyFlow({
         }
         setBusy(true);
         try {
-          const result = await call("/api/submissions", {
-            ...data,
-            signature: pad.current.toDataURL(),
-            certified: true,
-            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+          const result = await call("/api/email-verification/start", {
+            email: data.email,
             turnstileToken: token,
           });
-          setId(result.id ?? "");
-          setResendAt(Date.now() + 30000);
-          setStep(4);
-          if (result.codeSent === false)
-            setError(
-              "Your signature was saved, but the verification email could not be sent. Please use Resend code when available.",
-            );
+          setResendAt(result.nextResendAt ?? Date.now() + 30000);
+          setCode("");
+          setNotice("");
+          setToken("");
+          setStep(2);
         } catch (e) {
-          setError(e instanceof Error ? e.message : t("Request failed"));
+          setToken("");
+          setChallengeKey((v) => v + 1);
+          setError(e instanceof Error ? e.message : "Request failed");
         } finally {
           setBusy(false);
         }
+      } else setStep(2);
+      return;
+    }
+    if (step === 3) {
+      if (enabled && verifiedEmail !== data.email.trim().toLowerCase()) {
+        setError("Verify your email before signing");
+        setStep(2);
         return;
       }
+      const property = propertySchema.safeParse({
+        houseNumber: data.houseNumber,
+        street: data.street,
+      });
+      const signer = signerSchema.safeParse({
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        ownershipType: data.ownershipType,
+        entityName: data.entityName,
+        signerTitle: data.signerTitle,
+      });
+      if (!property.success || !signer.success) {
+        setError(
+          !property.success
+            ? property.error.issues[0].message
+            : !signer.success
+              ? signer.error.issues[0].message
+              : "Request failed",
+        );
+        return;
+      }
+      if (!id && (!certified || !pad.current || pad.current.isEmpty())) {
+        setError("Draw your signature and confirm the certification");
+        return;
+      }
+      if (!enabled) {
+        setStep(4);
+        return;
+      }
+      setBusy(true);
+      try {
+        if (!id) {
+          const result = await call("/api/submissions", {
+            ...data,
+            signature: pad.current!.toDataURL(),
+            certified: true,
+            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+          });
+          setId(result.id ?? "");
+        }
+        await call("/api/proxy/finalize", {});
+        setStep(4);
+      } catch (e) {
+        const message = e instanceof Error ? e.message : "Request failed";
+        if (!id && /^Verify (your|this) email/.test(message)) {
+          setVerifiedEmail("");
+          setCertified(false);
+          setSigned(false);
+          signatureImage.current = "";
+          setToken("");
+          setStep(1);
+        }
+        setError(message);
+      } finally {
+        setBusy(false);
+      }
     }
-    setStep((v) => v + 1);
   }
   async function verify() {
     setError("");
-    if (editingReview) return;
     if (!enabled) {
-      setStep(5);
+      setVerifiedEmail(data.email.trim().toLowerCase());
+      setStep(3);
       return;
     }
     setBusy(true);
     try {
-      await call("/api/proxy/verify", { code });
-      setStep(5);
+      await call("/api/email-verification/verify", { code });
+      setVerifiedEmail(data.email.trim().toLowerCase());
+      setStep(3);
     } catch (e) {
       setError(e instanceof Error ? e.message : t("Verification unsuccessful"));
     } finally {
@@ -254,7 +296,7 @@ export function ProxyFlow({
       <button
         type="button"
         className="secondary proxy-details-edit"
-        disabled={busy}
+        disabled={busy || Boolean(id)}
         onClick={edit}
         aria-label={
           locale === "es" ? "Editar nombre o dirección" : "Edit name or address"
@@ -348,7 +390,7 @@ export function ProxyFlow({
       <p className="note" aria-live="polite">
         {t(" Step ")}
         {step + 1}
-        {t(" of 6 · ")}
+        {t(" of 5 · ")}
         {steps[step]}
       </p>
       <div className="progress" aria-hidden="true">
@@ -505,32 +547,14 @@ export function ProxyFlow({
                 " The Association will independently determine whether the signer is authorized to vote for this property. ",
               )}
             </p>
-          </>
-        )}
-        {step === 2 && (
-          <>
-            <p>
-              {locale === "es"
-                ? `Usted designa a ${proxyholder} para representar su vivienda y ayudar a establecer el quórum en la reunión del 17 de noviembre de 2026, a las 6:15 p. m.`
-                : `You appoint ${proxyholder} to represent your home and help establish quorum at the November 17, 2026 meeting at 6:15 PM.`}
-            </p>
-            <p>
-              <strong>
-                {locale === "es"
-                  ? "Este poder no vota por candidatos a la Junta."
-                  : "This proxy does not cast votes for Board candidates."}
-              </strong>
-            </p>
-            <p>
-              {locale === "es"
-                ? "El paquete de la Asociación indica que los votos para la elección se emiten mediante boleta escrita en la reunión. Jenny recibirá una copia de su poder para imprimirla y presentarla."
-                : "The Association’s packet says election votes are cast by written ballot at the meeting. Jenny will receive a copy of your proxy for printing and presentation."}
-            </p>
-            <p>
-              <Link href="/proxy-language" target="_blank">
-                {t("View the complete proxy template")}
-              </Link>
-            </p>
+            {enabled && verifiedEmail !== data.email.trim().toLowerCase() && (
+              <Turnstile
+                key={challengeKey}
+                siteKey={siteKey}
+                nonce={nonce}
+                onToken={setToken}
+              />
+            )}
           </>
         )}
         {step === 3 && (
@@ -584,7 +608,14 @@ export function ProxyFlow({
                 </button>
               </>
             )}
-            <p>{data.email}</p>
+            <p>
+              {enabled ? t("Email verified") : t("Email address")}: {data.email}
+            </p>
+            <p>
+              <Link href="/proxy-language" target="_blank">
+                {t("View the complete proxy template")}
+              </Link>
+            </p>
             <label htmlFor="signature">{t("Draw your signature")}</label>
             <p className="note">
               {t(
@@ -594,12 +625,14 @@ export function ProxyFlow({
             <canvas
               id="signature"
               className="signature"
+              style={{ pointerEvents: id ? "none" : undefined }}
               ref={canvas}
               aria-label="Draw your handwritten signature"
             />
             <button
               className="secondary"
               type="button"
+              disabled={busy || Boolean(id)}
               onClick={() => {
                 pad.current?.clear();
                 signatureImage.current = "";
@@ -615,18 +648,16 @@ export function ProxyFlow({
               <input
                 id="certified"
                 type="checkbox"
+                disabled={busy || Boolean(id)}
                 checked={certified}
                 onChange={(e) => setCertified(e.target.checked)}
               />
               <label htmlFor="certified">{t(certification)}</label>
             </div>
-            {enabled && (
-              <Turnstile siteKey={siteKey} nonce={nonce} onToken={setToken} />
-            )}
             <p className="note">
               {enabled
                 ? t(
-                    "Continuing submits your signature and sends an email verification code.",
+                    "Signing saves your signature and generates your completed proxy.",
                   )
                 : t(
                     "This signature is a local preview and will not be saved or submitted.",
@@ -634,85 +665,14 @@ export function ProxyFlow({
             </p>
           </>
         )}
-        {step === 4 && (
+        {step === 2 && (
           <>
-            <h3>
-              {locale === "es"
-                ? "Revise los datos de su poder"
-                : "Review your proxy details"}
-            </h3>
-            {!editingReview ? (
-              <>
-                {detailsSummary(() => setEditingReview(true))}
-                <p className="note">
-                  {locale === "es"
-                    ? "Pulse el lápiz para corregir su nombre o dirección. Si hace cambios, deberá firmar de nuevo antes de generar el PDF."
-                    : "Click the pencil to correct your name or address. If you make changes, you will sign again before the PDF is generated."}
-                </p>
-              </>
-            ) : (
-              <>
-                {reviewFields}
-                <p className="note">
-                  {locale === "es"
-                    ? "Después de guardar los cambios, deberá firmar de nuevo y confirmar un nuevo código de correo."
-                    : "After saving changes, you will sign again and confirm a new email code."}
-                </p>
-                <button
-                  disabled={busy}
-                  onClick={async () => {
-                    const property = propertySchema.safeParse({
-                      houseNumber: data.houseNumber,
-                      street: data.street,
-                    });
-                    const signer = signerSchema.safeParse({
-                      firstName: data.firstName,
-                      lastName: data.lastName,
-                      email: data.email,
-                      ownershipType: data.ownershipType,
-                      entityName: data.entityName,
-                      signerTitle: data.signerTitle,
-                    });
-                    if (!property.success || !signer.success) {
-                      setError(
-                        !property.success
-                          ? property.error.issues[0].message
-                          : !signer.success
-                            ? signer.error.issues[0].message
-                            : "Request failed",
-                      );
-                      return;
-                    }
-                    setBusy(true);
-                    try {
-                      if (enabled) await call("/api/proxy/restart", {});
-                      setId("");
-                      setCode("");
-                      setToken("");
-                      setCertified(false);
-                      setSigned(false);
-                      signatureImage.current = "";
-                      setNotice("");
-                      setError("");
-                      setEditingReview(false);
-                      setStep(3);
-                    } catch (e) {
-                      setError(
-                        e instanceof Error ? e.message : "Request failed",
-                      );
-                    } finally {
-                      setBusy(false);
-                    }
-                  }}
-                >
-                  {locale === "es"
-                    ? "Guardar cambios y firmar de nuevo"
-                    : "Save changes and sign again"}
-                </button>
-              </>
-            )}
-
-            {enabled ? (
+            {verifiedEmail === data.email.trim().toLowerCase() ? (
+              <p>
+                {enabled ? t("Email verified") : t("Email address")}:{" "}
+                {data.email}
+              </p>
+            ) : enabled ? (
               <>
                 <p>
                   {locale === "es"
@@ -740,7 +700,10 @@ export function ProxyFlow({
                   onClick={async () => {
                     setBusy(true);
                     try {
-                      const result = await call("/api/proxy/resend", {});
+                      const result = await call(
+                        "/api/email-verification/resend",
+                        {},
+                      );
                       setResendAt(result.nextResendAt ?? Date.now() + 120000);
                       setCode("");
                       setNotice(
@@ -749,7 +712,7 @@ export function ProxyFlow({
                       setError("");
                     } catch (e) {
                       setError(
-                        e instanceof Error ? e.message : t("Request failed"),
+                        e instanceof Error ? e.message : "Request failed",
                       );
                     } finally {
                       setBusy(false);
@@ -769,49 +732,41 @@ export function ProxyFlow({
               </>
             ) : (
               <p className="preview">
-                {t(
-                  " No verification code was sent. Continue to preview the completion screen. ",
-                )}
+                {locale === "es"
+                  ? "Vista previa: no se envió un código. Continúe para ver el paso de firma."
+                  : "Preview only: no code was sent. Continue to the signature step."}
               </p>
             )}
             <div className="actions proxy-flow-actions">
               <button
                 className="secondary"
                 disabled={busy}
-                onClick={async () => {
-                  setBusy(true);
+                onClick={() => {
                   setError("");
-                  try {
-                    if (enabled) await call("/api/proxy/restart", {});
-                    setId("");
-                    setCode("");
-                    setToken("");
-                    setCertified(false);
-                    setSigned(false);
-                    signatureImage.current = "";
-                    setNotice("");
-                    setEditingReview(false);
-                    setStep(3);
-                  } catch (e) {
-                    setError(e instanceof Error ? e.message : "Request failed");
-                  } finally {
-                    setBusy(false);
-                  }
+                  setStep(1);
                 }}
               >
-                {t("Back to edit")}
+                {t("Back")}
               </button>
-              <button disabled={busy || editingReview} onClick={verify}>
+              <button
+                disabled={busy}
+                onClick={
+                  verifiedEmail === data.email.trim().toLowerCase()
+                    ? () => setStep(3)
+                    : verify
+                }
+              >
                 {busy
                   ? t("Verifying…")
-                  : enabled
-                    ? t("Verify & finalize")
-                    : t("Preview completion")}
+                  : !enabled ||
+                      verifiedEmail === data.email.trim().toLowerCase()
+                    ? t("Continue to signature")
+                    : t("Verify email & continue")}
               </button>
             </div>
           </>
         )}
-        {step === 5 && (
+        {step === 4 && (
           <>
             <h3>
               {enabled
@@ -862,12 +817,12 @@ export function ProxyFlow({
             </Link>
           </>
         )}
-        {step < 4 && (
+        {step < 4 && step !== 2 && (
           <div className="actions proxy-flow-actions">
             {step > 0 && (
               <button
                 className="secondary"
-                disabled={busy}
+                disabled={busy || Boolean(id)}
                 onClick={() => {
                   setError("");
                   setStep((v) => v - 1);
@@ -884,9 +839,13 @@ export function ProxyFlow({
                 ? t("Submitting…")
                 : step === 3
                   ? enabled
+                    ? t(id ? "Retry completion" : "Sign and complete proxy")
+                    : t("Preview completion")
+                  : step === 1 &&
+                      enabled &&
+                      verifiedEmail !== data.email.trim().toLowerCase()
                     ? t("Send verification code")
-                    : t("Continue preview")
-                  : t("Continue")}
+                    : t("Continue")}
             </button>
           </div>
         )}

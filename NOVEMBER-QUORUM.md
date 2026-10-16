@@ -23,3 +23,10 @@ Real OTP/PDF email delivery for the November campaign has not been tested yet. J
 ## Dev testing opened by request
 
 Dev is now `SITE_STATE=open`, `ENABLE_SUBMISSIONS=true`, and `PROXY_TEST_MODE=true`. The live signing page was checked over HTTPS and displays the DEV TEST notice rather than preview-only mode. Verification codes go to the email entered by the tester; the proxyholder delivery copy remains routed to the approved test address `rocada@me.com`. PDFs retain the dev-test watermark. Production remains closed with only Thank you displayed. No real November test submission or email delivery was performed during this gate change; the tester can now run that flow.
+
+
+## Email before signing
+
+The guided flow is now Property, Signer, Email verification, Signature, Complete. There is no separate Jenny confirmation step. A short-lived mailbox session exists before any signature or proxy submission is saved. The signing API requires a verified session for the submitted email and consumes that proof atomically with creating the signed submission. A code verification cannot generate a PDF. Existing signed records, template versions, and their legacy verification endpoints are retained for in-flight records.
+
+Apply migration `20261016000000_email_before_signing` to dev after a protected database backup. It only creates the session table and indexes. Verification attempts, expiry, and progressive resend delays remain server-enforced. Sessions are private operator records; expiry prevents use but does not promise automatic deletion. The database backup includes them. Existing test-reset controls target proxy submissions; they do not purge these mailbox sessions.

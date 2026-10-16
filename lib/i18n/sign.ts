@@ -19,7 +19,7 @@ export const spanishSign: Record<string, string> = {
   "← Back to overview": "← Volver al resumen",
   "Your limited proxy": "Su poder limitado",
   Step: "Paso",
-  "of 6 ·": "de 6 ·",
+  "of 5 ·": "de 5 ·",
   Property: "Propiedad",
   Signer: "Firmante",
   "Voting instructions": "Instrucciones de voto",
@@ -55,14 +55,18 @@ export const spanishSign: Record<string, string> = {
   "Clear signature": "Borrar firma",
   "Signature captured": "Firma registrada",
   "Signature empty": "Falta la firma",
-  "Continuing submits your signature and sends an email verification code.":
-    "Al continuar, se guarda su firma y se envía un código de verificación a su correo.",
+  "Signing saves your signature and generates your completed proxy.":
+    "Al firmar, se guarda su firma y se genera el poder completado.",
   "This signature is a local preview and will not be saved or submitted.":
     "Esta firma es una vista previa local; no se guardará ni se enviará.",
   "Verification code": "Código de verificación",
   "Resend code": "Reenviar código",
   "Verifying…": "Verificando…",
-  "Verify & finalize": "Verificar y finalizar",
+  "Verify email & continue": "Verificar correo y continuar",
+  "Sign and complete proxy": "Firmar y completar el poder",
+  "Retry completion": "Reintentar finalizar",
+  "Email verified": "Correo verificado",
+  "Continue to signature": "Continuar a la firma",
   "Preview completion": "Ver la pantalla final",
   "Your proxy has been finalized": "Su poder se ha finalizado",
   "Preview complete": "Vista previa finalizada",
@@ -91,6 +95,14 @@ export const spanishSign: Record<string, string> = {
   "Complete bot verification": "Complete la verificación de seguridad",
   "Request failed": "No se pudo completar la solicitud",
   "Verification unsuccessful": "No se pudo verificar el código",
+  "Verify your email before signing": "Verifique su correo antes de firmar",
+  "Verify this email address before signing":
+    "Verifique esta dirección de correo antes de firmar",
+  "Check your email address": "Revise su dirección de correo",
+  "Code could not be verified. Request a new code if needed.":
+    "No se pudo verificar el código. Solicite otro si es necesario.",
+  "Please wait before requesting another code":
+    "Espere antes de solicitar otro código",
   "Download unavailable": "La descarga no está disponible",
   "Enter a valid house number": "Introduzca un número de casa válido",
   "Select a listed street": "Seleccione una calle de la lista",

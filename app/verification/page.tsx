@@ -7,20 +7,20 @@ export default async function Page() {
   const safeguards = es
     ? [
         [
-          "Complete, revise y firme",
-          "Ingrese los datos de su propiedad y del firmante. Revise las instrucciones que designan a Jenny Ghetea para representar su vivienda y ayudar a establecer el quórum, y firme el poder.",
+          "Ingrese sus datos",
+          "Ingrese los datos de su propiedad, de la persona autorizada para firmar y su correo electrónico.",
         ],
         [
           "Confirme su correo",
           "Ingrese el código enviado a su correo para completar la verificación. Esto comprueba que tiene acceso a esa dirección.",
         ],
         [
-          "Instrucciones claras para el poder",
-          "Su firma queda vinculada al documento específico del poder y a sus instrucciones: Jenny Ghetea representa su vivienda para ayudar a establecer el quórum. Este poder no vota por candidatos.",
+          "Revise y firme",
+          "Después de verificar su correo, revise su nombre y dirección, corrija los datos necesarios y firme. Su firma queda vinculada al poder que designa a Jenny Ghetea para representar su vivienda y ayudar a establecer el quórum.",
         ],
         [
           "Conserve su poder completado",
-          "Después de verificar el correo, completamos el formulario oficial con sus datos y firma. Puede descargar el PDF y le enviamos una copia por correo.",
+          "Después de firmar, completamos el formulario oficial con sus datos y firma. Puede descargar el PDF y le enviamos una copia por correo.",
         ],
         [
           "Un registro que se puede revisar",
@@ -41,20 +41,20 @@ export default async function Page() {
       ]
     : [
         [
-          "Complete, review, and sign",
-          "Enter your property and signer details. Review the instructions appointing Jenny Ghetea to represent your home and help establish quorum, then sign the proxy.",
+          "Enter your details",
+          "Enter your property, authorized signer, and email details.",
         ],
         [
           "Confirm your email",
           "Enter the code sent to your email address to complete verification. This checks that you can access that mailbox.",
         ],
         [
-          "Clear proxy instructions",
-          "Your signature is linked to the specific proxy document and its instructions for Jenny Ghetea to represent your home and help establish quorum.",
+          "Review and sign",
+          "After verifying your email, review your name and address, make any corrections, and sign. Your signature is linked to the specific proxy appointing Jenny Ghetea to represent your home for quorum.",
         ],
         [
           "Keep your completed proxy",
-          "After email verification, we fill the official proxy form with your details and signature. You can download the completed PDF, and we send a copy to your email.",
+          "After you sign, we fill the official proxy form with your details and signature. You can download the completed PDF, and we send a copy to your email.",
         ],
         [
           "A record that can be checked",

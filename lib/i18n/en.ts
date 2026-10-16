@@ -2,9 +2,8 @@ export const english = {
   steps: [
     "Aventura Isles Property Address",
     "Signer",
-    "Review your proxy",
-    "Signature",
     "Email verification",
+    "Signature",
     "Complete",
   ],
   fields: {

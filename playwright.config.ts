@@ -17,6 +17,7 @@ export default defineConfig({
       url: "http://localhost:3140",
       reuseExistingServer: false,
       env: {
+        SITE_STATE: "open",
         ENABLE_SUBMISSIONS: "false",
         ENABLE_ADMIN: "false",
         APP_URL: "http://localhost:3140",

@@ -106,3 +106,21 @@ model AuditLedger {
  entryHash String
  @@unique([eventId, operation])
 }
+
+// Short-lived mailbox proof, created before any signature or proxy submission.
+model EmailSigningSession {
+ id String @id @default(uuid()) @db.Uuid
+ tokenHash String @unique
+ email String
+ campaignId String
+ codeHash String
+ codeExpiresAt DateTime
+ accessExpiresAt DateTime
+ sentAt DateTime
+ attempts Int @default(0)
+ resendCount Int @default(0)
+ verifiedAt DateTime?
+ consumedAt DateTime?
+ createdAt DateTime @default(now())
+ @@index([accessExpiresAt])
+}

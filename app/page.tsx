@@ -107,13 +107,13 @@ export default async function Home() {
           </li>
           <li>
             {es
-              ? "Revise el poder que designa a Jenny y fírmelo."
-              : "Review the proxy appointing Jenny and sign it."}
+              ? "Confirme su correo con el código que le enviamos."
+              : "Confirm your email with the code we send."}
           </li>
           <li>
             {es
-              ? "Confirme su correo con el código que le enviamos. Recibirá el PDF completado; Jenny recibirá una copia para imprimirla y presentarla."
-              : "Confirm your email with the code we send. You receive the completed PDF; Jenny receives a copy for printing and presentation."}
+              ? "Revise sus datos y firme el poder. Recibirá el PDF completado; Jenny recibirá una copia para imprimirla y presentarla."
+              : "Review your details and sign the proxy. You receive the completed PDF; Jenny receives a copy for printing and presentation."}
           </li>
         </ol>
         <p className="quorum-document-links">

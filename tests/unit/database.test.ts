@@ -91,3 +91,31 @@ it("adds independent receipt, print, and filing timestamps without changing exis
     ]),
   );
 });
+it("adds isolated pre-signing email sessions and consumes each proof only once", async () => {
+  await state.database!.exec(
+    await readFile(
+      new URL(
+        "../../prisma/migrations/20261016000000_email_before_signing/migration.sql",
+        import.meta.url,
+      ),
+      "utf8",
+    ),
+  );
+  const id = "11111111-1111-4111-8111-111111111111";
+  await state.database!.query(
+    `INSERT INTO "EmailSigningSession" ("id","tokenHash","email","campaignId","codeHash","codeExpiresAt","accessExpiresAt","sentAt","verifiedAt") VALUES ($1,'test-proof','owner@example.org','test','consumed',NOW()+INTERVAL '10 minutes',NOW()+INTERVAL '1 hour',NOW(),NOW())`,
+    [id],
+  );
+  const consume = `UPDATE "EmailSigningSession" SET "consumedAt"=NOW() WHERE "id"=$1 AND "consumedAt" IS NULL AND "verifiedAt" IS NOT NULL AND "accessExpiresAt">NOW() RETURNING "id"`;
+  const results = await Promise.all([
+    state.database!.query(consume, [id]),
+    state.database!.query(consume, [id]),
+  ]);
+  expect(results.reduce((total, result) => total + result.rows.length, 0)).toBe(
+    1,
+  );
+  const before = await state.database!.query<{ count: number }>(
+    `SELECT COUNT(*) AS count FROM "ProxySubmission"`,
+  );
+  expect(Number(before.rows[0].count)).toBe(0);
+});
