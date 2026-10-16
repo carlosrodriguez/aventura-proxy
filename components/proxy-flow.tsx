@@ -690,45 +690,6 @@ export function ProxyFlow({
                     onChange={(e) => setCode(e.target.value.replace(/\D/g, ""))}
                   />
                 </div>
-                <p className="note">
-                  {t("Didn't get your code? Check your junk or spam folder.")}
-                </p>
-                {notice && <p role="status">{t(notice)}</p>}
-                <button
-                  className="secondary"
-                  disabled={busy || now < resendAt}
-                  onClick={async () => {
-                    setBusy(true);
-                    try {
-                      const result = await call(
-                        "/api/email-verification/resend",
-                        {},
-                      );
-                      setResendAt(result.nextResendAt ?? Date.now() + 120000);
-                      setCode("");
-                      setNotice(
-                        "A new code has been requested. Use the most recent email.",
-                      );
-                      setError("");
-                    } catch (e) {
-                      setError(
-                        e instanceof Error ? e.message : "Request failed",
-                      );
-                    } finally {
-                      setBusy(false);
-                    }
-                  }}
-                >
-                  {t("Resend code")}
-                  {now < resendAt
-                    ? ` (${Math.ceil((resendAt - now) / 1000)}s)`
-                    : ""}
-                </button>
-                <p className="verification-footnote">
-                  {t(
-                    "Email verification confirms access to this email address. It does not establish property ownership or voting authority. The Association must independently validate the proxy.",
-                  )}
-                </p>
               </>
             ) : (
               <p className="preview">
@@ -737,7 +698,73 @@ export function ProxyFlow({
                   : "Preview only: no code was sent. Continue to the signature step."}
               </p>
             )}
-            <div className="actions proxy-flow-actions">
+            <button
+              className="verification-primary"
+              disabled={busy}
+              onClick={
+                verifiedEmail === data.email.trim().toLowerCase()
+                  ? () => setStep(3)
+                  : verify
+              }
+            >
+              {busy
+                ? t("Verifying…")
+                : !enabled || verifiedEmail === data.email.trim().toLowerCase()
+                  ? t("Continue to signature")
+                  : t("Verify email & continue")}
+            </button>
+
+            {enabled && verifiedEmail !== data.email.trim().toLowerCase() && (
+              <>
+                <p className="verification-help">
+                  {locale === "es"
+                    ? "¿No recibió el código? Revise su carpeta de spam o "
+                    : "Didn’t get your code? Check junk/spam or "}
+                  <button
+                    className="verification-resend"
+                    type="button"
+                    disabled={busy || now < resendAt}
+                    onClick={async () => {
+                      setBusy(true);
+                      try {
+                        const result = await call(
+                          "/api/email-verification/resend",
+                          {},
+                        );
+                        setResendAt(result.nextResendAt ?? Date.now() + 120000);
+                        setCode("");
+                        setNotice(
+                          "A new code has been requested. Use the most recent email.",
+                        );
+                        setError("");
+                      } catch (e) {
+                        setError(
+                          e instanceof Error ? e.message : "Request failed",
+                        );
+                      } finally {
+                        setBusy(false);
+                      }
+                    }}
+                  >
+                    {t("Resend code")}
+                    {now < resendAt
+                      ? ` (${Math.ceil((resendAt - now) / 1000)}s)`
+                      : ""}
+                  </button>
+                </p>
+                {notice && (
+                  <p className="verification-help" role="status">
+                    {t(notice)}
+                  </p>
+                )}
+                <p className="verification-footnote">
+                  {t(
+                    "Email verification confirms access to this email address. It does not establish property ownership or voting authority. The Association must independently validate the proxy.",
+                  )}
+                </p>
+              </>
+            )}
+            <div className="verification-back">
               <button
                 className="secondary"
                 disabled={busy}
@@ -747,21 +774,6 @@ export function ProxyFlow({
                 }}
               >
                 {t("Back")}
-              </button>
-              <button
-                disabled={busy}
-                onClick={
-                  verifiedEmail === data.email.trim().toLowerCase()
-                    ? () => setStep(3)
-                    : verify
-                }
-              >
-                {busy
-                  ? t("Verifying…")
-                  : !enabled ||
-                      verifiedEmail === data.email.trim().toLowerCase()
-                    ? t("Continue to signature")
-                    : t("Verify email & continue")}
               </button>
             </div>
           </>

@@ -1232,3 +1232,27 @@ td {
     align-items: flex-start;
   }
 }
+
+.verification-primary {
+  width: 100%;
+  margin-top: 8px;
+}
+.verification-help {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--muted);
+  margin: 12px 0;
+}
+.verification-resend {
+  background: transparent;
+  color: var(--ink);
+  border: 0;
+  padding: 0 4px;
+  min-height: 44px;
+  font-size: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.verification-back {
+  margin-top: 20px;
+}
