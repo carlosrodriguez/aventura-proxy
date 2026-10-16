@@ -11,3 +11,11 @@ Signer verification, signature capture, private storage, receipts, audit evidenc
 Deployment must keep SITE_STATE=closed and ENABLE_SUBMISSIONS=false until approved for review/collection. Production remains on its existing Thank you release. Dev test delivery must continue to the approved test address, never Association management. Jenny's actual delivery address is still required before live collection; use PROXY_DELIVERY_EMAIL. No new email was sent as part of source preparation.
 
 Before collection: install the new packet at a new protected PROXY_TEMPLATE_PATH, verify its hash, confirm Jenny's attendance and delivery address, validate the filled fields/signature on the official page, then test real OTP and completed PDF delivery in dev. Keep the old template file for historical records. No database migration is needed.
+
+## October 15 preparation results
+
+Dev release: `/srv/aventura/releases/20261015-dev-november-quorum`, source `6e15376`. Local build and dev Linux build passed; 75 unit tests, lint, and type checks passed. Desktop and mobile preview reviewed in English and Spanish. An unsigned one-page PDF was generated from the installed protected packet on dev without creating a submission or sending an email.
+
+Protected dev settings remain `SITE_STATE=closed`, `ENABLE_SUBMISSIONS=false`, `PROXY_TEST_MODE=true`, with delivery to the approved test recipient. The new template is `/etc/aventura/annual-meeting-2026.pdf`; the old template remains. Both dev and production were checked over HTTPS: only Thank you is displayed, direct collection returns 503, and health returns 200. Production was not redeployed or reconfigured.
+
+Real OTP/PDF email delivery for the November campaign has not been tested yet. Jenny's approved delivery email remains pending. No live collection was enabled.
