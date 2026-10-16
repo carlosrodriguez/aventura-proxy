@@ -19,3 +19,7 @@ Dev release: `/srv/aventura/releases/20261015-dev-november-quorum`, source `6e15
 Protected dev settings remain `SITE_STATE=closed`, `ENABLE_SUBMISSIONS=false`, `PROXY_TEST_MODE=true`, with delivery to the approved test recipient. The new template is `/etc/aventura/annual-meeting-2026.pdf`; the old template remains. Both dev and production were checked over HTTPS: only Thank you is displayed, direct collection returns 503, and health returns 200. Production was not redeployed or reconfigured.
 
 Real OTP/PDF email delivery for the November campaign has not been tested yet. Jenny's approved delivery email remains pending. No live collection was enabled.
+
+## Dev testing opened by request
+
+Dev is now `SITE_STATE=open`, `ENABLE_SUBMISSIONS=true`, and `PROXY_TEST_MODE=true`. The live signing page was checked over HTTPS and displays the DEV TEST notice rather than preview-only mode. Verification codes go to the email entered by the tester; the proxyholder delivery copy remains routed to the approved test address `rocada@me.com`. PDFs retain the dev-test watermark. Production remains closed with only Thank you displayed. No real November test submission or email delivery was performed during this gate change; the tester can now run that flow.
