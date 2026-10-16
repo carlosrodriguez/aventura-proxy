@@ -5,12 +5,7 @@ import { requireAdmin } from "@/lib/security/admin";
 import { failure, HttpError, jsonBody, originCheck } from "@/lib/security/http";
 import { temporaryUrl } from "@/lib/storage";
 import { event, deliverReceipt } from "@/lib/submissions";
-export function csvCell(value: unknown) {
-  const s = String(value ?? "");
-  return (
-    '"' + (/^[=+@\-\t\r\n]/.test(s) ? "'" : "") + s.replaceAll('"', '""') + '"'
-  );
-}
+import { csvCell } from "@/lib/security/csv";
 export async function GET(req: NextRequest) {
   try {
     const admin = await requireAdmin();
@@ -46,6 +41,7 @@ export async function GET(req: NextRequest) {
         "filedAt",
         "deliveredAt",
         "pdfSha256",
+        "templateVersion",
       ] as const;
       return new NextResponse(
         [
@@ -73,6 +69,7 @@ export async function GET(req: NextRequest) {
         id: s.id,
         property: `${s.houseNumber} ${s.street}`,
         signer: `${s.firstName} ${s.lastName}`,
+        templateVersion: s.templateVersion,
         status: s.status,
         associationStatus: s.associationStatus,
         likelyDuplicate: s.likelyDuplicate,

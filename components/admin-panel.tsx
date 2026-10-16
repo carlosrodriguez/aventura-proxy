@@ -5,6 +5,7 @@ type Row = {
   id: string;
   property: string;
   signer: string;
+  templateVersion: string;
   status: string;
   associationStatus: string;
   likelyDuplicate: boolean;
@@ -186,6 +187,11 @@ export function AdminPanel() {
             <div className="admin-property">
               <h2>{s.property}</h2>
               <p>{s.signer}</p>
+              <p className="note">
+                {s.templateVersion.startsWith("annual-quorum-2026-11-17-")
+                  ? "November 17 annual meeting"
+                  : "Earlier campaign record"}
+              </p>
               <span className="admin-badge">{s.status.toLowerCase()}</span>
               {s.likelyDuplicate && (
                 <span className="admin-badge warning">Review duplicate</span>

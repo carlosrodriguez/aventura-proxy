@@ -136,7 +136,7 @@ vi.mock("@/lib/pdf/proxy", async (importOriginal) => {
       signature: Uint8Array,
     ) => {
       const fixture = await PDFDocument.create();
-      fixture.addPage([780, 1000]);
+      for (let i = 0; i < 5; i++) fixture.addPage([612, 792]);
       return original.fillOfficialProxy(
         await fixture.save(),
         details,

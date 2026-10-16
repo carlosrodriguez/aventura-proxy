@@ -8,15 +8,15 @@ export default async function Page() {
     ? [
         [
           "Complete, revise y firme",
-          "Ingrese los datos de su propiedad y del firmante. Revise las instrucciones que designan a Jenny Ghetea para votar NO a los anexos A, B y C, y firme el poder.",
+          "Ingrese los datos de su propiedad y del firmante. Revise las instrucciones que designan a Jenny Ghetea para representar su vivienda y ayudar a establecer el quórum, y firme el poder.",
         ],
         [
           "Confirme su correo",
           "Ingrese el código enviado a su correo para completar la verificación. Esto comprueba que tiene acceso a esa dirección.",
         ],
         [
-          "Instrucciones de voto claras",
-          "Su firma queda vinculada al documento específico del poder y a sus instrucciones: Jenny Ghetea debe votar NO a los anexos A, B y C.",
+          "Instrucciones claras para el poder",
+          "Su firma queda vinculada al documento específico del poder y a sus instrucciones: Jenny Ghetea representa su vivienda para ayudar a establecer el quórum. Este poder no vota por candidatos.",
         ],
         [
           "Conserve su poder completado",
@@ -42,15 +42,15 @@ export default async function Page() {
     : [
         [
           "Complete, review, and sign",
-          "Enter your property and signer details. Review the instructions appointing Jenny Ghetea to vote NO on Exhibits A, B, and C, then sign the proxy.",
+          "Enter your property and signer details. Review the instructions appointing Jenny Ghetea to represent your home and help establish quorum, then sign the proxy.",
         ],
         [
           "Confirm your email",
           "Enter the code sent to your email address to complete verification. This checks that you can access that mailbox.",
         ],
         [
-          "Clear voting instructions",
-          "Your signature is linked to the specific proxy document and its instructions for Jenny Ghetea to vote NO on Exhibits A, B, and C.",
+          "Clear proxy instructions",
+          "Your signature is linked to the specific proxy document and its instructions for Jenny Ghetea to represent your home and help establish quorum.",
         ],
         [
           "Keep your completed proxy",
@@ -108,7 +108,7 @@ export default async function Page() {
       </p>
       <p>
         <Link className="button" href="/sign">
-          {es ? "Completar mi poder NO" : "Complete my NO proxy"}
+          {es ? "Completar mi poder" : "Complete my quorum proxy"}
         </Link>
       </p>
       <p className="disclaimer">

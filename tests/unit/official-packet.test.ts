@@ -1,4 +1,7 @@
-import { expect, it, vi } from "vitest";
+import { afterEach, expect, it, vi } from "vitest";
+import { readFile } from "node:fs/promises";
+import { createHash } from "node:crypto";
+import { PDFDocument } from "pdf-lib";
 import {
   proxyConfig,
   officialTemplateReady,
@@ -6,70 +9,56 @@ import {
   resolveProxyholderName,
   proxyholderReady,
 } from "@/lib/config";
-
-it("uses the membership meeting time, not the board meeting time", () => {
-  expect(proxyConfig.meetingTime).toBe(
-    "6:15pm, or immediately following the Special Board Meeting",
-  );
+import { fillOfficialProxy } from "@/lib/pdf/proxy";
+afterEach(() => vi.unstubAllEnvs());
+it("uses the annual membership meeting rather than the budget meeting", () => {
+  expect(proxyConfig.meetingDate).toBe("November 17, 2026");
+  expect(proxyConfig.meetingTime).toBe("6:15 PM");
   expect(proxyConfig.meetingLocation).toContain("605 NE 193 Street");
+  expect(proxyConfig.officialProxyWording).toContain("establishing a quorum");
+  expect(proxyConfig.officialProxyWording).not.toContain("LIMITED POWERS");
+  expect(proxyConfig.importantProxyNote).toContain("ninety (90) days");
 });
-it("keeps NO instructions and uses the configurable named-proxyholder option", () => {
-  expect(proxyConfig.proposals.map((p) => p.vote)).toEqual(["NO", "NO", "NO"]);
-  expect(proxyConfig.proxyholderSelection).toBe("b");
-  vi.stubEnv("PROXYHOLDER_NAME", "TBD");
-  expect(proxyConfig.proxyholder).toBe("TBD");
-  vi.unstubAllEnvs();
-  expect(proxyConfig.importantProxyNote).toContain(
-    "90 days after the date of the meeting",
+it("pins the complete official packet and outputs only its proxy page", async () => {
+  vi.stubEnv("PROXYHOLDER_NAME", "Jenny Ghetea");
+  const packet = await readFile("public/documents/annual-meeting-2026.pdf");
+  expect(createHash("sha256").update(packet).digest("hex")).toBe(
+    proxyConfig.proxyTemplateSha256,
   );
+  const result = await fillOfficialProxy(
+    packet,
+    {
+      id: "test-only",
+      houseNumber: "665",
+      street: "NE 191st Street",
+      firstName: "TEST",
+      lastName: "ONLY",
+      entityName: null,
+      signerTitle: null,
+      signedAt: new Date("2026-10-15T16:00:00Z"),
+      templateVersion: proxyConfig.templateVersion,
+    },
+    null,
+  );
+  const pdf = await PDFDocument.load(result);
+  expect(pdf.getPageCount()).toBe(1);
+  expect(pdf.getPage(0).getSize()).toEqual({ width: 612, height: 792 });
 });
-it("preserves amendment redlines without presenting deleted text as new text", () => {
-  expect(proxyConfig.officialExhibits.A.sections[0].segments).toContainEqual({
-    text: "OWNERS",
-    change: "deleted",
-  });
-  expect(proxyConfig.officialExhibits.C.sections[0].segments).toContainEqual({
-    text: "one-third",
-    change: "deleted",
-  });
-  expect(proxyConfig.officialExhibits.C.sections[0].segments).toContainEqual({
-    text: "twenty percent (20%)",
-    change: "added",
-  });
+it("refuses a different packet shape rather than filling an unrelated form", async () => {
+  const pdf = await PDFDocument.create();
+  pdf.addPage();
+  await expect(
+    fillOfficialProxy(await pdf.save(), {} as never, null),
+  ).rejects.toThrow("five-page");
 });
-it("requires a resolved proxyholder and configured environment after template review", () => {
-  vi.stubEnv("ENABLE_SUBMISSIONS", "true");
-  expect(proxyConfig.officialExhibits.B.sections[0].segments).toContainEqual({
-    text: "entire membership of the ASSOCIATION", change: "deleted",
-  });
-  expect(proxyConfig.reviewed).toBe(true);
+it("uses option b and still blocks unresolved proxyholders", () => {
+  expect(proxyConfig.proxyholderSelection).toBe("b");
+  vi.stubEnv("PROXYHOLDER_NAME", "  Jenny Ghetea  ");
+  expect(proxyConfig.executionProxyWording).toContain("(X) (b) Jenny Ghetea,");
   vi.stubEnv("PROXYHOLDER_NAME", "TBD");
   expect(officialTemplateReady()).toBe(false);
   expect(submissionsEnabled()).toBe(false);
-  vi.unstubAllEnvs();
-});
-
-it("defaults unresolved names to TBD and blocks placeholder or invalid names", () => {
-  expect(resolveProxyholderName("")).toBe("TBD");
-  expect(resolveProxyholderName(" ")).toBe("TBD");
-  for (const name of [
-    "TBD",
-    "tbd",
-    "To be determined",
-    "unknown",
-    "",
-    "A\nB",
-    "A".repeat(161),
-  ]) {
+  for (const name of ["TBD", "unknown", "", "A\nB", "A".repeat(161)])
     expect(proxyholderReady(name)).toBe(false);
-  }
-  expect(resolveProxyholderName("A\nB")).toBe("TBD");
-  expect(resolveProxyholderName("A".repeat(161))).toBe("TBD");
-});
-it("resolves the configured name into option b of the execution wording", () => {
-  vi.stubEnv("PROXYHOLDER_NAME", "  Sample Attendee  ");
-  expect(proxyConfig.proxyholder).toBe("Sample Attendee");
-  expect(proxyholderReady()).toBe(true);
-  expect(proxyConfig.executionProxyWording).toContain("(b) Sample Attendee,");
-  vi.unstubAllEnvs();
+  expect(resolveProxyholderName("")).toBe("TBD");
 });

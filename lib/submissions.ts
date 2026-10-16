@@ -85,6 +85,7 @@ export async function createSubmission(
         where: {
           houseNumber: { equals: data.houseNumber, mode: "insensitive" },
           street: data.street,
+          templateVersion: { startsWith: proxyConfig.campaignId + "-v" },
         },
         select: { id: true },
       });
@@ -385,6 +386,11 @@ export async function finalizeSubmission(
 export async function deliverReceipt(id: string) {
   assertEnabled();
   const s = await db().proxySubmission.findUniqueOrThrow({ where: { id } });
+  if (s.templateVersion !== executionTemplateVersion())
+    throw new HttpError(
+      409,
+      "This proxy belongs to a different campaign; its original PDF remains available in the admin records.",
+    );
   if (
     s.status !== "FINALIZED" ||
     !s.finalPdfRef ||
@@ -397,7 +403,7 @@ export async function deliverReceipt(id: string) {
   if (!s.receiptSentAt) {
     await sendEmail(
       s.email,
-      "Your signed limited proxy — October 6, 2026",
+      "Your signed limited proxy — November 17, 2026",
       text,
       `receipt-${id}`,
       pdf,

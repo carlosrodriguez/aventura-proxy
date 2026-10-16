@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import { NextRequest } from "next/server";
 import { originCheck, jsonBody, clientIp } from "@/lib/security/http";
-import { csvCell } from "@/app/api/admin/submissions/route";
+import { csvCell } from "@/lib/security/csv";
 
 describe("request boundaries", () => {
   it("requires the exact configured origin and JSON", () => {

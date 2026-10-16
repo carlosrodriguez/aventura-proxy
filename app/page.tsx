@@ -1,322 +1,151 @@
-import { getLocale } from "@/lib/i18n/locale";
 import Link from "next/link";
-import { submissionsEnabled, proxyConfig } from "@/lib/config";
-import { homeCopy } from "@/lib/i18n/home";
-
-function Emphasized({ text, phrases }: { text: string; phrases: string[] }) {
-  const matching = phrases.filter((phrase) => text.includes(phrase));
-  if (!matching.length) return text;
-  const pattern = new RegExp(
-    `(${matching.map((phrase) => phrase.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|")})`,
-    "g",
-  );
-  return text
-    .split(pattern)
-    .map((part, index) =>
-      matching.includes(part) ? <strong key={index}>{part}</strong> : part,
-    );
-}
-
-function OfficialRedlines({ exhibit }: { exhibit: "A" | "B" | "C" }) {
-  return (
-    <div className="official-redlines" lang="en">
-      {proxyConfig.officialExhibits[exhibit].sections.map((section) => (
-        <section key={section.heading}>
-          <h4>{section.heading}</h4>
-          <blockquote>
-            {section.segments.map((segment, index) =>
-              segment.change === "deleted" ? (
-                <del key={index}>{segment.text}</del>
-              ) : segment.change === "added" ? (
-                <u key={index}>{segment.text}</u>
-              ) : (
-                <span key={index}>{segment.text}</span>
-              ),
-            )}
-          </blockquote>
-        </section>
-      ))}
-    </div>
-  );
-}
-
+import { getLocale } from "@/lib/i18n/locale";
+import { proxyConfig, disclaimer, submissionsEnabled } from "@/lib/config";
 export default async function Home() {
-  const locale = await getLocale();
-  const copy = homeCopy[locale];
+  const es = (await getLocale()) === "es";
   const enabled = submissionsEnabled();
-  const emphasis =
-    locale === "es"
-      ? [
-          "mayoría de todos los miembros",
-          "mayoría de los lotes con derecho a voto representados",
-          "66 votos a favor",
-          "futura enmienda a los estatutos",
-          "para todos",
-          "sin el respaldo de la mayoría de la comunidad",
-          "amplio respaldo de los propietarios",
-          "Por eso recomendamos NO.",
-        ]
-      : [
-          "majority of the entire membership",
-          "majority of the eligible lots represented",
-          "66 YES votes",
-          "future By-Laws amendment",
-          "for everyone",
-          "without support from a majority of the community",
-          "broad homeowner support",
-          "That is why we recommend NO.",
-        ];
+  const faqs = es
+    ? [
+        [
+          "¿Qué es el quórum?",
+          "Es la participación mínima necesaria para que se celebre la reunión. Si no puede asistir, este poder permite que su vivienda esté representada para establecer el quórum.",
+        ],
+        [
+          "¿Este poder vota por candidatos?",
+          "No. El paquete de la Asociación indica que los poderes no se pueden usar para elegir a los miembros de la Junta. Los votos se emiten en la reunión mediante una boleta escrita.",
+        ],
+        [
+          "¿Quién recibe mi poder?",
+          "Jenny Ghetea recibe una copia para imprimirla y presentarla en la reunión. Usted también recibe el PDF completado para sus archivos.",
+        ],
+        [
+          "¿Puedo asistir y votar?",
+          "Para votar por candidatos, asista a la reunión y siga el procedimiento de votación de la Asociación. Consulte al administrador sobre cómo se tratará un poder que ya haya entregado.",
+        ],
+        [
+          "¿Quién puede firmar?",
+          "La persona autorizada para votar por el lote. La Asociación determina la autoridad del firmante y si el poder cumple sus requisitos.",
+        ],
+      ]
+    : [
+        [
+          "What is quorum?",
+          "It is the minimum participation needed for the meeting to proceed. If you cannot attend, this proxy allows your home to be represented to help establish quorum.",
+        ],
+        [
+          "Does this proxy vote for candidates?",
+          "No. The Association’s packet says proxies cannot be used to elect Board members. Election votes are cast by written ballot at the meeting.",
+        ],
+        [
+          "Who receives my proxy?",
+          "Jenny Ghetea receives a copy for printing and presentation at the meeting. You also receive the completed PDF for your records.",
+        ],
+        [
+          "Can I attend and vote?",
+          "To vote for candidates, attend the meeting and follow the Association’s voting procedures. Ask management how a proxy you have already given will be handled.",
+        ],
+        [
+          "Who can sign?",
+          "The person authorized to cast the vote for the lot. The Association determines the signer’s voting authority and whether the proxy meets its requirements.",
+        ],
+      ];
   return (
-    <article className="container participation-page" lang={locale}>
-      <div className="participation-intro">
-        <p className="eyebrow">{copy.meeting}</p>
-      </div>
-      <section className="campaign-hero" aria-labelledby="campaign-heading">
-        <h1 id="campaign-heading">
-          <span className="campaign-vote">{copy.campaignVote}</span>{" "}
-          <span className="campaign-meeting">{copy.campaignMeeting}</span>
+    <article className="container participation-page" lang={es ? "es" : "en"}>
+      <section className="campaign-hero">
+        <p className="eyebrow">
+          {es
+            ? "17 de noviembre de 2026 · Reunión anual y elección"
+            : "November 17, 2026 · Annual Meeting and Election"}
+        </p>
+        <h1>
+          {es
+            ? "Ayude a que la reunión alcance el quórum."
+            : "Help the annual meeting reach quorum."}
         </h1>
-        <p className="campaign-intro">{copy.campaignIntro}</p>
-        <p className="note">
-          {locale === "es"
-            ? "6 de octubre de 2026 · 6:15 p. m., o inmediatamente después de la reunión especial de la Junta"
-            : "October 6, 2026 · 6:15pm, or immediately following the Special Board Meeting"}
+        <p className="campaign-intro">
+          {es
+            ? "¿No puede asistir? Complete un poder limitado que designe a Jenny Ghetea para representar su vivienda y ayudar a establecer el quórum."
+            : "Cannot attend? Complete a limited proxy appointing Jenny Ghetea to represent your home and help establish quorum."}
+        </p>
+        <p>
+          <strong>
+            {es
+              ? "Este poder no vota por candidatos a la Junta."
+              : "This proxy does not cast votes for Board candidates."}
+          </strong>{" "}
+          {es
+            ? "La elección se realiza mediante boleta escrita en la reunión."
+            : "The election is conducted by written ballot at the meeting."}
+        </p>
+        <p>
+          <strong>
+            {es
+              ? "17 de noviembre de 2026 · 6:15 p. m."
+              : "November 17, 2026 · 6:15 PM"}
+          </strong>
           <br />
-          605 NE 193 Street, Miami, FL 33179
-          <br />
-          {locale === "es"
-            ? "Representante designada"
-            : "Named proxyholder"}: {proxyConfig.proxyholder}
+          {proxyConfig.meetingLocation}
         </p>
-        <div className="proxy-shortcut">
-          <Link
-            className="button secondary"
-            href={locale === "es" ? "/sign?lang=es" : "/sign"}
+        <Link className="button" href="/sign">
+          {es ? "Completar mi poder" : "Complete my quorum proxy"}
+        </Link>
+        {!enabled && (
+          <p className="preview">
+            {es
+              ? "Vista previa. No se guardan ni se envían poderes."
+              : "Preview only. No proxies are saved or sent."}
+          </p>
+        )}
+      </section>
+      <section className="prose">
+        <h2>{es ? "Cómo funciona" : "How it works"}</h2>
+        <ol>
+          <li>
+            {es
+              ? "Ingrese su dirección y los datos de la persona autorizada para firmar."
+              : "Enter your property address and the authorized signer’s details."}
+          </li>
+          <li>
+            {es
+              ? "Revise el poder que designa a Jenny y fírmelo."
+              : "Review the proxy appointing Jenny and sign it."}
+          </li>
+          <li>
+            {es
+              ? "Confirme su correo con el código que le enviamos. Recibirá el PDF completado; Jenny recibirá una copia para imprimirla y presentarla."
+              : "Confirm your email with the code we send. You receive the completed PDF; Jenny receives a copy for printing and presentation."}
+          </li>
+        </ol>
+        <p>
+          <Link href="/proxy-language">
+            {es ? "Leer el poder oficial" : "Read the official proxy"}
+          </Link>{" "}
+          ·{" "}
+          <a
+            href="/documents/annual-meeting-2026.pdf"
+            target="_blank"
+            rel="noreferrer"
           >
-            {enabled ? copy.directProxy : copy.directPreview}{" "}
-            <span aria-hidden="true">→</span>
-          </Link>
-        </div>
-        <p className="note">{copy.independentNote}</p>
-      </section>
-      <div className="comparison-heading" id="why-no">
-        <p className="eyebrow">{copy.whyIntro}</p>
-      </div>
-      <section
-        className="governing-overview"
-        aria-labelledby="documents-heading"
-      >
-        <h2 id="documents-heading">{copy.documentsTitle}</h2>
-        <p>{copy.documentsIntro}</p>
-        <dl className="document-definitions">
-          {copy.documents.map((document) => (
-            <div key={document.title}>
-              <dt>{document.title}</dt>
-              <dd>{document.body}</dd>
-            </div>
-          ))}
-        </dl>
-        <div className="business-comparison">
-          <section>
-            <h3>{copy.boardTodayTitle}</h3>
-            <p>{copy.boardToday}</p>
-          </section>
-          <section>
-            <h3>{copy.amendmentChoiceTitle}</h3>
-            <p>{copy.amendmentChoice}</p>
-          </section>
-        </div>
-      </section>
-      <section
-        className="governing-overview"
-        aria-labelledby="bylaws-change-heading"
-      >
-        <h2 id="bylaws-change-heading">{copy.bylawsChangeTitle}</h2>
-        <p>
-          <Emphasized text={copy.bylawsCurrent} phrases={emphasis} />
-        </p>
-        <p>
-          <Emphasized text={copy.bylawsExample} phrases={emphasis} />
-        </p>
-        <p>
-          <Emphasized text={copy.bylawsConsequence} phrases={emphasis} />
-        </p>
-        <p className="vote-recommendation">
-          <Emphasized text={copy.bylawsPosition} phrases={emphasis} />
-        </p>
-      </section>
-      <h2 className="comparison-title">{copy.title}</h2>
-      <section className="today-panel" aria-labelledby="today-heading">
-        <div>
-          <h2 className="eyebrow" id="today-heading">
-            {copy.today}
-          </h2>
-          <p className="practical-lead">{copy.todayLead}</p>
-          <div className="today-requirements">
-            <section>
-              <h3>{copy.meetingRequirement}</h3>
-              <p className="approval-number">{copy.meetingNumber}</p>
-              <p>{copy.meetingNumberLabel}</p>
-              <p>{copy.meetingParticipation}</p>
-              <p className="note">{copy.todayRule}</p>
-            </section>
-            <section>
-              <h3>{copy.amendmentRequirement}</h3>
-              <p className="approval-number">{copy.amendmentNumber}</p>
-              <p>{copy.amendmentParticipation}</p>
-              <p className="note">{copy.todayApproval}</p>
-            </section>
-          </div>
-          <p className="note">{copy.todayProtection}</p>
-        </div>
-      </section>
-      <section className="proposed-panel" aria-labelledby="proposed-heading">
-        <h2 className="eyebrow" id="proposed-heading">
-          {copy.proposed}
-        </h2>
-        <div className="participation-step">
-          <span className="step-tag">{copy.stepOne}</span>
-          <h3>{copy.stepOneTitle}</h3>
-          <p>{copy.participation}</p>
-          <p className="representation-note">{copy.represented}</p>
-        </div>
-        <div className="participation-step">
-          <span className="step-tag">{copy.stepTwo}</span>
-          <h3>{copy.stepTwoTitle}</h3>
-          <ol className="decision-sequence">
-            <li>
-              <strong>131</strong>
-              <span>{copy.homes}</span>
-            </li>
-            <li className="sequence-arrow" aria-hidden="true">
-              ↓
-            </li>
-            <li>
-              <strong>66</strong>
-              <span>{copy.yes}</span>
-            </li>
-            <li className="sequence-arrow" aria-hidden="true">
-              ↓
-            </li>
-            <li className="everyone">
-              <strong>
-                100<span>%</span>
-              </strong>
-              <span>{copy.everyone}</span>
-              <p>{copy.consequence}</p>
-            </li>
-          </ol>
-        </div>
-      </section>
-      <section className="takeaway-panel" aria-labelledby="takeaway-heading">
-        <div className="community-dots" aria-hidden="true">
-          {Array.from({ length: 100 }, (_, i) => (
-            <span className={i < 10 ? "highlighted" : undefined} key={i} />
-          ))}
-        </div>
-        <h2 id="takeaway-heading">{copy.amendmentTakeaway}</h2>
-        <p className="accuracy-note">{copy.accuracy}</p>
-      </section>
-      <section className="recommendation-panel" aria-labelledby="why-heading">
-        <h2 id="why-heading">{copy.why}</h2>
-        {copy.reasons.map((reason) => (
-          <p key={reason}>{reason}</p>
-        ))}
-        <p className="vote-recommendation">{copy.recommendation}</p>
-        <div className="proxy-shortcut">
-          <Link
-            className="button secondary"
-            href={locale === "es" ? "/sign?lang=es" : "/sign"}
-          >
-            {enabled ? copy.begin : copy.preview}{" "}
-            <span aria-hidden="true">→</span>
-          </Link>
-        </div>
-        {!enabled && <p className="preview">{copy.previewNote}</p>}
-      </section>
-      <section
-        className="recommendation-panel"
-        aria-labelledby="participation-heading"
-      >
-        <h2 id="participation-heading">{copy.participationTitle}</h2>
-        {copy.participationArgument.map((paragraph) => (
-          <p key={paragraph}>{paragraph}</p>
-        ))}
-      </section>
-      <section className="section" aria-labelledby="faq-heading">
-        <h2 id="faq-heading">{copy.faqsTitle}</h2>
-        {copy.faqs.map((faq) => (
-          <details className="participation-details" key={faq.question}>
-            <summary>{faq.question}</summary>
-            <div>
-              <p>{faq.answer}</p>
-            </div>
-          </details>
-        ))}
-        <p className="note">
-          <a href="https://www.leg.state.fl.us/statutes/index.cfm?App_mode=Display_Statute&URL=0700-0799/0720/Sections/0720.306.html">
-            {locale === "es"
-              ? "Ley de Florida: sección 720.306"
-              : "Florida Statutes section 720.306"}
+            {es
+              ? "Ver el paquete completo de la Asociación"
+              : "View the complete Association packet"}
           </a>
         </p>
       </section>
-      <section
-        className="section exhibit-explanations"
-        aria-labelledby="exhibits-heading"
-      >
-        <p className="eyebrow">{copy.exhibitsLabel}</p>
-        <h2 id="exhibits-heading">{copy.exhibitsTitle}</h2>
-        <div className="grid">
-          {copy.exhibits.map((exhibit, index) => (
-            <section className="card" key={exhibit.label}>
-              <p className="eyebrow">{exhibit.label}</p>
-              <h3>{exhibit.title}</h3>
-              <dl>
-                <dt>
-                  <strong>
-                    {locale === "es" ? "Regla actual" : "Current rule"}
-                  </strong>
-                </dt>
-                <dd>{copy.comparisons[index].current}</dd>
-                <dt>
-                  <strong>
-                    {locale === "es" ? "Regla propuesta" : "Proposed rule"}
-                  </strong>
-                </dt>
-                <dd>{copy.comparisons[index].proposed}</dd>
-                <dt>
-                  <strong>
-                    {locale === "es" ? "Efecto práctico" : "Practical effect"}
-                  </strong>
-                </dt>
-                <dd>{copy.comparisons[index].effect}</dd>
-              </dl>
-              {
-                <details className="exhibit-wording">
-                  <summary>
-                    {locale === "es"
-                      ? "Texto exacto del documento (en inglés)"
-                      : "Exact wording from the document"}
-                  </summary>
-                  <p className="note">
-                    {locale === "es"
-                      ? "El texto tachado se elimina; el texto subrayado se añade. Se conserva el inglés original del documento."
-                      : "Strikethrough marks deleted text; underlining marks added text. The original document wording is preserved."}
-                  </p>
-                  <OfficialRedlines
-                    exhibit={index === 0 ? "A" : index === 1 ? "B" : "C"}
-                  />
-                </details>
-              }
-            </section>
-          ))}
-        </div>
-        <Link className="exhibit-source-link" href="/proxy-language">
-          {copy.read} →
-        </Link>
+      <section className="amendment-faq">
+        <h2>{es ? "Preguntas frecuentes" : "Common questions"}</h2>
+        {faqs.map(([title, body]) => (
+          <details key={title}>
+            <summary>{title}</summary>
+            <p>{body}</p>
+          </details>
+        ))}
       </section>
-      <p className="disclaimer">{copy.disclaimer}</p>
+      <aside className="independent-disclaimer">
+        {es
+          ? "Este sitio independiente es operado por SAPSLAB SERVICES LLC. No es un sitio oficial de la Asociación ni de su empresa administradora."
+          : disclaimer}
+      </aside>
     </article>
   );
 }

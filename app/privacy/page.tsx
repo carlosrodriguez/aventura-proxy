@@ -59,11 +59,11 @@ export default async function Privacy() {
           Conservamos los poderes completados y los registros de firma durante
           esta campaña para apoyar la entrega, la revisión y la resolución de
           preguntas. No los eliminamos automáticamente después de imprimirlos ni
-          al terminar la reunión de octubre. Después de la reunión, el operador
-          revisará qué datos deben conservarse y cuáles pueden eliminarse,
-          teniendo en cuenta las preguntas o controversias pendientes y los
-          requisitos aplicables. La revisión también incluirá las copias de
-          respaldo.
+          al terminar la reunión de noviembre. Después de la reunión, el
+          operador revisará qué datos deben conservarse y cuáles pueden
+          eliminarse, teniendo en cuenta las preguntas o controversias
+          pendientes y los requisitos aplicables. La revisión también incluirá
+          las copias de respaldo.
         </p>
         <p>
           El firmante recibe el PDF finalizado. Jenny Ghetea recibe una copia
@@ -146,11 +146,11 @@ export default async function Privacy() {
       <p>
         We retain completed proxies and signing records during this campaign to
         support delivery, review, and resolution of questions. We do not
-        automatically delete them when printed or when the October meeting ends.
-        After the meeting, the operator will review what needs to be retained
-        and what can be deleted, taking account of unresolved questions or
-        disputes and applicable requirements. That review will also cover backup
-        copies.
+        automatically delete them when printed or when the November meeting
+        ends. After the meeting, the operator will review what needs to be
+        retained and what can be deleted, taking account of unresolved questions
+        or disputes and applicable requirements. That review will also cover
+        backup copies.
       </p>
       <p>
         The signer receives the finalized PDF. Jenny Ghetea receives a copy for

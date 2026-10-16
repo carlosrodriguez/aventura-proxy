@@ -24,7 +24,7 @@ export async function sendEmail(
   await transactionalEmail(to, subject, text, key, attachment);
 }
 export function emailContent(text: string) {
-  const body = `Aventura Isles Proxy\nIndependent website operated by SAPSLAB SERVICES LLC\n\n${text}\n\nThis message relates to a limited proxy requested at aventuraislesproxy.com for the October 6, 2026 meeting. If you did not request this, contact the site operator. This is not an official Association website.`;
+  const body = `Aventura Isles Proxy\nIndependent website operated by SAPSLAB SERVICES LLC\n\n${text}\n\nThis message relates to a limited proxy requested at aventuraislesproxy.com for the November 17, 2026 meeting. If you did not request this, contact the site operator. This is not an official Association website.`;
   const escape = (value: string) =>
     value.replace(
       /[&<>"']/g,

@@ -335,8 +335,8 @@ export function ProxyFlow({
       )}
       <p className="note">
         {locale === "es"
-          ? `Usted designa a ${proxyholder} para representarle y votar NO a los anexos A, B y C.`
-          : `You appoint ${proxyholder} to represent you and vote NO on Exhibits A, B, and C.`}
+          ? `Usted designa a ${proxyholder} para representar su vivienda y ayudar a establecer el quórum. Este poder no vota por candidatos.`
+          : `You appoint ${proxyholder} to represent your home and help establish quorum. This proxy does not vote for candidates.`}
       </p>
       {!enabled && (
         <p className="preview">
@@ -376,15 +376,15 @@ export function ProxyFlow({
                 <>
                   Al completar y firmar este poder limitado, usted designa a{" "}
                   <strong>Jenny Ghetea</strong> para representar su vivienda y
-                  votar <strong>NO a los Exhibits A, B y C</strong> en la
-                  reunión del 6 de octubre.
+                  ayudar a establecer el <strong>quórum</strong> en la reunión
+                  del 17 de noviembre. Este poder no vota por candidatos.
                 </>
               ) : (
                 <>
                   By completing and signing this limited proxy, you appoint{" "}
-                  <strong>Jenny Ghetea</strong> to represent your home and vote{" "}
-                  <strong>NO on Exhibits A, B, and C</strong> at the October 6
-                  meeting.
+                  <strong>Jenny Ghetea</strong> to represent your home and help
+                  establish <strong>quorum</strong> at the November 17 meeting.
+                  This proxy does not vote for candidates.
                 </>
               )}
             </p>
@@ -510,30 +510,25 @@ export function ProxyFlow({
         {step === 2 && (
           <>
             <p>
-              {t(
-                " This limited proxy directs a NO vote on all three proposals. These instructions are fixed. ",
-              )}
+              {locale === "es"
+                ? `Usted designa a ${proxyholder} para representar su vivienda y ayudar a establecer el quórum en la reunión del 17 de noviembre de 2026, a las 6:15 p. m.`
+                : `You appoint ${proxyholder} to represent your home and help establish quorum at the November 17, 2026 meeting at 6:15 PM.`}
+            </p>
+            <p>
+              <strong>
+                {locale === "es"
+                  ? "Este poder no vota por candidatos a la Junta."
+                  : "This proxy does not cast votes for Board candidates."}
+              </strong>
             </p>
             <p>
               {locale === "es"
-                ? `Reunión del 6 de octubre de 2026. Usted designa a ${proxyholder} y le indica votar NO a los anexos A, B y C.`
-                : `October 6, 2026 meeting. You appoint ${proxyholder} and instruct NO on Exhibits A, B, and C.`}
+                ? "El paquete de la Asociación indica que los votos para la elección se emiten mediante boleta escrita en la reunión. Jenny recibirá una copia de su poder para imprimirla y presentarla."
+                : "The Association’s packet says election votes are cast by written ballot at the meeting. Jenny will receive a copy of your proxy for printing and presentation."}
             </p>
-            {proxyConfig.proposals.map((p) => (
-              <div className="card" key={p.label}>
-                <h3>
-                  {p.label}
-                  {t(" — ")}
-                  {p.vote}
-                </h3>
-                <p className="note" lang="en">
-                  {p.language}
-                </p>
-              </div>
-            ))}
             <p>
               <Link href="/proxy-language" target="_blank">
-                {t(" View the complete proxy template ")}
+                {t("View the complete proxy template")}
               </Link>
             </p>
           </>

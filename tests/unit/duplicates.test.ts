@@ -6,6 +6,7 @@ const state = vi.hoisted(() => ({
     houseNumber: string;
     street: string;
     likelyDuplicate: boolean;
+    templateVersion: string;
   }>,
   events: [] as Array<{ submissionId: string; eventType: string }>,
   locks: [] as string[],
@@ -13,7 +14,7 @@ const state = vi.hoisted(() => ({
 vi.mock("@/lib/config", () => ({
   submissionsEnabled: () => true,
   certification: "TEST electronic signing consent",
-  proxyConfig: { templateVersion: "test-only-v1" },
+  proxyConfig: { campaignId: "test-only", templateVersion: "test-only-v1" },
 }));
 vi.mock("@/lib/email", () => ({
   sendEmail: vi.fn().mockResolvedValue(undefined),
@@ -29,13 +30,18 @@ vi.mock("@/lib/db", () => {
     },
     proxySubmission: {
       findMany: async (args: {
-        where: { houseNumber: { equals: string }; street: string };
+        where: {
+          houseNumber: { equals: string };
+          street: string;
+          templateVersion: { startsWith: string };
+        };
       }) =>
         state.rows.filter(
           (s) =>
             s.houseNumber.toLowerCase() ===
               args.where.houseNumber.equals.toLowerCase() &&
-            s.street === args.where.street,
+            s.street === args.where.street &&
+            s.templateVersion.startsWith(args.where.templateVersion.startsWith),
         ),
       create: async (args: {
         data: {
@@ -43,6 +49,7 @@ vi.mock("@/lib/db", () => {
           houseNumber: string;
           street: string;
           likelyDuplicate: boolean;
+          templateVersion: string;
         };
       }) => {
         state.rows.push(args.data);
@@ -132,4 +139,30 @@ it("does not flag different properties as duplicates", async () => {
   await createSubmission(data, "test", "test");
   await createSubmission({ ...data, houseNumber: "19124" }, "test", "test");
   expect(state.rows.every((s) => !s.likelyDuplicate)).toBe(true);
+});
+
+it("does not flag a November property because it had an October proxy", async () => {
+  state.rows.push({
+    id: "old-campaign",
+    houseNumber: "665",
+    street: "NE 191st Street",
+    likelyDuplicate: false,
+    templateVersion: "old-october:hash",
+  });
+  await createSubmission(
+    {
+      houseNumber: "665",
+      street: "NE 191st Street",
+      firstName: "Test",
+      lastName: "Signer",
+      email: "test@example.org",
+      ownershipType: "Individual",
+      signature,
+      certified: true,
+      turnstileToken: "test-only",
+    },
+    "test",
+    "test",
+  );
+  expect(state.rows.every((row) => !row.likelyDuplicate)).toBe(true);
 });

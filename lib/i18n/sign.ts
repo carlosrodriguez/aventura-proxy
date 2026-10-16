@@ -47,8 +47,6 @@ export const spanishSign: Record<string, string> = {
   "Signer title / capacity": "Cargo o facultad del firmante",
   "The Association will independently determine whether the signer is authorized to vote for this property.":
     "La Asociación determinará de forma independiente si el firmante está autorizado a votar por esta propiedad.",
-  "This limited proxy directs a NO vote on all three proposals. These instructions are fixed.":
-    "Este poder limitado indica votar NO a las tres propuestas. Estas instrucciones no se pueden modificar.",
   "View the complete proxy template": "Leer el poder completo",
   "Draw your signature": "Dibuje su firma",
   "Draw your handwritten signature": "Dibuje su firma manuscrita",
