@@ -116,11 +116,10 @@ export default async function Home() {
               : "Confirm your email with the code we send. You receive the completed PDF; Jenny receives a copy for printing and presentation."}
           </li>
         </ol>
-        <p>
+        <p className="quorum-document-links">
           <Link href="/proxy-language">
             {es ? "Leer el poder oficial" : "Read the official proxy"}
-          </Link>{" "}
-          ·{" "}
+          </Link>
           <a
             href="/documents/annual-meeting-2026.pdf"
             target="_blank"
