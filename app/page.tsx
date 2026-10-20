@@ -19,10 +19,6 @@ export default async function Home() {
           "Jenny Ghetea recibe una copia para imprimirla y presentarla en la reunión. Usted también recibe el PDF completado para sus archivos.",
         ],
         [
-          "¿Puedo asistir y votar?",
-          "Para votar por candidatos, asista a la reunión y siga el procedimiento de votación de la Asociación. Consulte al administrador sobre cómo se tratará un poder que ya haya entregado.",
-        ],
-        [
           "¿Quién puede firmar?",
           "La persona autorizada para votar por el lote. La Asociación determina la autoridad del firmante y si el poder cumple sus requisitos.",
         ],
@@ -39,10 +35,6 @@ export default async function Home() {
         [
           "Who receives my proxy?",
           "Jenny Ghetea receives a copy for printing and presentation at the meeting. You also receive the completed PDF for your records.",
-        ],
-        [
-          "Can I attend and vote?",
-          "To vote for candidates, attend the meeting and follow the Association’s voting procedures. Ask management how a proxy you have already given will be handled.",
         ],
         [
           "Who can sign?",
