@@ -24,7 +24,10 @@ export async function sendEmail(
   await transactionalEmail(to, subject, text, key, attachment);
 }
 export function emailContent(text: string) {
-  const body = `Aventura Isles Proxy\nIndependent website operated by SAPSLAB SERVICES LLC\n\n${text}\n\nThis message relates to a limited proxy requested at aventuraislesproxy.com for the November 17, 2026 meeting. If you did not request this, contact the site operator. This is not an official Association website.`;
+  const footer =
+    "This message relates to a limited proxy requested at aventuraislesproxy.com for the November 17, 2026 meeting. If you did not request this, contact the site operator. This is not an official Association website. Independent website operated by SAPSLAB SERVICES LLC.";
+  const body = `${text}\n\n${footer}`;
+  const verification = text.match(/^Your verification code is (\d{6})\./);
   const escape = (value: string) =>
     value.replace(
       /[&<>"']/g,
@@ -37,12 +40,17 @@ export function emailContent(text: string) {
           "'": "&#39;",
         })[character]!,
     );
-  return {
-    text: body,
-    html: `<!doctype html><html lang="en"><body style="font-family:Arial,sans-serif;color:#183b3a;line-height:1.6"><main style="max-width:600px;margin:24px auto;padding:24px"><h1 style="font-size:22px">Aventura Isles Proxy</h1>${body
+  const paragraphs = (value: string) =>
+    value
       .split("\n\n")
       .map((paragraph) => `<p>${escape(paragraph).replace(/\n/g, "<br>")}</p>`)
-      .join("")}</main></body></html>`,
+      .join("");
+  const content = verification
+    ? `<p style="margin:0 0 8px">Your verification code</p><p style="font-size:36px;font-weight:700;line-height:1.3;margin:0 0 24px">${verification[1]}</p>${paragraphs(text.slice(verification[0].length).trim())}`
+    : paragraphs(text);
+  return {
+    text: body,
+    html: `<!doctype html><html lang="en"><body style="font-family:Arial,sans-serif;color:#183b3a;line-height:1.6"><div style="display:none;max-height:0;overflow:hidden;mso-hide:all">${escape(text.split(". ")[0])}.</div><main style="max-width:600px;margin:24px auto;padding:24px">${content}<p style="font-size:12px;line-height:1.5;color:#65736e;margin-top:32px">${escape(footer)}</p></main></body></html>`,
   };
 }
 export async function transactionalEmail(
